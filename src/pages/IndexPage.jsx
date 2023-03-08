@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import Image from "../Image.jsx";
+import Image from "../components/Image.jsx";
 
 export default function IndexPage() {
   const data = [

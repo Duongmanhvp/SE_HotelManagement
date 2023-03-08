@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import AddressLink from "../AddressLink";
-import BookingWidget from "../BookingWidget";
-import PlaceGallery from "../PlaceGallery";
+import AddressLink from "../components/AddressLink";
+import BookingWidget from "../components/BookingWidget";
+import PlaceGallery from "../components/PlaceGallery";
 
 export default function PlacePage() {
   const data = {

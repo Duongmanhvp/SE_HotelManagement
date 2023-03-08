@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useContext, useState } from "react";
 import { Navigate, useParams } from "react-router-dom";
-import AccountNav from "../AccountNav";
+import AccountNav from "../components/AccountNav";
 import PlacesPage from "./PlacesPage";
 
 export default function ProfilePage() {

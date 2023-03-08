@@ -1,6 +1,6 @@
-import AddressLink from "../AddressLink";
-import PlaceGallery from "../PlaceGallery";
-import BookingDates from "../BookingDates";
+import AddressLink from "../components/AddressLink";
+import PlaceGallery from "../components/PlaceGallery";
+import BookingDates from "../components/BookingDates";
 import { booking } from "../data/Data";
 
 export default function BookingPage() {
