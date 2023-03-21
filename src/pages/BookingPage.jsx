@@ -2,8 +2,13 @@ import AddressLink from "../components/AddressLink";
 import PlaceGallery from "../components/PlaceGallery";
 import BookingDates from "../components/BookingDates";
 import { booking } from "../data/Data";
+import { useEffect } from "react";
 
 export default function BookingPage() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div className="my-8">
       <h1 className="text-3xl">{booking.place.title}</h1>

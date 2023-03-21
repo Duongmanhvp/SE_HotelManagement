@@ -44,7 +44,11 @@ function LangdingPage() {
           </Link>
         </div>
       </div>
-      <div className="mt-16">
+      <div
+        className="mt-16"
+        id="about"
+        style={{ "scroll-margin-top": "144px" }}
+      >
         <h2 className="text-5xl text-center font-bold">Feathers</h2>
         <div className="grid grid-cols-3 mt-12">
           <div className="flex items-center justify-center flex-col">
@@ -168,7 +172,7 @@ function LangdingPage() {
           </label>
         </div>
       </div>
-      <div>
+      <div id="contact" style={{ "scroll-margin-top": "140px" }}>
         <h1 className="text-center mb-8 text-5xl mt-8 font-bold">
           Get in touch
         </h1>

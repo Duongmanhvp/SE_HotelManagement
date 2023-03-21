@@ -8,7 +8,7 @@ export default function Image({ src, ...rest }) {
       {...rest}
       src={src}
       alt={""}
-      className="w-full h-full object-cover max-w-96"
+      className="w-full h-full object-cover max-w-96 rounded-2xl"
     />
   );
 }

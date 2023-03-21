@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "./Image.jsx";
 
 export default function PlaceGallery({ place }) {
@@ -78,8 +78,11 @@ export default function PlaceGallery({ place }) {
         </div>
       </div>
       <button
-        onClick={() => setShowAllPhotos(true)}
-        className="flex gap-1 absolute bottom-2 right-2 py-2 px-4 bg-white rounded-2xl shadow shadow-md shadow-gray-500"
+        onClick={() => {
+          setShowAllPhotos(true);
+          window.scrollTo(0, 0);
+        }}
+        className="flex gap-1 absolute bottom-2 right-2 py-2 px-4 bg-white rounded-2xl shadow shadow-gray-500"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
