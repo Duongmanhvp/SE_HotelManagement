@@ -24,7 +24,7 @@ function Header() {
           {/* Site branding */}
           <div className="flex-shrink-0 mr-4">
             {/* Logo */}
-            <Link to="/" className="block" aria-label="Cruip">
+            <Link to="/home" className="block" aria-label="Cruip">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -47,7 +47,7 @@ function Header() {
             <ul className="flex flex-grow justify-start flex-wrap items-center">
               <li>
                 <Link
-                  to="/"
+                  to="/home"
                   className="font-medium text-gray-600 hover:text-gray-900 px-5 py-3 flex items-center transition duration-150 ease-in-out"
                 >
                   Home
@@ -55,7 +55,7 @@ function Header() {
               </li>
               <li>
                 <Link
-                  to="/explore"
+                  to="/"
                   className="font-medium text-gray-600 hover:text-gray-900 px-5 py-3 flex items-center transition duration-150 ease-in-out"
                 >
                   Explore
@@ -63,7 +63,11 @@ function Header() {
               </li>
               <li>
                 <Link
-                  to="/"
+                  onClick={() => {
+                    document
+                      .getElementById("about")
+                      .scrollIntoView({ behavior: "smooth" });
+                  }}
                   className="font-medium text-gray-600 hover:text-gray-900 px-5 py-3 flex items-center transition duration-150 ease-in-out"
                 >
                   About
@@ -71,7 +75,11 @@ function Header() {
               </li>
               <li>
                 <Link
-                  to="/"
+                  onClick={() => {
+                    document
+                      .getElementById("contact")
+                      .scrollIntoView({ behavior: "smooth" });
+                  }}
                   className="font-medium text-gray-600 hover:text-gray-900 px-5 py-3 flex items-center transition duration-150 ease-in-out"
                 >
                   Contact
