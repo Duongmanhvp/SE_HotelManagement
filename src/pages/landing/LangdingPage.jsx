@@ -1,10 +1,11 @@
 import React from "react";
-import Header from "./Header";
+import Header from "../../components/landing/Header";
 import HeroImg from "../../assets/hero.jpg";
 import HandShakeImg from "../../assets/handshake.png";
 import RocketImg from "../../assets/rocket.png";
 import AwardImg from "../../assets/award.png";
 import { Link } from "react-router-dom";
+import Footer from "../../components/customer/Footer";
 
 function LangdingPage() {
   const links = [
@@ -23,22 +24,22 @@ function LangdingPage() {
     <div>
       <Header></Header>
       <div className="relative">
-        <img src={HeroImg} alt="hero"></img>
+        <img src={HeroImg} alt="hero" className="opacity-70"></img>
         <div className="absolute text-center top-1/2 left-1/2 -translate-x-1/2 -translate-y-72">
           <h2 className="text-7xl font-bold italic mb-8">
             Welcome to{" "}
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-600">
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/80">
               Howell
             </span>
           </h2>
-          <p className="text-2xl ">
+          <p className="text-2xl">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
             ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
             aliquip ex ea commodo consequat.
           </p>
           <Link to={"/"}>
-            <button className="mt-8 text-xl  outline-none bg-gradient-to-r from-pink-500 to-violet-600 p-4 border-none rounded-full hover:scale-125 duration-300">
+            <button className="mt-8 text-lg text-white  outline-none bg-gradient-to-r from-primary to-primary/80 px-8 py-4 border-none hover:px-16 rounded-full duration-300">
               Đặt phòng ngay
             </button>
           </Link>
@@ -947,7 +948,7 @@ function LangdingPage() {
             <div class="text-center">
               <button
                 type="submit"
-                className="rounded-full outline-none p-3 mt-4 bg-pink-400 hover:bg-pink-500 duration-300"
+                className="rounded-full outline-none px-6 py-3 mt-4 bg-primary hover:opacity-80 text-white duration-300"
                 tabIndex="-1"
               >
                 Send message
@@ -956,242 +957,7 @@ function LangdingPage() {
           </form>
         </div>
       </div>
-      <footer className="mt-12">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          {/* Top area: Blocks */}
-          <div className="grid sm:grid-cols-12 gap-8 py-8 md:py-12 border-t border-gray-200">
-            {/* 1st block */}
-            <div className="sm:col-span-12 lg:col-span-3">
-              <div className="mb-2">
-                {/* Logo */}
-                <Link to="/" className="block" aria-label="Cruip">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-8 h-8 -rotate-90"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"
-                    />
-                  </svg>
-                </Link>
-              </div>
-              <div className="text-sm text-gray-600">
-                <Link
-                  to="#"
-                  className="text-gray-600 hover:text-gray-900 hover:underline transition duration-150 ease-in-out"
-                >
-                  Terms
-                </Link>{" "}
-                ·{" "}
-                <Link
-                  to="#"
-                  className="text-gray-600 hover:text-gray-900 hover:underline transition duration-150 ease-in-out"
-                >
-                  Privacy Policy
-                </Link>
-              </div>
-            </div>
-
-            {/* 2nd block */}
-            <div className="sm:col-span-6 md:col-span-3 lg:col-span-2">
-              <h6 className="text-gray-800 font-medium mb-2">Products</h6>
-              <ul className="text-sm">
-                <li className="mb-2">
-                  <Link
-                    to="#"
-                    className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out"
-                  >
-                    Web Studio
-                  </Link>
-                </li>
-                <li className="mb-2">
-                  <Link
-                    to="#"
-                    className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out"
-                  >
-                    DynamicBox Flex
-                  </Link>
-                </li>
-                <li className="mb-2">
-                  <Link
-                    to="#"
-                    className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out"
-                  >
-                    Programming Forms
-                  </Link>
-                </li>
-                <li className="mb-2">
-                  <Link
-                    to="#"
-                    className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out"
-                  >
-                    Integrations
-                  </Link>
-                </li>
-                <li className="mb-2">
-                  <Link
-                    to="#"
-                    className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out"
-                  >
-                    Command-line
-                  </Link>
-                </li>
-              </ul>
-            </div>
-
-            {/* 3rd block */}
-            <div className="sm:col-span-6 md:col-span-3 lg:col-span-2">
-              <h6 className="text-gray-800 font-medium mb-2">Resources</h6>
-              <ul className="text-sm">
-                <li className="mb-2">
-                  <Link
-                    to="#"
-                    className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out"
-                  >
-                    Documentation
-                  </Link>
-                </li>
-                <li className="mb-2">
-                  <Link
-                    to="#"
-                    className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out"
-                  >
-                    Tutorials & Guides
-                  </Link>
-                </li>
-                <li className="mb-2">
-                  <Link
-                    to="#"
-                    className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out"
-                  >
-                    Blog
-                  </Link>
-                </li>
-                <li className="mb-2">
-                  <Link
-                    to="#"
-                    className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out"
-                  >
-                    Support Center
-                  </Link>
-                </li>
-                <li className="mb-2">
-                  <Link
-                    to="#"
-                    className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out"
-                  >
-                    Partners
-                  </Link>
-                </li>
-              </ul>
-            </div>
-
-            {/* 4th block */}
-            <div className="sm:col-span-6 md:col-span-3 lg:col-span-2">
-              <h6 className="text-gray-800 font-medium mb-2">Company</h6>
-              <ul className="text-sm">
-                <li className="mb-2">
-                  <Link
-                    to="#"
-                    className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out"
-                  >
-                    Home
-                  </Link>
-                </li>
-                <li className="mb-2">
-                  <Link
-                    to="#"
-                    className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out"
-                  >
-                    About us
-                  </Link>
-                </li>
-                <li className="mb-2">
-                  <Link
-                    to="#"
-                    className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out"
-                  >
-                    Company values
-                  </Link>
-                </li>
-                <li className="mb-2">
-                  <Link
-                    to="#"
-                    className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out"
-                  >
-                    Pricing
-                  </Link>
-                </li>
-                <li className="mb-2">
-                  <Link
-                    to="#"
-                    className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out"
-                  >
-                    Privacy Policy
-                  </Link>
-                </li>
-              </ul>
-            </div>
-
-            {/* 5th block */}
-            <div className="sm:col-span-6 md:col-span-3 lg:col-span-3">
-              <h6 className="text-gray-800 font-medium mb-2">Subscribe</h6>
-              <p className="text-sm text-gray-600 mb-4">
-                Get the latest news and articles to your inbox every month.
-              </p>
-              <form>
-                <div className="flex flex-wrap mb-4">
-                  <div className="w-full">
-                    <label
-                      className="block text-sm sr-only"
-                      htmlFor="newsletter"
-                    >
-                      Email
-                    </label>
-                    <div className="relative flex items-center max-w-xs">
-                      <input
-                        id="newsletter"
-                        type="email"
-                        className="form-input w-full text-gray-800 px-3 py-2 pr-12 text-sm"
-                        placeholder="Your email"
-                        required
-                      />
-                      <button
-                        type="submit"
-                        className="absolute inset-0 left-auto"
-                        aria-label="Subscribe"
-                      >
-                        <span
-                          className="absolute inset-0 right-auto w-px -ml-px my-2 bg-gray-300"
-                          aria-hidden="true"
-                        ></span>
-                        <svg
-                          className="w-3 h-3 fill-current text-blue-600 mx-3 flex-shrink-0"
-                          viewBox="0 0 12 12"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M11.707 5.293L7 .586 5.586 2l3 3H0v2h8.586l-3 3L7 11.414l4.707-4.707a1 1 0 000-1.414z"
-                            fillRule="nonzero"
-                          />
-                        </svg>
-                      </button>
-                    </div>
-                    {/* Success message */}
-                    {/* <p className="mt-2 text-green-600 text-sm">Thanks for subscribing!</p> */}
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <Footer></Footer>
     </div>
   );
 }

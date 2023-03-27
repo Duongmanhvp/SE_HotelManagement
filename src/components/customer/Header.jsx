@@ -35,23 +35,30 @@ export default function Header() {
       }`}
     >
       <div className="flex justify-between items-center h-20">
-        <Link to={"/home"} className="flex items-center gap-1">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="w-8 h-8 -rotate-90"
+        <div className="flex-shrink-0 mr-4 text-primary hover:opacity-80 duration-200">
+          {/* Logo */}
+          <Link
+            to="/home"
+            className="flex justify-start items-center"
+            aria-label="Cruip"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"
-            />
-          </svg>
-          <span className="font-bold text-xl">airbnb</span>
-        </Link>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="w-8 h-8 -rotate-90"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"
+              />
+            </svg>
+            <p className="ml-3 font-bold text-2xl">Booking</p>
+          </Link>
+        </div>
 
         <div
           className="flex gap-2 border border-gray-300 rounded-full py-2 px-4 shadow-md hover:shadow-lg duration-200 shadow-gray-300 cursor-pointer"
@@ -125,7 +132,7 @@ export default function Header() {
             )}
           </Link>
           <Link to={"/admin"}>
-            <button className="py-2 px-8 ml-4 outline-none rounded-3xl border-none bg-red-600 text-white ">
+            <button className="py-2 px-8 ml-4 outline-none rounded-3xl border-none bg-blue1 hover:opacity-80 duration-200 text-white ">
               Admin
             </button>
           </Link>
@@ -191,7 +198,7 @@ export default function Header() {
           </div>
           <button
             type="submit"
-            className="rounded-2xl px-4 bg-pink-600 text-white mt-[26px] h-[42px]"
+            className="rounded-2xl px-4 bg-primary  hover:shadow-lg font-bold duration-200 text-white mt-[26px] h-[42px]"
             onClick={handleSubmit}
           >
             Tìm khách sạn

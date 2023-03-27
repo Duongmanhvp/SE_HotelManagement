@@ -34,7 +34,7 @@ const BarChart = () => {
           label: "Đơn vị $",
           data: [827, 901, 1990, 1738, 982, 1342, 2275],
           borderColor: "rgb(53, 162, 235)",
-          backgroundColor: "rgb(53, 162, 235, 0.4",
+          backgroundColor: "rgb(53, 162, 235, 0.4)",
         },
       ],
     });

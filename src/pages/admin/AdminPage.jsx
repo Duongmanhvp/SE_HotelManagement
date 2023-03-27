@@ -1,8 +1,8 @@
 import React from "react";
-import Header from "./components/Header";
-import TopCards from "./components/TopCards";
-import BarChart from "./components/BarChart";
-import RecentOrders from "./components/RecentOrders";
+import Header from "../../components/admin/Header";
+import TopCards from "../../components/admin/TopCards";
+import BarChart from "../../components/admin/BarChart";
+import RecentOrders from "../../components/admin/RecentOrders";
 
 function AdminPage() {
   return (

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, Navigate } from "react-router-dom";
-import { users } from "../data/Data.jsx";
+import { users } from "../../data/sampleData.jsx";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
