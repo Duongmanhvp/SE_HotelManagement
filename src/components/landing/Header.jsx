@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, redirect } from "react-router-dom";
 
 function Header() {
   const [top, setTop] = useState(true);
@@ -15,7 +15,7 @@ function Header() {
 
   return (
     <header
-      className={`fixed w-full z-30 md:bg-opacity-90 transition duration-300 ease-in-out ${
+      className={`fixed top-0 left-0 right-0 w-full z-30 md:bg-opacity-90 transition duration-300 ease-in-out ${
         !top && "bg-white backdrop-blur-sm shadow-lg"
       }`}
     >
@@ -68,6 +68,7 @@ function Header() {
               </li>
               <li>
                 <Link
+                  to={"/home"}
                   onClick={() => {
                     document
                       .getElementById("about")
@@ -80,6 +81,7 @@ function Header() {
               </li>
               <li>
                 <Link
+                  to={"/home"}
                   onClick={() => {
                     document
                       .getElementById("contact")
@@ -91,13 +93,21 @@ function Header() {
                 </Link>
               </li>
             </ul>
-            <ul className="flex flex-grow justify-end flex-wrap items-center">
+            <ul className="flex flex-grow justify-end flex-wrap gap-8 items-center">
               <li className="rounded-full bg-primary hover:bg-primary/80 duration-200">
                 <Link
-                  to="/signin"
+                  to="/login"
                   className="font-medium text-white px-6 py-3 flex items-center "
                 >
                   Sign in
+                </Link>
+              </li>
+              <li className="rounded-full bg-tranparent border-2 border-primary hover:bg-primary/80 duration-200">
+                <Link
+                  to="/admin"
+                  className="font-medium text-black px-6 py-3 flex items-center hover:text-white"
+                >
+                  Admin
                 </Link>
               </li>
             </ul>
