@@ -8,22 +8,10 @@ import { Link } from "react-router-dom";
 import Footer from "../../components/customer/Footer";
 
 function LangdingPage() {
-  const links = [
-    { name: "Open roles", href: "#" },
-    { name: "Internship program", href: "#" },
-    { name: "Our values", href: "#" },
-    { name: "Meet our leadership", href: "#" },
-  ];
-  const stats = [
-    { name: "Offices worldwide", value: "12" },
-    { name: "Full-time colleagues", value: "300+" },
-    { name: "Hours per week", value: "40" },
-    { name: "Paid time off", value: "Unlimited" },
-  ];
   return (
     <div>
       <Header></Header>
-      <div className="relative">
+      <div className="relative animate-[fadeIn_2s_ease-in-out]">
         <img src={HeroImg} alt="hero" className="opacity-70"></img>
         <div className="absolute text-center top-1/2 left-1/2 -translate-x-1/2 -translate-y-72">
           <h2 className="text-7xl font-bold italic mb-8">

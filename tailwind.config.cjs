@@ -10,6 +10,16 @@ module.exports = {
         blue2: "#00eb3b",
         blue3: "#00a429",
       },
+      keyframes: {
+        fadeIn: {
+          "0%": {
+            opacity: "0%",
+          },
+          "100%": {
+            opacity: "100%",
+          },
+        },
+      },
     },
   },
   plugins: [require("@tailwindcss/line-clamp")],
