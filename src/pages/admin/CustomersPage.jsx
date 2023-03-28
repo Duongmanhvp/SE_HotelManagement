@@ -1,6 +1,6 @@
 import React from "react";
 import { BsPersonFill, BsThreeDotsVertical } from "react-icons/bs";
-import { data } from "./data/data";
+import { adminData } from "../../data/sampleData";
 import { Link } from "react-router-dom";
 
 function CustomersPage() {
@@ -19,15 +19,15 @@ function CustomersPage() {
             <span className="font-bold hidden sm:grid">Method</span>
           </div>
           <ul>
-            {data.map((order, id) => (
+            {adminData.map((order, id) => (
               <Link to={`./${id}`}>
                 <li
                   key={id}
                   className="bg-gray-50 hover:bg-gray-100 rounded-lg my-3 p-2 grid md:grid-cols-4 sm:grid-cols-3 grid-cols-2 items-center justify-between cursor-pointer"
                 >
                   <div className="flex items-center">
-                    <div className="bg-purple-100 p-3 rounded-lg">
-                      <BsPersonFill className="text-purple-800" />
+                    <div className="bg-blue1/10 p-3 rounded-lg">
+                      <BsPersonFill className="text-blue1" />
                     </div>
                     <p className="pl-4">
                       {order.name.first + " " + order.name.last}

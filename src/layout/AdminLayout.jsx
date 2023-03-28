@@ -1,6 +1,6 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import Sidebar from "./pages/admin/components/Sidebar";
+import Sidebar from "../components/admin/Sidebar";
 
 function AdminLayout() {
   return (

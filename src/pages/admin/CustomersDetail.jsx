@@ -1,7 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import UserProfile from "../../components/customer/UserProfile";
+import { _bookings } from "../../data/sampleData";
+import axios from "axios";
+import { Link } from "react-router-dom";
+import BookingItem from "../../components/customer/BookingItem";
 
 function CustomersDetail() {
   const [index, setIndex] = useState(1);
+  const [bookings, setBookings] = useState([]);
+  useEffect(() => {
+    axios
+      .get("/bookings")
+      .then((response) => {
+        setBookings(response.data);
+      })
+      .catch((err) => setBookings(_bookings));
+  }, []);
   return (
     <div>
       <h1 className="font-bold text-xl mt-3 ml-6">Chi tiết khách hàng</h1>
@@ -22,14 +36,16 @@ function CustomersDetail() {
       <div className=" mt-5 flex justify-center items-center">
         <button
           onClick={() => setIndex(1)}
-          className={`px-6 py-3 rounded-xl ${index === 1 && "bg-pink-500"}`}
+          className={`px-6 py-3 rounded-xl ${
+            index === 1 && "bg-blue1 text-white"
+          }`}
         >
           Hồ sơ
         </button>
         <button
           onClick={() => setIndex(2)}
           className={`px-6 py-3 ml-3 rounded-xl ${
-            index === 2 && "bg-pink-500"
+            index === 2 && "bg-blue1 text-white shadow-xl"
           }`}
         >
           Đơn mua
@@ -37,163 +53,18 @@ function CustomersDetail() {
       </div>
 
       {index === 1 && (
-        <div className="grid grid-cols-2 gap-3 w-1/2 m-auto mt-8">
-          <div className="font-bold text-right">
-            <p>Họ tên</p>
-            <p>Ngày sinh</p>
-            <p>Giới tính</p>
-            <p>Địa chỉ</p>
-            <p>Dân tộc</p>
-            <p>Email</p>
-            <p>Số điện thoại</p>
-          </div>
-          <div>
-            <p>Nguyễn Văn A</p>
-            <p>28/06/2003</p>
-            <p>Nam</p>
-            <p>Thành phố Hà Nội - Việt Nam</p>
-            <p>Kinh</p>
-            <p>abcxyz@gmail.com</p>
-            <p>0123456987</p>
-          </div>
+        <div className="w-2/3 mx-auto mt-16 pb-16">
+          <UserProfile></UserProfile>
         </div>
       )}
       {index === 2 && (
-        <div className="mt-8 ml-12">
-          <ul className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <li>
-              <img
-                src="https://picsum.photos/200"
-                className="w-20 h-20 rounded-lg float-left ml-3 mr-4"
-              ></img>
-              <p>EcoLuxe Cabin w/Conversation Pit : 32 Acres +Trail</p>
-              <p>Đánh giá: ⭐⭐⭐⭐⭐</p>
-              <p>
-                <span className="font-bold">Thanh toán:</span> $762
-              </p>
-            </li>
-            <li>
-              <img
-                src="https://picsum.photos/200"
-                className="w-20 h-20 rounded-lg float-left ml-3 mr-4"
-              ></img>
-              <p>EcoLuxe Cabin w/Conversation Pit : 32 Acres +Trail</p>
-              <p>Đánh giá: ⭐⭐⭐⭐⭐</p>
-              <p>
-                <span className="font-bold">Thanh toán:</span> $762
-              </p>
-            </li>
-            <li>
-              <img
-                src="https://picsum.photos/200"
-                className="w-20 h-20 rounded-lg float-left ml-3 mr-4"
-              ></img>
-              <p>EcoLuxe Cabin w/Conversation Pit : 32 Acres +Trail</p>
-              <p>Đánh giá: ⭐⭐⭐⭐⭐</p>
-              <p>
-                <span className="font-bold">Thanh toán:</span> $762
-              </p>
-            </li>
-            <li>
-              <img
-                src="https://picsum.photos/200"
-                className="w-20 h-20 rounded-lg float-left ml-3 mr-4"
-              ></img>
-              <p>EcoLuxe Cabin w/Conversation Pit : 32 Acres +Trail</p>
-              <p>Đánh giá: ⭐⭐⭐⭐⭐</p>
-              <p>
-                <span className="font-bold">Thanh toán:</span> $762
-              </p>
-            </li>
-            <li>
-              <img
-                src="https://picsum.photos/200"
-                className="w-20 h-20 rounded-lg float-left ml-3 mr-4"
-              ></img>
-              <p>EcoLuxe Cabin w/Conversation Pit : 32 Acres +Trail</p>
-              <p>Đánh giá: ⭐⭐⭐⭐⭐</p>
-              <p>
-                <span className="font-bold">Thanh toán:</span> $762
-              </p>
-            </li>
-            <li>
-              <img
-                src="https://picsum.photos/200"
-                className="w-20 h-20 rounded-lg float-left ml-3 mr-4"
-              ></img>
-              <p>EcoLuxe Cabin w/Conversation Pit : 32 Acres +Trail</p>
-              <p>Đánh giá: ⭐⭐⭐⭐⭐</p>
-              <p>
-                <span className="font-bold">Thanh toán:</span> $762
-              </p>
-            </li>
-            <li>
-              <img
-                src="https://picsum.photos/200"
-                className="w-20 h-20 rounded-lg float-left ml-3 mr-4"
-              ></img>
-              <p>EcoLuxe Cabin w/Conversation Pit : 32 Acres +Trail</p>
-              <p>Đánh giá: ⭐⭐⭐⭐⭐</p>
-              <p>
-                <span className="font-bold">Thanh toán:</span> $762
-              </p>
-            </li>
-            <li>
-              <img
-                src="https://picsum.photos/200"
-                className="w-20 h-20 rounded-lg float-left ml-3 mr-4"
-              ></img>
-              <p>EcoLuxe Cabin w/Conversation Pit : 32 Acres +Trail</p>
-              <p>Đánh giá: ⭐⭐⭐⭐⭐</p>
-              <p>
-                <span className="font-bold">Thanh toán:</span> $762
-              </p>
-            </li>
-            <li>
-              <img
-                src="https://picsum.photos/200"
-                className="w-20 h-20 rounded-lg float-left ml-3 mr-4"
-              ></img>
-              <p>EcoLuxe Cabin w/Conversation Pit : 32 Acres +Trail</p>
-              <p>Đánh giá: ⭐⭐⭐⭐⭐</p>
-              <p>
-                <span className="font-bold">Thanh toán:</span> $762
-              </p>
-            </li>
-            <li>
-              <img
-                src="https://picsum.photos/200"
-                className="w-20 h-20 rounded-lg float-left ml-3 mr-4"
-              ></img>
-              <p>EcoLuxe Cabin w/Conversation Pit : 32 Acres +Trail</p>
-              <p>Đánh giá: ⭐⭐⭐⭐⭐</p>
-              <p>
-                <span className="font-bold">Thanh toán:</span> $762
-              </p>
-            </li>
-            <li>
-              <img
-                src="https://picsum.photos/200"
-                className="w-20 h-20 rounded-lg float-left ml-3 mr-4"
-              ></img>
-              <p>EcoLuxe Cabin w/Conversation Pit : 32 Acres +Trail</p>
-              <p>Đánh giá: ⭐⭐⭐⭐⭐</p>
-              <p>
-                <span className="font-bold">Thanh toán:</span> $762
-              </p>
-            </li>
-            <li>
-              <img
-                src="https://picsum.photos/200"
-                className="w-20 h-20 rounded-lg float-left ml-3 mr-4"
-              ></img>
-              <p>EcoLuxe Cabin w/Conversation Pit : 32 Acres +Trail</p>
-              <p>Đánh giá: ⭐⭐⭐⭐⭐</p>
-              <p>
-                <span className="font-bold">Thanh toán:</span> $762
-              </p>
-            </li>
-          </ul>
+        <div className="w-2/3 mx-auto mt-16 pb-16">
+          {bookings?.length > 0 &&
+            bookings.map((booking) => (
+              <Link to={`/account/bookings/${booking.place._id}`}>
+                <BookingItem booking={booking}></BookingItem>
+              </Link>
+            ))}
         </div>
       )}
     </div>
