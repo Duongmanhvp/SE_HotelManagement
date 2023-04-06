@@ -39,79 +39,83 @@ export default function BookingWidget({ place }) {
         Price:{" "}
         <span className="font-semibold">${place.price.$numberDecimal}</span>
       </div>
-      <div className="border rounded-2xl mt-4 mb-6">
-        <div className="flex">
-          <div className="py-3 px-4">
-            <label className="font-semibold">Check in:</label>
+      <form>
+        <div className="border rounded-2xl mt-4 mb-6">
+          <div className="flex">
+            <div className="py-3 px-4">
+              <label className="font-semibold">Check in:</label>
+              <input
+                type="date"
+                min={formatISO(Date.now(), { representation: "date" })}
+                max={
+                  checkOut != ""
+                    ? formatISO(new Date(checkOut), { representation: "date" })
+                    : ""
+                }
+                value={checkIn}
+                onChange={(ev) => setCheckIn(ev.target.value)}
+              />
+            </div>
+            <div className="py-3 px-4 border-l">
+              <label className="font-semibold">Check out:</label>
+              <input
+                type="date"
+                min={
+                  checkIn != ""
+                    ? formatISO(new Date(checkIn), { representation: "date" })
+                    : ""
+                }
+                value={checkOut}
+                disabled={checkIn == ""}
+                onChange={(ev) => setCheckOut(ev.target.value)}
+              />
+            </div>
+          </div>
+          <div className="py-3 px-4 border-t">
+            <label className="font-semibold">Number of guests:</label>
             <input
-              type="date"
-              min={formatISO(Date.now(), { representation: "date" })}
-              max={
-                checkOut != ""
-                  ? formatISO(new Date(checkOut), { representation: "date" })
-                  : ""
-              }
-              value={checkIn}
-              onChange={(ev) => setCheckIn(ev.target.value)}
+              type="text"
+              value={numberOfGuests}
+              min={1}
+              pattern="/\d+/"
+              max={place.accommodates.$numberInt}
+              onChange={(ev) => setNumberOfGuests(ev.target.value)}
             />
           </div>
-          <div className="py-3 px-4 border-l">
-            <label className="font-semibold">Check out:</label>
-            <input
-              type="date"
-              min={
-                checkIn != ""
-                  ? formatISO(new Date(checkIn), { representation: "date" })
-                  : ""
-              }
-              value={checkOut}
-              disabled={checkIn == ""}
-              onChange={(ev) => setCheckOut(ev.target.value)}
-            />
-          </div>
         </div>
-        <div className="py-3 px-4 border-t">
-          <label className="font-semibold">Number of guests:</label>
-          <input
-            type="number"
-            value={numberOfGuests}
-            min={1}
-            max={place.accommodates.$numberInt}
-            onChange={(ev) => setNumberOfGuests(ev.target.value)}
-          />
-        </div>
-      </div>
-      {numberOfNights > 0 && (
-        <div className="mt-6">
-          <div className="flex justify-between items-center">
-            <p className="">
-              ${place.price.$numberDecimal} x {numberOfNights} đêm
-            </p>
-            <p className="font-bold">${corePrice}</p>
+        {numberOfNights > 0 && (
+          <div className="mt-6">
+            <div className="flex justify-between items-center">
+              <p className="">
+                ${place.price.$numberDecimal} x {numberOfNights} đêm
+              </p>
+              <p className="font-bold">${corePrice}</p>
+            </div>
+            <div className="flex justify-between items-center">
+              <p>Phí an ninh</p>
+              <p className="font-bold">${securityDeposit}</p>
+            </div>
+            <div className="flex justify-between items-center mb-2">
+              <p>Phí vệ sinh</p>
+              <p className="font-bold">${cleaningFee}</p>
+            </div>
+            <hr></hr>
+            <div className="flex justify-between items-center font-semibold text-xl mt-4">
+              <p className="">Tổng</p>
+              <p>${totalPrice}</p>
+            </div>
           </div>
-          <div className="flex justify-between items-center">
-            <p>Phí an ninh</p>
-            <p className="font-bold">${securityDeposit}</p>
-          </div>
-          <div className="flex justify-between items-center mb-2">
-            <p>Phí vệ sinh</p>
-            <p className="font-bold">${cleaningFee}</p>
-          </div>
-          <hr></hr>
-          <div className="flex justify-between items-center font-semibold text-xl mt-4">
-            <p className="">Tổng</p>
-            <p>${totalPrice}</p>
-          </div>
-        </div>
-      )}
-      <Link to={"/account/bookings/payment"}>
-        <button onClick={bookThisPlace} className="primary mt-6">
-          Book this place
-          <span className="font-bold">
-            {numberOfNights > 0 && <span> ${totalPrice}</span>}
-          </span>
-        </button>
-      </Link>
+        )}
+
+        <Link to={"/account/bookings/payment"}>
+          <button onClick={bookThisPlace} className="primary mt-6">
+            Book this place
+            <span className="font-bold">
+              {numberOfNights > 0 && <span> ${totalPrice}</span>}
+            </span>
+          </button>
+        </Link>
+      </form>
     </div>
   );
 }

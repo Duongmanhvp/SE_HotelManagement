@@ -16,7 +16,7 @@ export default function IndexPage() {
   }, []);
 
   return (
-    <div className="mt-8 ml-[352px]">
+    <div className="mt-8 ml-[352px] py-4 px-8 ">
       <SearchBar></SearchBar>
       <div className="grid gap-x-6 gap-y-8 xs:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {places.length > 0 &&

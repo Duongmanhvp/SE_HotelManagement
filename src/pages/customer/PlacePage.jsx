@@ -40,7 +40,7 @@ export default function PlacePage() {
   if (!place) return "";
 
   return (
-    <div className="mt-4  -mx-8 px-8 pt-8">
+    <div className="p-8">
       <h1 className="text-3xl font-semibold">{place.name}</h1>
       <div className="flex items-center">
         <p className="mr-2">

@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link, redirect } from "react-router-dom";
+import UserContext from "../../context/UserContext";
+import AvatarImg from "../../assets/avatar.jpg";
 
 function Header() {
   const [top, setTop] = useState(true);
-
   // detect whether user has scrolled the page down by 10px
   useEffect(() => {
     const scrollHandler = () => {
@@ -12,6 +13,7 @@ function Header() {
     window.addEventListener("scroll", scrollHandler);
     return () => window.removeEventListener("scroll", scrollHandler);
   }, [top]);
+  const { user } = useContext(UserContext);
 
   return (
     <header
@@ -93,23 +95,41 @@ function Header() {
                 </Link>
               </li>
             </ul>
+
             <ul className="flex flex-grow justify-end flex-wrap gap-8 items-center">
-              <li className="rounded-full bg-primary hover:bg-primary/80 duration-200">
-                <Link
-                  to="/login"
-                  className="font-medium text-white px-6 py-3 flex items-center "
-                >
-                  Sign in
-                </Link>
-              </li>
-              <li className="rounded-full bg-tranparent border-2 border-primary hover:bg-primary/80 duration-200">
-                <Link
-                  to="/admin"
-                  className="font-medium text-black px-6 py-3 flex items-center hover:text-white"
-                >
-                  Admin
-                </Link>
-              </li>
+              {user.isAuth && (
+                <li>
+                  <Link
+                    to="/account"
+                    className="font-medium text-white px-6 py-3 flex items-center "
+                  >
+                    <img
+                      src={AvatarImg}
+                      className="w-12 h-12 object-cover rounded-full"
+                    ></img>
+                  </Link>
+                </li>
+              )}
+              {!user.isAuth && (
+                <li className="rounded-full bg-primary hover:bg-primary/80 duration-200">
+                  <Link
+                    to="/login"
+                    className="font-medium text-white px-6 py-3 flex items-center "
+                  >
+                    Sign in
+                  </Link>
+                </li>
+              )}
+              {user.isAuth && user.role === "admin" && (
+                <li className="rounded-full bg-tranparent border-2 border-primary hover:bg-primary/80 duration-200">
+                  <Link
+                    to="/admin"
+                    className="font-medium text-black px-6 py-3 flex items-center hover:text-white"
+                  >
+                    Admin
+                  </Link>
+                </li>
+              )}
             </ul>
           </nav>
         </div>

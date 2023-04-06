@@ -1,23 +1,18 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
-import { users } from "../../data/sampleData.jsx";
+import UserContext from "../../context/UserContext";
+import axios from "axios";
+import { login } from "../../api";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [redirect, setRedirect] = useState(false);
+  const { setUser } = useContext(UserContext);
+  async function checkValid({ email, password }) {
+    // valid user
+    // const {name,role} = await login({email,password})
 
-  function checkValid({ email, password }) {
-    for (let index = 0; index < users.length; index++) {
-      const element = users[index];
-      if (element.email === email && element.password === password) {
-        localStorage.setItem("name", element.name);
-        localStorage.setItem("email", element.email);
-        return true;
-      }
-    }
-
-    return false;
+    return true;
   }
 
   function handleLoginSubmit(ev) {
@@ -27,21 +22,19 @@ export default function LoginPage() {
         throw new Error("Sai tài khoản hoặc mật khẩu");
       }
       alert("Login successful");
+      setUser({ username: email, role: "customer", isAuth: true });
       setRedirect(true);
     } catch (e) {
       alert("Login failed");
     }
   }
 
-  if (redirect) {
-    return <Navigate to={"/"} />;
-  }
-
   return (
-    <div className="mt-4 flex items-center justify-center grow">
-      <div>
-        <h1 className="text-4xl text-center mb-12 font-semibold">Login</h1>
-        <form className="max-w-md mx-auto" onSubmit={handleLoginSubmit}>
+    <form onSubmit={handleLoginSubmit}>
+      <div className="mt-4 flex items-center justify-center grow">
+        <div>
+          <h1 className="text-4xl text-center mb-12 font-semibold">Login</h1>
+
           <input
             type="email"
             placeholder="your@email.com"
@@ -63,8 +56,8 @@ export default function LoginPage() {
               Register now
             </Link>
           </div>
-        </form>
+        </div>
       </div>
-    </div>
+    </form>
   );
 }

@@ -14,10 +14,11 @@ export default function RegisterPage() {
     }
   }
   return (
-    <div className="mt-4 flex items-center justify-center grow">
-      <div>
-        <h1 className="text-4xl text-center mb-12">Register</h1>
-        <form className="max-w-md mx-auto" onSubmit={registerUser}>
+    <form className="max-w-md mx-auto" onSubmit={registerUser}>
+      <div className="mt-4 flex items-center justify-center grow+">
+        <div>
+          <h1 className="text-4xl text-center mb-12">Register</h1>
+
           <input
             type="text"
             placeholder="John Doe"
@@ -43,8 +44,8 @@ export default function RegisterPage() {
               Login
             </Link>
           </div>
-        </form>
+        </div>
       </div>
-    </div>
+    </form>
   );
 }

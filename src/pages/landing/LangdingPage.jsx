@@ -10,7 +10,6 @@ import Footer from "../../components/customer/Footer";
 function LangdingPage() {
   return (
     <div>
-      <Header></Header>
       <div className="relative animate-[fadeIn_2s_ease-in-out]">
         <img src={HeroImg} alt="hero" className="opacity-70"></img>
         <div className="absolute text-center top-1/2 left-1/2 -translate-x-1/2 -translate-y-72">
@@ -945,7 +944,6 @@ function LangdingPage() {
           </form>
         </div>
       </div>
-      <Footer></Footer>
     </div>
   );
 }
