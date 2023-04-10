@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="number"],
+input[type="tel"],
+input[type="date"],
+textarea {
+  @apply w-full border my-1 py-2 px-3 rounded-2xl;
+}
+textarea {
+  height: 140px;
+}
+button {
+  @apply bg-gray-300;
+}
+button.primary {
+  @apply bg-primary/80 hover:bg-primary duration-200 p-2 w-full text-white rounded-2xl;
+}
+.admin a.active:not(:first-child) div {
+  @apply bg-blue1 hover:bg-blue1/80 duration-200 text-white;
+}
+.rate-btn {
+  @apply p-2 border-none;
+}
+.star:hover ~ .star {
+  @apply text-yellow-500;
+}
