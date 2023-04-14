@@ -5,6 +5,7 @@ from rest_framework.fields import CharField, EmailField
 
 
 class CustomerSerializer(serializers.ModelSerializer):
+
 	class Meta:
 		model = models.Customer
 		fields = (

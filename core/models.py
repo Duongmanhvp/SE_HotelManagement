@@ -4,14 +4,12 @@ from django.contrib.auth.models import AbstractBaseUser
 from django_extensions.db.models import (
 	TimeStampedModel, 
 	ActivatorModel,
-	TitleDescriptionModel
 )
 
 class Customer(
 	TimeStampedModel, 
 	ActivatorModel,
 	AbstractBaseUser,
-	TitleDescriptionModel
 	# Model
 	):
 
@@ -20,11 +18,11 @@ class Customer(
 
 	name = models.CharField(max_length=50, default="new user")
 	email = models.EmailField(verbose_name="Email", unique=True, blank=True)
-	password = models.CharField(max_length=128)
 
 	is_active = True
 
+	USERNAME_FIELD= "name"
 	REQUIRED_FIELDS = []
 
 	def __str__(self):
-		return f'{self.title}'
+		return f'{self.name}'

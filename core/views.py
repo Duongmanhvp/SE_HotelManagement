@@ -30,7 +30,11 @@ class CustomerAPIView(views.APIView):
             serializer = CustomerSerializer(data=data)
             if serializer.is_valid(raise_exception=True):
                 serializer.save()
-                return Response(serializer.data)
+                token = AuthToken.objects.create(user)[1]
+                return Response({
+                    "user": CustomerSerializer(fdaf, context=self.get_serializer_context()).data,  # Get serialized User data
+                    "token": Customer.objects.get(token=token)
+                })
             else:
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except JSONDecodeError:

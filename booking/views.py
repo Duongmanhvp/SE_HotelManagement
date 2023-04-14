@@ -13,7 +13,7 @@ class HotelViewSet(
         RetrieveModelMixin, 
         viewsets.GenericViewSet
         ):
-    # permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated,)
     queryset = Hotel.objects.all()
     serializer_class = HotelSerializer
 
@@ -22,7 +22,7 @@ class RoomViewSet(
         RetrieveModelMixin, 
         viewsets.GenericViewSet
         ):
-    # permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated,)
     queryset = Room.objects.all()
     serializer_class = RoomSerializer
 
@@ -34,25 +34,25 @@ class ReservationViewSet(
         viewsets.GenericViewSet
         ):
     # permission_classes = (IsAuthenticated,)
-    queryset = Room.objects.all()
+
     serializer_class = ReservationSerializer
 
-    # def get_queryset(self):
-    #     """
-    #     This view should return a list of all the orders
-    #     for the currently authenticated user.
-    #     """
-    #     user = self.request.user
-    #     return Reservation.objects.filter(user = user)
+    def get_queryset(self):
+        """
+        This view should return a list of all the orders
+        for the currently authenticated user.
+        """
+        user = self.request.user
+        return Reservation.objects.filter(user = user)
 
     def create(self, request):
         try:
             data = JSONParser().parse(request)
             serializer = ReservationSerializer(data=data)
             if serializer.is_valid(raise_exception=True):
-                room_ordered = Room.objects.get(pk = data["item"])
-                order = room_ordered.make_reservation(request.user, data["quantity"])
-                return Response(ReservationSerializer(order).data)
+                room = Room.objects.get(pk = data["room"])
+                reservation = room.place_order(request.user, data["quantity"])
+                return Response(ReservationSerializer(reservation).data)
             else:
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except JSONDecodeError:
