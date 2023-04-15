@@ -1,5 +1,7 @@
 from django.urls import path
 from django.contrib import admin
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+
 from core import views as core_views
 from booking import views as booking_views
 from rest_framework import routers
@@ -18,3 +20,5 @@ urlpatterns += [
     path('users/', core_views.CustomerAPIView.as_view()),
     path('api-token-auth/', obtain_auth_token), # access to token
 ]
+
+urlpatterns += staticfiles_urlpatterns()
