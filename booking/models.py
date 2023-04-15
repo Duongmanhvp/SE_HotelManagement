@@ -30,7 +30,7 @@ class Hotel(
 
 class Room(
     TimeStampedModel,
-    ActivatorModel ,
+    ActivatorModel,
     TitleDescriptionModel,
     # Model
     ):
@@ -47,6 +47,9 @@ class Room(
     hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE)
     no_room_available = models.IntegerField(default=1)
     price = models.IntegerField(default=0)
+
+    USERNAME_FIELD= "email"
+    REQUIRED_FIELDS = ["name"]
 
     def amount(self):
         amount = float(self.price / 100)

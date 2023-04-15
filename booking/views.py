@@ -13,19 +13,27 @@ class HotelViewSet(
         RetrieveModelMixin, 
         viewsets.GenericViewSet
         ):
-    permission_classes = (IsAuthenticated,)
+    # permission_classes = (IsAuthenticated,)
     queryset = Hotel.objects.all()
     serializer_class = HotelSerializer
+
+    def get(self, request, *args, **kwargs):
+        model_data = Hotel.objects.all
+        try:
+            ...
+        except:
+            pass
+
 
 class RoomViewSet(
         ListModelMixin,
         RetrieveModelMixin, 
         viewsets.GenericViewSet
         ):
-    permission_classes = (IsAuthenticated,)
+    # permission_classes = (IsAuthenticated,)
     queryset = Room.objects.all()
     serializer_class = RoomSerializer
-
+    lookup_field = 'id'
 
 class ReservationViewSet(
         ListModelMixin,
@@ -33,7 +41,7 @@ class ReservationViewSet(
         UpdateModelMixin, 
         viewsets.GenericViewSet
         ):
-    # permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated,)
 
     serializer_class = ReservationSerializer
 
@@ -43,7 +51,7 @@ class ReservationViewSet(
         for the currently authenticated user.
         """
         user = self.request.user
-        return Reservation.objects.filter(user = user)
+        return Reservation.objects.filter(customer=user)
 
     def create(self, request):
         try:

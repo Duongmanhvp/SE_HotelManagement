@@ -4,10 +4,14 @@ from .serializers import CustomerSerializer
 from rest_framework.parsers import JSONParser
 from rest_framework import views, status
 from rest_framework.response import Response
-from rest_framework import viewsets
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.authtoken.models import Token
 
 
-class CustomerAPIView(views.APIView):
+class CustomerAPIView(
+    ObtainAuthToken,
+    views.APIView,
+):
     """
     A simple APIView for creating contact entires.
     """
@@ -30,10 +34,10 @@ class CustomerAPIView(views.APIView):
             serializer = CustomerSerializer(data=data)
             if serializer.is_valid(raise_exception=True):
                 serializer.save()
-                token = AuthToken.objects.create(user)[1]
+                token, created = Token.objects.get_or_create(user=data)
                 return Response({
-                    "user": CustomerSerializer(fdaf, context=self.get_serializer_context()).data,  # Get serialized User data
-                    "token": Customer.objects.get(token=token)
+                    "user": CustomerSerializer(data=data, context=self.get_serializer_context()).data,  # Get serialized User data
+                    "token": Token.objects.get(token=token)
                 })
             else:
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
