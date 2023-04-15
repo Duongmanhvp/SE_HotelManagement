@@ -41,15 +41,11 @@ class ReservationViewSet(
         UpdateModelMixin, 
         viewsets.GenericViewSet
         ):
+    
     permission_classes = (IsAuthenticated,)
-
     serializer_class = ReservationSerializer
 
     def get_queryset(self):
-        """
-        This view should return a list of all the orders
-        for the currently authenticated user.
-        """
         user = self.request.user
         return Reservation.objects.filter(customer=user)
 

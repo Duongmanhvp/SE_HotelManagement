@@ -13,7 +13,7 @@ class CustomerAPIView(
     views.APIView,
 ):
     """
-    A simple APIView for creating contact entires.
+    A simple APIView for creating customer entires.
     """
     serializer_class = CustomerSerializer
 
@@ -23,7 +23,7 @@ class CustomerAPIView(
             'format': self.format_kwarg,
             'view': self
         }
-
+    
     def get_serializer(self, *args, **kwargs):
         kwargs['context'] = self.get_serializer_context()
         return self.serializer_class(*args, **kwargs)
