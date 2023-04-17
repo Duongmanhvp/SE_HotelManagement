@@ -3,6 +3,21 @@ from .models import Room , Reservation, Hotel
 from .exceptions import NotEnoughStockException, NotAProperRatingNumberException
 from rest_framework_json_api import serializers
 from rest_framework.fields import CharField
+from rest_framework import permissions
+
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+
+        # Add custom claims
+        token['username'] = user.username
+        # ...
+
+        return token
+
 class HotelSerializer(serializers.ModelSerializer):
     
     name = CharField(source="title", required=True)
@@ -36,8 +51,10 @@ class RoomSerializer(serializers.ModelSerializer):
             'price',
         )
 
-class ReservationSerializer(serializers.ModelSerializer):
-
+class ReservationSerializer(
+    serializers.ModelSerializer,
+):
+    permission_classes = (permissions.IsAuthenticated )
     room = serializers.PrimaryKeyRelatedField(queryset = Room.objects.all(), many=False)
     customer_name = CharField(source="customer.name")
 

@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 # from utils.model_abstracts import Model
-from core.models import Customer
+from core.models import Account
 from django_extensions.db.models import (
     TimeStampedModel,
     ActivatorModel,
@@ -88,7 +88,7 @@ class Reservation(
         verbose_name_plural = 'Reservation'
         ordering = ["id"]
     
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, null=True, blank=True)
+    customer = models.ForeignKey(Account, on_delete=models.CASCADE, null=True, blank=True)
     room = models.ForeignKey(Room, null=True, blank=True, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=0)
 

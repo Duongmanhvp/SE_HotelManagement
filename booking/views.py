@@ -1,12 +1,17 @@
 from json import JSONDecodeError
 from django.http import JsonResponse
-from .serializers import  HotelSerializer, RoomSerializer, ReservationSerializer
+from .serializers import  HotelSerializer, RoomSerializer, ReservationSerializer, MyTokenObtainPairSerializer
 from .models import Hotel, Room , Reservation
 from rest_framework.parsers import JSONParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.mixins import ListModelMixin,UpdateModelMixin,RetrieveModelMixin
+
+from rest_framework_simplejwt.views import TokenObtainPairView
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer
 
 class HotelViewSet(
         ListModelMixin,
@@ -47,7 +52,7 @@ class ReservationViewSet(
 
     def get_queryset(self):
         user = self.request.user
-        return Reservation.objects.filter(customer=user)
+        return Reservation.objects.filter(user=user)
 
     def create(self, request):
         try:

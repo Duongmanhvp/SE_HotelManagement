@@ -1,21 +1,20 @@
 from json import JSONDecodeError
 from django.http import JsonResponse
-from .serializers import CustomerSerializer
+from .serializers import AccountSerializer
 from rest_framework.parsers import JSONParser
 from rest_framework import views, status
 from rest_framework.response import Response
-from rest_framework.authtoken.views import ObtainAuthToken
-from rest_framework.authtoken.models import Token
+from rest_framework import viewsets, status
+from rest_framework.mixins import UpdateModelMixin, RetrieveModelMixin
 
-
-class CustomerAPIView(
-    ObtainAuthToken,
-    views.APIView,
+class AccountAPIView(
+    RetrieveModelMixin, 
+    viewsets.GenericViewSet,
 ):
     """
     A simple APIView for creating customer entires.
     """
-    serializer_class = CustomerSerializer
+    serializer_class = AccountSerializer
 
     def get_serializer_context(self):
         return {
@@ -31,13 +30,11 @@ class CustomerAPIView(
     def post(self, request):
         try:
             data = JSONParser().parse(request)
-            serializer = CustomerSerializer(data=data)
+            serializer = AccountSerializer(data=data)
             if serializer.is_valid(raise_exception=True):
                 serializer.save()
-                token, created = Token.objects.get_or_create(user=data)
                 return Response({
-                    "user": CustomerSerializer(data=data, context=self.get_serializer_context()).data,  # Get serialized User data
-                    "token": Token.objects.get(token=token)
+                    "user": AccountSerializer(data=data, context=self.get_serializer_context()).data,  # Get serialized User data
                 })
             else:
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -46,3 +43,4 @@ class CustomerAPIView(
 
     def get_renderers(self):
         return super().get_renderers()
+    
