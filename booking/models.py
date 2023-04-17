@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-# from utils.model_abstracts import Model
 from core.models import Account
 from django_extensions.db.models import (
     TimeStampedModel,
@@ -13,7 +12,6 @@ class Hotel(
     TimeStampedModel,
     ActivatorModel,
     TitleSlugDescriptionModel,
-    # Model
     ):
 
     class Meta:
@@ -32,7 +30,6 @@ class Room(
     TimeStampedModel,
     ActivatorModel,
     TitleDescriptionModel,
-    # Model
     ):
 
 
@@ -80,7 +77,6 @@ class Room(
 class Reservation(
     TimeStampedModel,
     ActivatorModel ,
-    # Model
     ):
 
     class Meta:
