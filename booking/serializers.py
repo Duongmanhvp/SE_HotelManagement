@@ -5,20 +5,6 @@ from rest_framework_json_api import serializers
 from rest_framework.fields import CharField
 from rest_framework import permissions
 
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-
-class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
-    @classmethod
-    def get_token(cls, user):
-        token = super().get_token(user)
-
-        # Add custom claims
-        token['username'] = user.username
-        token['is_hotel_manager'] = user.is_hotel_manager
-        # ...
-
-        return token
-
 class HotelSerializer(serializers.ModelSerializer):
     
     name = CharField(source="title", required=True)
@@ -26,6 +12,7 @@ class HotelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Hotel
         fields = (
+            'id',
             'name',
             'description',
             'country',
@@ -40,14 +27,16 @@ class HotelSerializer(serializers.ModelSerializer):
 
 class RoomSerializer(serializers.ModelSerializer):
     
-    hotel_name = CharField(source="hotel.title", required=True)
+    hotel_id = CharField(source="hotel.id", required=True)
     room_type = CharField(source="title", required=True)
+    room_description = CharField(source="description", required=True)
 
     class Meta:
         model = Room
         fields = (
-            'hotel_name',
+            'hotel_id',
             'room_type',
+            'room_description',
             'no_room_available',
             'price',
         )

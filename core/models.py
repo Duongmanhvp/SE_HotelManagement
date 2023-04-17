@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
+from django.contrib.auth.models import AbstractUser, PermissionsMixin, BaseUserManager
 from django_extensions.db.models import (
 	TimeStampedModel, 
 	ActivatorModel,
@@ -26,6 +26,7 @@ class AccountManager(BaseUserManager):
 		extra_field.setdefault('is_staff', False)
 		extra_field.setdefault('is_admin', False)
 		extra_field.setdefault('is_superuser', False)
+		extra_field.setdefault('is_active', False)
 
 		return self._create_user(email, username, password, **extra_field)
 
@@ -46,7 +47,7 @@ def get_default_profile_image():
 class Account(
 	TimeStampedModel, 
 	ActivatorModel,
-	AbstractBaseUser,
+	AbstractUser,
 	PermissionsMixin,
 ):
 	
@@ -56,6 +57,7 @@ class Account(
 
 	username = models.CharField(max_length=50, default="new user")
 	email = models.EmailField(verbose_name="Email", unique=True, blank=True)
+	phone_number = models.CharField(max_length=11, blank=True)
 
 	is_active = models.BooleanField(default=True)
 	is_admin = models.BooleanField(default=False)

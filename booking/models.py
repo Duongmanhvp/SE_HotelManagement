@@ -22,6 +22,7 @@ class Hotel(
     star_rating = models.IntegerField(default=1, blank= False)
     country = models.CharField(max_length=100, default='country', blank=False)
     city = models.CharField(max_length=100, default='city', blank=False)
+    
 
     def __str__(self):
         return self.title

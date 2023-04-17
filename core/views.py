@@ -5,15 +5,15 @@ from rest_framework.parsers import JSONParser
 from rest_framework import views, status
 from rest_framework.response import Response
 from rest_framework import viewsets, status
-from rest_framework.mixins import UpdateModelMixin, RetrieveModelMixin
+from rest_framework.mixins import ListModelMixin, RetrieveModelMixin
 
 class AccountAPIView(
+    ListModelMixin,
     RetrieveModelMixin, 
     viewsets.GenericViewSet,
+    views.APIView
 ):
-    """
-    A simple APIView for creating customer entires.
-    """
+    queryset = None
     serializer_class = AccountSerializer
 
     def get_serializer_context(self):
