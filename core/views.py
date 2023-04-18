@@ -1,11 +1,13 @@
 from json import JSONDecodeError
 from django.http import JsonResponse
 from .serializers import AccountSerializer
+from .models import Account
 from rest_framework.parsers import JSONParser
 from rest_framework import views, status
 from rest_framework.response import Response
 from rest_framework import viewsets, status
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
 class AccountAPIView(
     ListModelMixin,
@@ -13,7 +15,8 @@ class AccountAPIView(
     viewsets.GenericViewSet,
     views.APIView
 ):
-    queryset = None
+    permission_classes = (IsAuthenticated, IsAdminUser)
+    queryset = Account.objects.all()
     serializer_class = AccountSerializer
 
     def get_serializer_context(self):
