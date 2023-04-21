@@ -19,9 +19,9 @@ class HotelViewSet(
     # permission_classes = (IsAuthenticated,)
     queryset = Hotel.objects.all()
     serializer_class = HotelSerializer
-    filter_backends = [DjangoFilterBackend, SearchFilter]
+    filter_backends = (DjangoFilterBackend, SearchFilter)
     lookup_field = 'id'
-    filterset_fields = ['country', 'city']
+    filter_fields = ('country', 'city')
     search_fields = ('name')
     def get(self, request, *args, **kwargs):
         model_data = Hotel.objects.all
@@ -39,10 +39,10 @@ class RoomViewSet(
     # permission_classes = (IsAuthenticated,)
     queryset = Room.objects.all()
     serializer_class = RoomSerializer
-    filter_backends = [DjangoFilterBackend, SearchFilter]
-    filter_fields = ('hotel')
+    filter_backends = (DjangoFilterBackend, SearchFilter)
+    filter_fields = ('hotel_id')
     search_fields = ('name')
-    # ordering_fields = ['price']
+
     def get_queryset(self):
         return super().get_queryset()
 
@@ -58,7 +58,7 @@ class ReservationViewSet(
 
     def get_queryset(self):
         user = self.request.user
-        return Reservation.objects.filter(user=user)
+        return Reservation.objects.filter(customer=user)
 
     def create(self, request):
         try:

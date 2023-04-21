@@ -43,7 +43,6 @@ def get_profile_image_path(self):
 def get_default_profile_image():
 	return "static/default.png"
 
-
 class Account(
 	TimeStampedModel, 
 	ActivatorModel,
@@ -66,7 +65,13 @@ class Account(
 
 	is_hotel_manager = models.BooleanField(default=False)
 
-	profile_image = models.ImageField(max_length=255, upload_to=get_profile_image_path, null=True, blank=True)
+	profile_image = models.ImageField(
+		max_length=255, 
+		upload_to=get_profile_image_path, 
+		null=True,
+		blank=True,
+		default=get_default_profile_image
+	)
 
 	USERNAME_FIELD = "email"
 	EMAIL_FIELD = "email"
@@ -78,7 +83,7 @@ class Account(
 		return f'{self.username}'
 	
 	def get_profile_image_filename(self):
-		return str(self.profile_image)[str(self.profile_image)]
+		return str(self.profile_image)[str(self.profile_image).index(f'profile_images/{self.pk}/')]
 
 	def has_perm(self, perm: str, obj= None) -> bool:
 		return self.is_staff

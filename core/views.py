@@ -1,49 +1,44 @@
 from json import JSONDecodeError
 from django.http import JsonResponse
-from .serializers import AccountSerializer
-from .models import Account
-from rest_framework.parsers import JSONParser
-from rest_framework import views, status
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
+from rest_framework import permissions
+from .serializers import AccountRegisterSerializer, MyTokenViewPairSerializer
+from rest_framework import status
 from rest_framework.response import Response
-from rest_framework import viewsets, status
-from rest_framework.mixins import ListModelMixin, RetrieveModelMixin
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.tokens import RefreshToken
+from .models import Account
 
-class AccountAPIView(
-    ListModelMixin,
-    RetrieveModelMixin, 
-    viewsets.GenericViewSet,
-    views.APIView
+def get_tokens_for_user(user):
+    refresh = RefreshToken.for_user(user)
+
+    return {
+        'refresh': str(refresh),
+        'access': str(refresh.access_token),
+    }
+
+class MyTokenObtainPairView(
+    TokenObtainPairView
 ):
-    permission_classes = (IsAuthenticated, IsAdminUser)
-    queryset = Account.objects.all()
-    serializer_class = AccountSerializer
+    serializer_class = MyTokenViewPairSerializer
 
-    def get_serializer_context(self):
-        return {
-            'request': self.request,
-            'format': self.format_kwarg,
-            'view': self
-        }
-    
-    def get_serializer(self, *args, **kwargs):
-        kwargs['context'] = self.get_serializer_context()
-        return self.serializer_class(*args, **kwargs)
+@api_view(['GET'])
+def get_routes(request):
+    routes = [
+        'register/',
+    ]
+    return Response(routes)
 
-    def post(self, request):
-        try:
-            data = JSONParser().parse(request)
-            serializer = AccountSerializer(data=data)
-            if serializer.is_valid(raise_exception=True):
-                serializer.save()
-                return Response({
-                    "user": AccountSerializer(data=data, context=self.get_serializer_context()).data,  # Get serialized User data
-                })
-            else:
-                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        except JSONDecodeError:
-            return JsonResponse({"result": "error","message": "Json decoding error"}, status= 400)
-
-    def get_renderers(self):
-        return super().get_renderers()
+@api_view(['POST'])
+@authentication_classes([])
+@permission_classes([permissions.AllowAny])
+def register(request, *args, **kwargs):
+    serializer = AccountRegisterSerializer(data=request.data)
+    if serializer.is_valid():
+        data = serializer.data
+        user = Account.objects.create_user(email=data['email'], username=data['username'], password=data['password'])
+        token = get_tokens_for_user(user)
+        return Response(token)
+    else:
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
