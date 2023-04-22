@@ -1,5 +1,9 @@
 from json import JSONDecodeError
 from django.http import JsonResponse
+from core.models import Account
+
+from core.serializers import AccountRegisterSerializer
+from core.views import get_tokens_for_user
 from .serializers import  HotelSerializer, RoomSerializer, ReservationSerializer
 from .models import Hotel, Room , Reservation
 from rest_framework.parsers import JSONParser
@@ -60,15 +64,11 @@ class ReservationViewSet(
         user = self.request.user
         return Reservation.objects.filter(customer=user)
 
-    def create(self, request):
-        try:
-            data = JSONParser().parse(request)
-            serializer = ReservationSerializer(data=data)
-            if serializer.is_valid(raise_exception=True):
-                room = Room.objects.get(pk = data["room"])
-                reservation = room.place_order(request.user, data["quantity"])
-                return Response(ReservationSerializer(reservation).data)
-            else:
-                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        except JSONDecodeError:
-            return JsonResponse({"result": "error","message": "Json decoding error"}, status= 400)
+    def post(request, *args, **kwargs):
+        serializer = ReservationSerializer(data=request.data)
+        if serializer.is_valid():
+            user = request.user
+            
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
