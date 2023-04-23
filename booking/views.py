@@ -14,6 +14,8 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.response import Response
 from rest_framework.mixins import ListModelMixin,UpdateModelMixin,RetrieveModelMixin
 from rest_framework.generics import ListAPIView
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
+from rest_framework import permissions
 
 class HotelViewSet(
         RetrieveModelMixin, 
@@ -71,4 +73,4 @@ class ReservationViewSet(
             
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+        

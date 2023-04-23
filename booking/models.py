@@ -5,13 +5,12 @@ from django_extensions.db.models import (
     TimeStampedModel,
     ActivatorModel,
     TitleDescriptionModel,
-    TitleSlugDescriptionModel
 )
 
 class Hotel(
     TimeStampedModel,
     ActivatorModel,
-    TitleSlugDescriptionModel,
+    TitleDescriptionModel,
     ):
 
     class Meta:
@@ -22,7 +21,7 @@ class Hotel(
     star_rating = models.IntegerField(default=1, blank= False)
     country = models.CharField(max_length=100, default='country', blank=False)
     city = models.CharField(max_length=100, default='city', blank=False)
-    
+    address = models.CharField(max_length=100, default='city', blank=False)
 
     def __str__(self):
         return self.title
@@ -91,3 +90,4 @@ class Reservation(
 
     def __str__(self):
         return f'{self.customer.name} - {self.room.title} - {self.quantity}'
+    

@@ -34,6 +34,7 @@ class AccountManager(BaseUserManager):
 		extra_field.setdefault('is_staff', True)
 		extra_field.setdefault('is_admin', True)
 		extra_field.setdefault('is_superuser', True)
+		extra_field.setdefault('is_hotel_manager', True)
 
 		return self._create_user(email, username, password, **extra_field)
 	
@@ -56,7 +57,9 @@ class Account(
 
 	username = models.CharField(max_length=50, default="new user")
 	email = models.EmailField(verbose_name="Email", unique=True, blank=True)
-	phone_number = models.CharField(max_length=11, blank=True)
+	# phone_number = models.CharField(max_length=11, blank=True)
+	first_name = None
+	last_name = None
 
 	is_active = models.BooleanField(default=True)
 	is_admin = models.BooleanField(default=False)
