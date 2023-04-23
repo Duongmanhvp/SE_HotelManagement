@@ -168,17 +168,13 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.AllowAny',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     'DEFAULT_METADATA_CLASS': 'rest_framework_json_api.metadata.JSONAPIMetadata',
-    'DEFAULT_FILTER_BACKENDS': (
-        'rest_framework_json_api.filters.QueryParameterValidationFilter',
-        'rest_framework_json_api.filters.OrderingFilter',
+    'DEFAULT_FILTER_BACKENDS': [
         'rest_framework_json_api.django_filters.DjangoFilterBackend',
-        'rest_framework.filters.SearchFilter',
-    ),
+    ],
     'SEARCH_PARAM': 'filter[search]',
     'TEST_REQUEST_RENDERER_CLASSES': (
         'rest_framework_json_api.renderers.JSONRenderer',
