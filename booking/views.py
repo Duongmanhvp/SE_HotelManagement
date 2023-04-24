@@ -38,7 +38,6 @@ class RoomViewSet(
         viewsets.GenericViewSet,
         ListAPIView
         ):
-    # permission_classes = (IsAuthenticated,)
     serializer_class = RoomSerializer
     queryset = Room.objects.all()
 
@@ -52,24 +51,15 @@ class RoomViewSet(
         return super().get_queryset()
 
 class ReservationViewSet(
-        ListModelMixin,
-        RetrieveModelMixin,
-        UpdateModelMixin, 
-        viewsets.GenericViewSet
-        ):
+        RetrieveModelMixin, 
+        viewsets.GenericViewSet,
+        ListAPIView
+    ):
     
     permission_classes = (IsAuthenticated,)
     serializer_class = ReservationSerializer
 
     def get_queryset(self):
         user = self.request.user
+        print(user)
         return Reservation.objects.filter(customer=user)
-
-    def post(request, *args, **kwargs):
-        serializer = ReservationSerializer(data=request.data)
-        if serializer.is_valid():
-            user = request.user
-            
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
