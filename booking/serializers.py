@@ -1,9 +1,10 @@
 from collections import OrderedDict
-from .models import Room , Reservation, Hotel
-from .exceptions import NotEnoughStockException, NotAProperRatingNumberException
+
 from rest_framework_json_api import serializers
 from rest_framework.fields import CharField
-from rest_framework import permissions
+
+from .models import Room , Reservation, Hotel
+from .exceptions import NotEnoughStockException, NotAProperRatingNumberException
 
 class HotelSerializer(serializers.ModelSerializer):
     
@@ -28,7 +29,7 @@ class HotelSerializer(serializers.ModelSerializer):
 
 class RoomSerializer(serializers.ModelSerializer):
     
-    hotel_id = CharField(source="hotel.id", required=True)
+    hotel_id = CharField(source="hotel", required=True)
     room_type = CharField(source="title", required=True)
     room_description = CharField(source="description", required=True)
 
@@ -39,16 +40,14 @@ class RoomSerializer(serializers.ModelSerializer):
             'room_type',
             'room_description',
             'no_room_available',
-            'price',
         )
 
 class ReservationSerializer(
     serializers.ModelSerializer,
 ):
-    permission_classes = (permissions.IsAuthenticated )
     room = serializers.PrimaryKeyRelatedField(queryset = Room.objects.all(), many=False)
     customer_name = CharField(source="customer.name")
-
+    
     class Meta:
         model = Reservation
         fields = (

@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, PermissionsMixin, BaseUserManager
+
 from django_extensions.db.models import (
 	TimeStampedModel, 
 	ActivatorModel,
@@ -57,7 +58,7 @@ class Account(
 
 	username = models.CharField(max_length=50, default="new user")
 	email = models.EmailField(verbose_name="Email", unique=True, blank=True)
-	# phone_number = models.CharField(max_length=11, blank=True)
+	phone_number = models.CharField(max_length=11, blank=True)
 	first_name = None
 	last_name = None
 

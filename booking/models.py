@@ -1,16 +1,18 @@
 from django.db import models
-from django.contrib.auth.models import User
-from core.models import Account
+from django.utils.translation import gettext_lazy as _
 from django_extensions.db.models import (
     TimeStampedModel,
     ActivatorModel,
     TitleDescriptionModel,
 )
+from datetime import datetime
+
+from core.models import Account
 
 class Hotel(
-    TimeStampedModel,
-    ActivatorModel,
     TitleDescriptionModel,
+    ActivatorModel,
+    TimeStampedModel,
     ):
 
     class Meta:
@@ -26,41 +28,54 @@ class Hotel(
     def __str__(self):
         return self.title
 
-class Room(
-    TimeStampedModel,
-    ActivatorModel,
+class RoomType(
     TitleDescriptionModel,
-    ):
+    ActivatorModel, 
+    TimeStampedModel,
+):
+    class Meta:
+        verbose_name = 'Room Type'
+        verbose_name_plural = 'Room Types'
+        constraints = [
+            models.UniqueConstraint('id', 'hotel', name='constraint_1')
+        ]
+    
+    hotel = models.ForeignKey(Hotel, default=0, unique=False, on_delete=models.CASCADE)
+    title = models.CharField(max_length=50)
+    total_inventory = models.IntegerField(default=2)
+    total_reserved = models.IntegerField(default=1)
+    rate = models.DecimalField(max_digits=20,default=0, decimal_places=2)
 
+    def check_availablity(self):
+        return self.total_inventory > self.total_reserved
+
+class Room(
+    ActivatorModel,
+    TimeStampedModel,
+    ):
 
     class Meta:
         verbose_name = 'Room'
         verbose_name_plural = 'Rooms'
         ordering = ["id"]
+        constraints = [
+            models.UniqueConstraint(fields = ['id', 'room_type'], name='constraint_2')
+        ]
 
     def __str__(self):
         return self.title
 
-    hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE)
-    no_room_available = models.IntegerField(default=1)
-    price = models.IntegerField(default=0)
-
-    USERNAME_FIELD= "email"
-    REQUIRED_FIELDS = ["name"]
-
-    def amount(self):
-        amount = float(self.price / 100)
-        return amount
+    hotel = models.ForeignKey(Hotel, default=0, on_delete=models.CASCADE)
+    room_type = models.ForeignKey(RoomType, on_delete=models.CASCADE)
+    floor = models.IntegerField(default=100, null=True, blank=True)
+    is_available = models.BooleanField(default=True)
 
     def manage_available_room(self, qty):
         new_no_room_available = self.no_room_available - int(qty)
         self.no_room_available = new_no_room_available
         self.save()
 
-    def check_availablity(self, qty):
-        if int(qty) > self.no_room_available:
-            return False
-        return True
+
 
     def make_reservation(self, user, qty):
         if self.check_available_rooms(qty):
@@ -75,18 +90,45 @@ class Room(
             return None
 
 class Reservation(
+    ActivatorModel,
     TimeStampedModel,
-    ActivatorModel ,
     ):
 
     class Meta:
         verbose_name = 'Reservation'
         verbose_name_plural = 'Reservation'
-        ordering = ["id"]
+        ordering = ['id']
     
-    customer = models.ForeignKey(Account, on_delete=models.CASCADE, null=True, blank=True)
-    room = models.ForeignKey(Room, null=True, blank=True, on_delete=models.CASCADE)
-    quantity = models.IntegerField(default=0)
+    class MealType(models.TextChoices):
+        DEFAULT_TYPE = 'na', _('no meal need')
+        MEAL_TYPE_1 = 't1', _('breakfast')
+        MEAL_TYPE_2 = 't2', _('dinner')
+        MEAL_TYPE_3 = 't3', _('breakfast and dinner')
+
+    class ReservationStatus(models.TextChoices):
+        NOT_CANCELLED = 'nc', _('not canceled')
+        CANCELLED = 'c', _('cancelled')
+        ...
+
+    customer = models.ForeignKey(Account, on_delete=models.CASCADE, null=True)
+    hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE)
+    room_type = models.ForeignKey(RoomType, on_delete=models.CASCADE)
+    no_of_children = models.PositiveIntegerField(default=0)
+    no_of_adults = models.PositiveIntegerField(default=1)
+    meal_type = models.TextField(
+        max_length=11,
+        choices=MealType.choices,
+        default=MealType.DEFAULT_TYPE
+    )
+    has_parking_lot = models.BooleanField(default=False)
+    special_requests = models.TextField(max_length=1000, default='')
+    status = models.TextField(
+        max_length=2,
+        choices=ReservationStatus.choices,
+        default=ReservationStatus.NOT_CANCELLED
+    )
+    arrive_date = models.DateTimeField(default=datetime.now())
+    no_of_days_stay = models.IntegerField(default=0)
 
     def __str__(self):
         return f'{self.customer.name} - {self.room.title} - {self.quantity}'

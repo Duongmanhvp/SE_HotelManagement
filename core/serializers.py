@@ -1,9 +1,9 @@
-import json
-from .models import Account
-from .exceptions import PasswordMismatchException, EmailExistedException
 from rest_framework import serializers
+from rest_framework.fields import CharField, EmailField
+
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from rest_framework.fields import CharField
+
+from .models import Account
 
 class MyTokenViewPairSerializer(
     TokenObtainPairSerializer,
@@ -23,7 +23,10 @@ class AccountRegisterSerializer(
     serializers.ModelSerializer
     ):
 
+    password = CharField(required=True)
     re_password = CharField(required=True)
+    username = CharField(required=True)
+    email = EmailField(required=True)
 
     class Meta:
         model = Account
@@ -36,7 +39,7 @@ class AccountRegisterSerializer(
 
     def validate_email(self, value):
         if value and Account.objects.filter(email__exact=value).exists():
-            raise serializers.ValidationError("Name already exists!")
+            raise serializers.ValidationError('Email already exists')
         # You need to return the value in after validation.
         return value
         
@@ -46,5 +49,5 @@ class AccountRegisterSerializer(
         re_password = data.get('re_password')
 
         if password != re_password:
-            raise PasswordMismatchException
+            raise serializers.ValidationError('Password mismatch')
         return data

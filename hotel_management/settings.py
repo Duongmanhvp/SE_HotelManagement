@@ -51,9 +51,9 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt', # jwt
     'rest_framework_simplejwt.token_blacklist', # blacklist token
 
-    'core', # new app
-    'booking', # new app
-    'accounting' # new app
+    'core', # include user account and super user
+    'booking', # making reservation app
+    'management', # hotel management and accounting
 ]
 
 MIDDLEWARE = [
@@ -162,6 +162,7 @@ AUTHENTICATION_BACKENDS = (
     ('django.contrib.auth.backends.ModelBackend'),
 )
 
+# rest framework
 REST_FRAMEWORK = {
     'EXCEPTION_HANDLER': 'rest_framework_json_api.exceptions.exception_handler',
     'DEFAULT_PERMISSION_CLASSES': (
@@ -183,6 +184,7 @@ REST_FRAMEWORK = {
     'UNAUTHENTICATED_USER': 'django.contrib.auth.models.AnonymousUser',
 }
 
+# token
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=90),
