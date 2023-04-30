@@ -30,6 +30,9 @@ class HotelManagerView(
     search_fields = ['title']
     ordering_fields = []
 
+from django.db import transaction
+
+@transaction.atomic
 @api_view(['POST'])
 def create_bulk_data(request):
     # with open(os.path.join(settings.BASE_DIR,'static/user_data.csv')) as f:
@@ -67,12 +70,13 @@ def create_bulk_data(request):
     #             total_reserved = 10,
     #             rate = 100,
     #     )
-
+    
+    room_list = []
     with open(os.path.join(settings.BASE_DIR,'static/room_data.csv')) as f:
         reader = csv.reader(f)
         first_row = next(reader)
         for row in reader:
-            user, created = Room.objects.get_or_create(
+            entry = Room(
                 hotel = Hotel.objects.get(id = row[0]),
                 room_type = RoomType.objects.get(
                     hotel = row[0],
@@ -81,8 +85,9 @@ def create_bulk_data(request):
                 floor = row[1],
                 is_available = True,
             )
+            room_list.append(entry)
+        rooms = Room. objects.bulk_create(room_list)
 
-    context = {}
     return Response({
         "success": "users succeessfully imported"
     })

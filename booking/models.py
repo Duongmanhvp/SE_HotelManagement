@@ -49,8 +49,26 @@ class RoomType(
     def check_availablity(self):
         return self.total_inventory > self.total_reserved
 
+    def manage_available_rooms(self, qty):
+        new_no_room_available = self.no_room_available - int(qty)
+        self.no_room_available = new_no_room_available
+        self.save()
+
+    
+    def make_reservation(self, user, qty):
+        if self.check_availablity(qty):
+            reservation = Reservation.objects.create(
+                room= self, 
+                quantity= qty, 
+                user= user
+            )
+            self.manage_available_room(qty)
+            return reservation
+        else:
+            return None
+        
 class Room(
-    ActivatorModel,
+    # ActivatorModel,
     TimeStampedModel,
     ):
 
@@ -69,25 +87,6 @@ class Room(
     room_type = models.ForeignKey(RoomType, on_delete=models.CASCADE)
     floor = models.IntegerField(default=100, null=True, blank=True)
     is_available = models.BooleanField(default=True)
-
-    def manage_available_room(self, qty):
-        new_no_room_available = self.no_room_available - int(qty)
-        self.no_room_available = new_no_room_available
-        self.save()
-
-
-
-    def make_reservation(self, user, qty):
-        if self.check_available_rooms(qty):
-            reservation = Reservation.objects.create(
-                room= self, 
-                quantity= qty, 
-                user= user
-            )
-            self.manage_available_room(qty)
-            return reservation
-        else:
-            return None
 
 class Reservation(
     ActivatorModel,
@@ -127,7 +126,7 @@ class Reservation(
         choices=ReservationStatus.choices,
         default=ReservationStatus.NOT_CANCELLED
     )
-    arrive_date = models.DateTimeField(default=datetime.now())
+    arrive_date = models.DateField()
     no_of_days_stay = models.IntegerField(default=0)
 
     def __str__(self):
