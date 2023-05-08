@@ -1,32 +1,34 @@
 import { useContext, useState } from "react";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import UserContext from "../../context/UserContext";
-import axios from "axios";
 import { login } from "../../api";
+import { useCookies } from "react-cookie";
 
 export default function LoginPage() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { setUser } = useContext(UserContext);
-  async function checkValid({ email, password }) {
-    // valid user
-    // const {name,role} = await login({email,password})
+  const [cookies, setCookie] = useCookies(["userId"]);
+  const [user, setUser] = useContext(UserContext);
 
-    return true;
-  }
-
-  function handleLoginSubmit(ev) {
+  const handleLoginSubmit = async (ev) => {
     ev.preventDefault();
     try {
-      if (!checkValid({ email, password })) {
-        throw new Error("Sai tài khoản hoặc mật khẩu");
-      }
+      login({ email, password })
+        .then((res) => {
+          setUser(res.data);
+          setCookie("userId", res.data._id);
+        })
+        .catch((err) => console.log(err));
       alert("Login successful");
-      setUser({ username: email, role: "customer", isAuth: true });
-      setRedirect(true);
+      navigate("/");
     } catch (e) {
       alert("Login failed");
     }
+  };
+
+  if (user) {
+    return <Navigate to={"/"}></Navigate>;
   }
 
   return (
@@ -34,7 +36,6 @@ export default function LoginPage() {
       <div className="mt-4 flex items-center justify-center grow">
         <div>
           <h1 className="text-4xl text-center mb-12 font-semibold">Login</h1>
-
           <input
             type="email"
             placeholder="your@email.com"

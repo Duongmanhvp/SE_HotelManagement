@@ -2,20 +2,30 @@ import React, { useState, useEffect } from "react";
 import UserProfile from "../../components/customer/UserProfile";
 import { _bookings } from "../../data/sampleData";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import BookingItem from "../../components/customer/BookingItem";
+import { getAllPaymentByUserId } from "../../api";
 
 function CustomersDetail() {
+  const location = useLocation();
+  const customer = location.state;
   const [index, setIndex] = useState(1);
   const [bookings, setBookings] = useState([]);
   useEffect(() => {
-    axios
-      .get("/bookings")
+    getAllPaymentByUserId(customer._id)
       .then((response) => {
         setBookings(response.data);
       })
-      .catch((err) => setBookings(_bookings));
+      .catch((err) => console.log(err));
   }, []);
+
+  if (!bookings) {
+    return <p>Loading...</p>;
+  }
+  const totalPayed = bookings.reduce(
+    (currSum, booking) => currSum + booking.price.totalPrice,
+    0
+  );
   return (
     <div>
       <h1 className="font-bold text-xl mt-3 ml-6">Chi tiết khách hàng</h1>
@@ -27,8 +37,9 @@ function CustomersDetail() {
         ></img>
         <div className="ml-8">
           <span className=" font-bold text-2xl">Nguyễn Văn A</span>
-          <p className=" text-md">
-            Rank: <span className="font-bold">Gold</span> • Khách hàng tiềm năng
+          <p className=" text-lg mt-2 font-medium">
+            {/* Rank: <span className="font-bold">Gold</span> • Khách hàng tiềm năng */}
+            Total payment: ${totalPayed}
           </p>
         </div>
       </div>
@@ -54,14 +65,14 @@ function CustomersDetail() {
 
       {index === 1 && (
         <div className="w-2/3 mx-auto mt-16 pb-16">
-          <UserProfile></UserProfile>
+          <UserProfile user={customer}></UserProfile>
         </div>
       )}
       {index === 2 && (
         <div className="w-2/3 mx-auto mt-16 pb-16">
           {bookings?.length > 0 &&
             bookings.map((booking) => (
-              <Link to={`/account/bookings/${booking.place._id}`}>
+              <Link to={`/account/bookings/${booking._id}`}>
                 <BookingItem booking={booking}></BookingItem>
               </Link>
             ))}

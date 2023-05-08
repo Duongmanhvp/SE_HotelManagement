@@ -1,24 +1,50 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import AccountNav from "../../components/customer/AccountNav";
-
 import { _bookings } from "../../data/sampleData";
-import { BsPeople, BsStarFill } from "react-icons/bs";
 import StarRating from "../../components/customer/StarRating";
 import BookingItem from "../../components/customer/BookingItem";
+import UserContext from "../../context/UserContext";
+import { getAllPaymentByUserId, sendReview } from "../../api";
 
+const starRate = {
+  review_scores_cleanliness: "Mức độ sạch sẽ",
+  review_scores_accuracy: "Độ chính xác",
+  review_scores_communication: "Giao tiếp",
+  review_scores_location: "Vị trí",
+  review_scores_checkin: "Nhận phòng",
+  review_scores_value: "Giá trị",
+};
 export default function BookingsPage() {
   const [bookings, setBookings] = useState([]);
+  const [user] = useContext(UserContext);
   const [modalOpen, setModalOpen] = useState(false);
-  function handleClick(e) {
+  const [stars, setStars] = useState();
+  const [feedback, setFeedback] = useState();
+  function handleClick(e, bookingId) {
     e.preventDefault();
     e.stopPropagation();
-    setModalOpen(true);
+    setModalOpen(bookingId);
+  }
+  async function handleSubmit(e) {
+    try {
+      e.preventDefault();
+      if (feedback && Object.keys(stars).length === 6) {
+        sendReview(modalOpen, {
+          userName: user.name,
+          stars,
+          feedback,
+        }).then((res) => {
+          setModalOpen(false);
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
   let Model = (
     <div
-      className="bg-gray-500/50 fixed w-full h-full top-0 bottom-0 left-0 right-0 z-50 "
+      className="bg-gray-500/50 fixed w-full h-full top-0 bottom-0 left-0 right-0 z-50"
       onClick={() => setModalOpen(false)}
     >
       <div
@@ -29,30 +55,16 @@ export default function BookingsPage() {
       >
         <h2 className="font-semibold text-2xl mb-4">Vui lòng đánh giá</h2>
         <div className="grid grid-cols-2 gap-x-20 gap-y-4">
-          <div className="flex  justify-between items-center gap-2">
-            <label>Độ chính xác</label>
-            <StarRating></StarRating>
-          </div>
-          <div className="flex justify-between items-center gap-2">
-            <label>Mức độ sạch sẽ</label>
-            <StarRating></StarRating>
-          </div>
-          <div className="flex  justify-between items-center gap-2">
-            <label>Giao tiếp</label>
-            <StarRating></StarRating>
-          </div>
-          <div className="flex  justify-between items-center gap-2">
-            <label>Vị trí</label>
-            <StarRating></StarRating>
-          </div>
-          <div className="flex  justify-between items-center gap-2">
-            <label>Nhận phòng</label>
-            <StarRating></StarRating>
-          </div>
-          <div className="flex  justify-between items-center gap-2">
-            <label>Giá trị</label>
-            <StarRating></StarRating>
-          </div>
+          {Object.keys(starRate).map((key) => (
+            <div className="flex justify-between items-center gap-2">
+              <label>{starRate[key]}</label>
+              <StarRating
+                name={`${key}`}
+                setStars={setStars}
+                stars={stars}
+              ></StarRating>
+            </div>
+          ))}
         </div>
 
         <textarea
@@ -60,8 +72,12 @@ export default function BookingsPage() {
           style={{ resize: "none" }}
           className="mt-8"
           maxLength={1000}
+          onChange={(e) => setFeedback(e.target.value)}
         ></textarea>
-        <button className="px-6 py-3 w-2/3 m-auto font-semibold text-white bg-primary/80 hover:bg-primary duration-200 mt-8 rounded-3xl">
+        <button
+          onClick={handleSubmit}
+          className="px-6 py-3 w-2/3 m-auto font-semibold text-white bg-primary/80 hover:bg-primary duration-200 mt-8 rounded-3xl"
+        >
           Gửi đánh giá
         </button>
       </div>
@@ -76,13 +92,16 @@ export default function BookingsPage() {
   }, [modalOpen]);
 
   useEffect(() => {
-    axios
-      .get("/bookings")
+    getAllPaymentByUserId(user._id)
       .then((response) => {
         setBookings(response.data);
       })
-      .catch((err) => setBookings(_bookings));
-  }, []);
+      .catch((err) => console.log(err));
+  }, [modalOpen]);
+
+  if (!bookings) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <>
@@ -91,10 +110,10 @@ export default function BookingsPage() {
         <div className="w-2/3 m-auto">
           {bookings?.length > 0 &&
             bookings.map((booking) => (
-              <Link to={`/account/bookings/${booking.place._id}`}>
+              <Link to={`/account/bookings/${booking._id}`}>
                 <BookingItem
                   booking={booking}
-                  handleClick={handleClick}
+                  handleClick={(e) => handleClick(e, booking._id)}
                 ></BookingItem>
               </Link>
             ))}

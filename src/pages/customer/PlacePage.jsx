@@ -3,10 +3,12 @@ import AddressLink from "../../components/customer/AddressLink";
 import BookingWidget from "../../components/customer/BookingWidget";
 import PlaceGallery from "../../components/customer/PlaceGallery";
 import { FaWifi } from "react-icons/fa";
+import ReactPaginate from "react-paginate";
 import {
   extractReviewScores,
   formatStarRate,
   extractDate,
+  getReviewScore,
 } from "../../utils/Caculate";
 import _place from "../../data/sampleData";
 import { RxAvatar } from "react-icons/rx";
@@ -22,35 +24,32 @@ import { getPlaceById } from "../../api";
 
 export default function PlacePage() {
   const [place, setPlace] = useState(null);
+  const [showServices, setShowServices] = useState(false);
+  const [longService, setLongService] = useState(false);
   const { placeId } = useParams();
-  let reviewScores = extractReviewScores(_place);
+  let star = getReviewScore(place?.review_scores);
+  let reviewScores = extractReviewScores(place);
   useEffect(() => {
-    //window.scrollTo(0, 0);
+    window.scrollTo(0, 0);
     getPlaceById(placeId)
       .then((res) => {
         setPlace(res.data);
-        reviewScores = extractReviewScores(res.data);
+        setLongService(res.data.amenities.length > 10);
       })
       .catch((err) => {
-        setPlace(_place);
-        reviewScores = extractReviewScores(_place);
+        console.log(err);
       });
   }, []);
 
-  if (!place) return "";
+  if (!place) return <p>Loading...</p>;
 
   return (
     <div className="p-8">
       <h1 className="text-3xl font-semibold">{place.name}</h1>
       <div className="flex items-center">
         <p className="mr-2">
-          <span className="font-bold text-lg">
-            ⭐{place.review_scores.review_scores_rating.$numberInt / 10}
-          </span>{" "}
-          •
-          <span className="ml-1 font-bold text-lg">
-            {place.number_of_reviews.$numberInt}
-          </span>{" "}
+          <span className="font-bold text-lg">⭐{star || "Not rated"}</span> •
+          <span className="ml-1 font-bold text-lg">{place.reviews.length}</span>{" "}
           đánh giá
         </p>
         <AddressLink>{place.address.street}</AddressLink>
@@ -69,10 +68,8 @@ export default function PlacePage() {
                   {place.name} • Chủ nhà {place.host.host_name}{" "}
                 </h1>
                 <p>
-                  {place.accommodates.$numberInt} khách •{" "}
-                  {place.bedrooms.$numberInt} phòng ngủ •{" "}
-                  {place.beds.$numberInt} giường •{" "}
-                  {Math.floor(place.bathrooms.$numberDecimal)} phòng tắm
+                  {place.guests_included} khách • {place.bedrooms} phòng ngủ •{" "}
+                  {place.beds} giường • {Math.floor(place.bathrooms)} phòng tắm
                 </p>
               </div>
               <div>
@@ -118,15 +115,58 @@ export default function PlacePage() {
                 Nơi này có những gì cho bạn
               </h2>
               <ul className="grid grid-cols-2">
-                {place.amenities.map((item) => (
-                  <li className="flex items-center mb-6">
-                    <BsCheckCircleFill
-                      size={24}
-                      style={{ color: "green" }}
-                    ></BsCheckCircleFill>
-                    <span className="ml-3">{item}</span>
-                  </li>
-                ))}
+                {!longService &&
+                  place.amenities.map((item) => (
+                    <li className="flex items-center mb-6">
+                      <BsCheckCircleFill
+                        size={24}
+                        style={{ color: "green" }}
+                      ></BsCheckCircleFill>
+                      <span className="ml-3">{item}</span>
+                    </li>
+                  ))}
+                {longService && !showServices && (
+                  <>
+                    {place.amenities.slice(0, 10).map((item) => (
+                      <li className="flex items-center mb-6">
+                        <BsCheckCircleFill
+                          size={24}
+                          style={{ color: "green" }}
+                        ></BsCheckCircleFill>
+                        <span className="ml-3">{item}</span>
+                      </li>
+                    ))}
+                    <button
+                      className="toggle-btn"
+                      onClick={() => {
+                        setShowServices(true);
+                      }}
+                    >
+                      Show all
+                    </button>
+                  </>
+                )}
+                {longService && showServices && (
+                  <>
+                    {place.amenities.map((item) => (
+                      <li className="flex items-center mb-6">
+                        <BsCheckCircleFill
+                          size={24}
+                          style={{ color: "green" }}
+                        ></BsCheckCircleFill>
+                        <span className="ml-3">{item}</span>
+                      </li>
+                    ))}
+                    <button
+                      className="toggle-btn"
+                      onClick={() => {
+                        setShowServices(false);
+                      }}
+                    >
+                      Hide
+                    </button>
+                  </>
+                )}
               </ul>
             </div>
             <hr></hr>
@@ -137,40 +177,74 @@ export default function PlacePage() {
       </div>
       <div className="my-8">
         <h2 className="text-2xl">
-          <span className="font-bold ">
-            ⭐{place.review_scores.review_scores_rating.$numberInt / 10}
-          </span>{" "}
-          •
-          <span className="ml-2 font-bold ">
-            {place.number_of_reviews.$numberInt}
-          </span>{" "}
-          đánh giá
+          <span className="font-bold ">⭐{star || "Not rated"}</span> •
+          <span className="ml-2 font-bold ">{place.reviews.length}</span> đánh
+          giá
         </h2>
-        <ul className="grid grid-cols-2 mt-4 gap-x-56 gap-y-5">
-          {reviewScores.map((item) => (
-            <li className="flex justify-between items-center">
-              <p className="font-semibold">{item[0]}</p>
-              <RateBar rate={item[1]}></RateBar>
-            </li>
-          ))}
-        </ul>
+        {place.review_scores && (
+          <ul className="grid grid-cols-2 mt-4 gap-x-56 gap-y-5">
+            {reviewScores.map((item) => (
+              <li className="flex justify-between items-center">
+                <p className="font-semibold">{item[0]}</p>
+                <RateBar rate={item[1]}></RateBar>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
+      <PaginatedItems itemsPerPage={8} items={place.reviews}></PaginatedItems>
+    </div>
+  );
+}
+
+function Items({ reviews }) {
+  return (
+    <>
       <ul className="grid grid-cols-2 gap-x-56">
-        {place.reviews.map((item) => (
+        {reviews.map((item) => (
           <li className="mb-8">
             <div className="flex items-center">
               <RxAvatar size={40}></RxAvatar>
               <div className="ml-2 mb-2">
                 <p className="font-semibold">{item.reviewer_name}</p>
                 <span className="font-light">
-                  {extractDate(item.date.$date.$numberLong)}
+                  {extractDate(new Date(item.date))}
                 </span>
               </div>
             </div>
-            <p className="leading-relaxed line-clamp-3">{item.comments}</p>
+            <p>{item.comments}</p>
           </li>
         ))}
       </ul>
-    </div>
+    </>
+  );
+}
+
+function PaginatedItems({ itemsPerPage, items }) {
+  const [itemOffset, setItemOffset] = useState(0);
+
+  const endOffset = itemOffset + itemsPerPage;
+  const currentItems = items.slice(itemOffset, endOffset);
+  const pageCount = Math.ceil(items.length / itemsPerPage);
+
+  const handlePageClick = (event) => {
+    const newOffset = (event.selected * itemsPerPage) % items.length;
+    setItemOffset(newOffset);
+  };
+
+  return (
+    <>
+      <Items reviews={currentItems} />
+      <ReactPaginate
+        className="paginate"
+        breakLabel="..."
+        nextLabel=">"
+        onPageChange={handlePageClick}
+        pageRangeDisplayed={5}
+        pageCount={pageCount}
+        previousLabel="<"
+        renderOnZeroPageCount={null}
+      />
+    </>
   );
 }

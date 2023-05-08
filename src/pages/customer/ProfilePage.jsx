@@ -1,30 +1,31 @@
 import axios from "axios";
 import { useContext, useState } from "react";
-import { Navigate, useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import AccountNav from "../../components/customer/AccountNav";
 import PlacesPage from "./PlacesPage";
 import { AiFillLock, AiFillEye } from "react-icons/ai";
 import { BsPersonFillLock } from "react-icons/bs";
 import UserProfile from "../../components/customer/UserProfile";
 import UserContext from "../../context/UserContext";
+import { useCookies } from "react-cookie";
 
 export default function ProfilePage() {
-  const [redirect, setRedirect] = useState(null);
-  const { user, setUser } = useContext(UserContext);
-  async function logout() {
-    setUser({ username: "", role: "", isAuth: false });
-    setRedirect("/");
+  const [user, setUser] = useContext(UserContext);
+  const [cookies, setCookie, removeCookie] = useCookies("userId");
+  const navigate = useNavigate();
+
+  async function handleLogout() {
+    setUser(null);
+    removeCookie("userId");
+    navigate("/");
   }
 
-  if (redirect) {
-    return <Navigate to={redirect} />;
-  }
   return (
     <div>
       <AccountNav />
       <div>
         <div className="w-[80%] m-auto grid grid-cols-[2fr,1fr] gap-24 mt-20">
-          <UserProfile></UserProfile>
+          <UserProfile user={user}></UserProfile>
           <div className="rounded-2xl border-2 p-6">
             <div>
               <BsPersonFillLock
@@ -67,9 +68,9 @@ export default function ProfilePage() {
         </div>
 
         <div className="text-center max-w-lg mx-auto mt-12">
-          Logged in as {user.username}
+          Logged in as {user.name}
           <br />
-          <button onClick={logout} className="primary max-w-sm mt-2">
+          <button onClick={handleLogout} className="primary max-w-sm mt-2">
             Logout
           </button>
         </div>

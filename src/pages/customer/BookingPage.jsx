@@ -1,18 +1,27 @@
 import AddressLink from "../../components/customer/AddressLink";
-import PlaceGallery from "../../components/customer/PlaceGallery";
 import BookingDates from "../../components/customer/BookingDates";
-import { booking } from "../../data/sampleData";
-import { useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { BiArrowBack } from "react-icons/bi";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Image from "../../components/customer/Image";
-import { BsPeople } from "react-icons/bs";
+import { getPayment } from "../../api";
+import UserContext from "../../context/UserContext";
 
 export default function BookingPage() {
+  const { bookingId } = useParams();
+  const [booking, setBooking] = useState();
+  const [user] = useContext(UserContext);
+  const isAdmin = user.role === "ADMIN";
   useEffect(() => {
     window.scrollTo(0, 0);
+    getPayment(bookingId)
+      .then((res) => setBooking(res.data))
+      .catch((err) => console.log(err));
   }, []);
 
+  if (!booking) {
+    return <p>Loading...</p>;
+  }
   return (
     <div className="my-8 mx-auto w-2/3">
       <Link to={"/account/bookings"} className="flex items-center mb-8">
@@ -24,13 +33,13 @@ export default function BookingPage() {
           <div className="rounded-2xl p-4">
             <Image
               className=" object-cover aspect-square m-auto"
-              src={booking.place.photos[0]}
+              src={booking.place.thumbnail}
               alt=""
             />
           </div>
 
           <div className="flex flex-col py-4">
-            <h2 className="text-3xl">{booking.place.title}</h2>
+            <h2 className="text-3xl">{booking.place.name}</h2>
             <AddressLink className="my-2 block">
               {booking.place.address}
             </AddressLink>
@@ -38,10 +47,17 @@ export default function BookingPage() {
               Price:{" "}
               <span className="font-semibold">${booking.place.price}</span>
             </p>
-            <div className="flex gap-x-4 items-center mt-6 ">
-              <p className=" text-gray-500">Chưa được bạn đánh giá</p>
-              <p className="underline font-semibold">Đánh giá ngay!</p>
-            </div>
+            {!isAdmin &&
+              (booking.feedbacked ? (
+                <p className="text-primary text-sm italic font-semibold">
+                  Thank for your feedback!
+                </p>
+              ) : (
+                <div className="flex gap-x-4 items-center mt-6 ">
+                  <p className=" text-gray-500">Chưa được bạn đánh giá</p>
+                  <p className="underline font-semibold">Đánh giá ngay!</p>
+                </div>
+              ))}
           </div>
         </div>
       </Link>
@@ -50,29 +66,29 @@ export default function BookingPage() {
         <div className="grid grid-cols-2 gap-y-4 "></div>
         <div className="grid grid-cols-2 gap-y-4 ">
           <label className="text-gray-600">Số người</label>
-          <span>{booking.people || 8}</span>
+          <span>{booking.guests}</span>
           <label className="text-gray-600">Số đêm</label>
           <BookingDates booking={booking} />
           <hr className="border-2"></hr>
           <hr className="border-2"></hr>
           <label className="text-gray-600">Tổng tiền phòng</label>
-          <span>${428 * 4}</span>
+          <span>${booking.price.corePrice}</span>
           <label className="text-gray-600">Phí an ninh</label>
-          <span>${booking.place.security_deposit}</span>
+          <span>${booking.price.securityDeposit}</span>
           <label className="text-gray-600">Phí vệ sinh</label>
-          <span>${booking.place.cleaning_fee}</span>
+          <span>${booking.price.cleaningFee}</span>
           <hr className="border-1"></hr>
           <hr className="border-1"></hr>
           <label className="text-gray-600">Tổng</label>
-          <span>${booking.price}</span>
+          <span>${booking.price.totalPrice}</span>
           <hr className="border-2"></hr>
           <hr className="border-2"></hr>
           <label className="text-gray-600">Phương thức thanh toán</label>
-          <span>{booking.payment_type}</span>
+          <span>{booking.paymentType}</span>
           <label className="text-gray-600">Người thanh toán</label>
-          <span>{booking.customer}</span>
+          <span>{booking.payerName}</span>
           <label className="text-gray-600">Số điện thoại</label>
-          <span>{booking.phone_number}</span>
+          <span>{booking.payerPhone}</span>
         </div>
       </div>
     </div>

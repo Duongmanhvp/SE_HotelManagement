@@ -13,7 +13,7 @@ function Header() {
     window.addEventListener("scroll", scrollHandler);
     return () => window.removeEventListener("scroll", scrollHandler);
   }, [top]);
-  const { user } = useContext(UserContext);
+  const [user, setUser] = useContext(UserContext);
 
   return (
     <header
@@ -97,7 +97,7 @@ function Header() {
             </ul>
 
             <ul className="flex flex-grow justify-end flex-wrap gap-8 items-center">
-              {user.isAuth && (
+              {user && (
                 <li>
                   <Link
                     to="/account"
@@ -110,7 +110,7 @@ function Header() {
                   </Link>
                 </li>
               )}
-              {!user.isAuth && (
+              {!user && (
                 <li className="rounded-full bg-primary hover:bg-primary/80 duration-200">
                   <Link
                     to="/login"
@@ -120,7 +120,7 @@ function Header() {
                   </Link>
                 </li>
               )}
-              {user.isAuth && user.role === "admin" && (
+              {user && user.role === "ADMIN" && (
                 <li className="rounded-full bg-tranparent border-2 border-primary hover:bg-primary/80 duration-200">
                   <Link
                     to="/admin"

@@ -1,10 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { adminData } from "../../data/sampleData";
 import { FaShoppingBag } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { BsThreeDotsVertical } from "react-icons/bs";
+import { gettAllPayment } from "../../api";
+import { getTimeAgo } from "../../utils/Caculate";
+import { format } from "date-fns";
 
 function ProductsPage() {
+  const [bookings, setBookings] = useState();
+  useEffect(() => {
+    gettAllPayment()
+      .then((res) => setBookings(res.data))
+      .catch((err) => console.log(err));
+  }, []);
+  if (!bookings) {
+    return <p>Loading...</p>;
+  }
   return (
     <div className="bg-gray-100 min-h-screen">
       <div className="flex justify-between px-4 pt-4">
@@ -16,15 +28,15 @@ function ProductsPage() {
           <div className="my-3 p-2 grid md:grid-cols-5 sm:grid-cols-3 grid-cols-2 items-center justify-between cursor-pointer font-bold">
             <span>Order</span>
             <span className="sm:text-left text-right">Order time</span>
-            <span className="hidden md:grid">Ngày nhận phòng</span>
-            <span className="hidden sm:grid">Ngày trả phòng</span>
+            <span className="hidden md:grid">Check in</span>
+            <span className="hidden sm:grid">Check out</span>
             <span className="hidden md:grid">Method</span>
           </div>
           <ul>
-            {adminData.map((order, id) => (
-              <Link to={"./orderdetails"}>
+            {bookings.map((booking) => (
+              <Link to={`details/${booking._id}`}>
                 <li
-                  key={id}
+                  key={booking._id}
                   className="bg-gray-50 hover:bg-gray-100 rounded-lg my-3 p-2 grid md:grid-cols-5 sm:grid-cols-3 grid-cols-2 items-center justify-between cursor-pointer"
                 >
                   <div className="flex">
@@ -33,22 +45,30 @@ function ProductsPage() {
                     </div>
                     <div className="pl-4">
                       <p className="text-gray-800 font-bold">
-                        ${order.total.toLocaleString()}
+                        ${booking.price.totalPrice}
                       </p>
                       <p className="text-gray-800 text-sm">
-                        {order.name.first}
+                        {booking.payerName}
                       </p>
                     </div>
                   </div>
-                  <p className="hidden md:flex">{order.date}</p>
-                  <p className="text-gray-600 sm:text-left text-right">
-                    <span>28-02-2022</span>
+                  <p className="hidden md:flex">
+                    {`${getTimeAgo(booking.createdAt).number} ${
+                      getTimeAgo(booking.createdAt).unit
+                    } ago`}
                   </p>
                   <p className="text-gray-600 sm:text-left text-right">
-                    <span>13-03-2022</span>
+                    <span>
+                      {format(new Date(booking.checkIn), "dd-MM-yyyy")}
+                    </span>
+                  </p>
+                  <p className="text-gray-600 sm:text-left text-right">
+                    <span>
+                      {format(new Date(booking.checkOut), "dd-MM-yyyy")}
+                    </span>
                   </p>
                   <div className="sm:flex hidden justify-between items-center">
-                    <p>{order.method}</p>
+                    <p>{booking.paymentType || "Unknown"}</p>
                   </div>
                 </li>
               </Link>

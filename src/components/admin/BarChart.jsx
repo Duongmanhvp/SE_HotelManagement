@@ -9,6 +9,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import { addDays, getDay, startOfWeek } from "date-fns";
 
 ChartJS.register(
   CategoryScale,
@@ -19,7 +20,7 @@ ChartJS.register(
   Legend
 );
 
-const BarChart = () => {
+const BarChart = ({ lastweekPayments }) => {
   const [chartData, setChartData] = useState({
     datasets: [],
   });
@@ -27,12 +28,26 @@ const BarChart = () => {
   const [chartOptions, setChartOptions] = useState({});
 
   useEffect(() => {
+    let data = {};
+    lastweekPayments.forEach(({ _id, count }) => {
+      data[getDay(new Date(_id))] = count;
+    });
+
+    let weeks = [0, 1, 2, 3, 4, 5, 6];
+    weeks.forEach((item) => {
+      const isHas = data.hasOwnProperty(item);
+      if (!isHas) {
+        data[item] = 0;
+      }
+    });
+    data = Object.values(data);
+    // console.log(data);
     setChartData({
-      labels: ["Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun"],
+      labels: ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"],
       datasets: [
         {
           label: "Đơn vị $",
-          data: [827, 901, 1990, 1738, 982, 1342, 2275],
+          data,
           borderColor: "rgb(53, 162, 235)",
           backgroundColor: "rgb(53, 162, 235, 0.4)",
         },

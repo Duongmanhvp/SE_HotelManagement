@@ -14,54 +14,62 @@ import BookingPage from "../pages/customer/BookingPage";
 import PaymentPage from "../pages/customer/PaymentPage";
 import AdminPage from "../pages/admin/AdminPage";
 import AdminLayout from "../layout/AdminLayout";
-import ProductsPage from "../pages/admin/ProductsPage";
+import OrdersPage from "../pages/admin/OrdersPage";
 import CustomersPage from "../pages/admin/CustomersPage";
 import CustomersDetail from "../pages/admin/CustomersDetail";
 import OrderDetail from "../pages/admin/OrderDetail";
 import Rooms from "../pages/admin/Rooms";
-import { UserProvider } from "../context/UserContext";
+import RequiredAuth from "../components/customer/RequiredAuth";
+import DeniedAccessPage from "../pages/error/DeniedAccessPage";
 
 function AppRoute() {
   return (
-    <UserProvider>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<IndexPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route
+          path="/denied"
+          element={<DeniedAccessPage></DeniedAccessPage>}
+        ></Route>
+        <Route path="/home" element={<LangdingPage></LangdingPage>}></Route>
+        <Route index element={<IndexPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/place/:placeId" element={<PlacePage />} />
+        <Route path="/" element={<RequiredAuth></RequiredAuth>}>
           <Route path="/account" element={<ProfilePage />} />
           <Route path="/account/places" element={<PlacesPage />} />
           <Route path="/account/places/new" element={<PlacesFormPage />} />
           <Route path="/account/places/:id" element={<PlacesFormPage />} />
-          <Route path="/place/:id" element={<PlacePage />} />
           <Route path="/account/bookings" element={<BookingsPage />} />
-          <Route path="/account/bookings/:id" element={<BookingPage />} />
+          <Route
+            path="/account/bookings/:bookingId"
+            element={<BookingPage />}
+          />
           <Route
             path="/account/bookings/payment"
             element={<PaymentPage></PaymentPage>}
           ></Route>
-          <Route path="/home" element={<LangdingPage></LangdingPage>}></Route>
         </Route>
+      </Route>
 
-        <Route path="/admin" element={<AdminLayout></AdminLayout>}>
-          <Route index element={<AdminPage></AdminPage>}></Route>
-          <Route path="orders" element={<ProductsPage></ProductsPage>}></Route>
-          <Route
-            path="customers"
-            element={<CustomersPage></CustomersPage>}
-          ></Route>
-          <Route
-            path="customers/:id"
-            element={<CustomersDetail></CustomersDetail>}
-          ></Route>
-          <Route
-            path="orders/orderdetails"
-            element={<OrderDetail></OrderDetail>}
-          ></Route>
-          <Route path="rooms" element={<Rooms></Rooms>}></Route>
-        </Route>
-      </Routes>
-    </UserProvider>
+      <Route path="/admin" element={<AdminLayout></AdminLayout>}>
+        <Route index element={<AdminPage></AdminPage>}></Route>
+        <Route path="orders" element={<OrdersPage></OrdersPage>}></Route>
+        <Route
+          path="customers"
+          element={<CustomersPage></CustomersPage>}
+        ></Route>
+        <Route
+          path="customers/details"
+          element={<CustomersDetail></CustomersDetail>}
+        ></Route>
+        <Route
+          path="orders/details/:bookingId"
+          element={<BookingPage></BookingPage>}
+        ></Route>
+        <Route path="rooms" element={<Rooms></Rooms>}></Route>
+      </Route>
+    </Routes>
   );
 }
 

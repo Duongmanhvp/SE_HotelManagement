@@ -1,25 +1,28 @@
 import React, { useState } from "react";
 import { FiFilter } from "react-icons/fi";
+import { useNavigate, createSearchParams } from "react-router-dom";
 import { BiMap, BiCalendarAlt, BiSearch } from "react-icons/bi";
 import { MdOutlineConfirmationNumber } from "react-icons/md";
-import { useNavigate } from "react-router-dom";
+import { getPlacesByQuery } from "../../api";
 
-function SearchBar() {
+function SearchBar({ setPlaces }) {
+  const [query, setQuery] = useState({});
   const navigate = useNavigate();
-  const [info, setInfo] = useState({});
   function handleInputChange(event) {
-    setInfo({
-      ...info,
+    setQuery({
+      ...query,
       [event.target.name]: event.target.value,
     });
   }
   function handleSubmit(event) {
     event.preventDefault();
-    navigate(
-      `/?country=${info.country || ""}&city=${info.city}&checkin=${
-        info.checkin
-      }&checkout=${info.checkout}&guest=${info.guest}&room=${info.room}`
-    );
+    getPlacesByQuery(query)
+      .then((res) => setPlaces(res.data))
+      .catch((err) => console.log(err));
+    navigate({
+      pathname: "/",
+      search: `?${createSearchParams(query)}`,
+    });
   }
   return (
     <div className="searchbar fixed top-20 left-0 bottom-0 w-[352px] py-6 pl-3 pr-5 hover:pr-3 overflow-hidden">
@@ -89,7 +92,7 @@ function SearchBar() {
                 onChange={handleInputChange}
                 type={"text"}
                 placeholder="1"
-                name="guest"
+                name="guests"
               ></input>
             </div>
             <div className="flex items-center justify-between gap-16">
@@ -99,7 +102,7 @@ function SearchBar() {
                 onChange={handleInputChange}
                 type={"text"}
                 placeholder="1"
-                name="room"
+                name="rooms"
               ></input>
             </div>
           </div>
