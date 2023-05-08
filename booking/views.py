@@ -36,8 +36,4 @@ class ReservationViewSet(
 
     def get_queryset(self):
         user = self.request.user
-        print(user)
         return Reservation.objects.filter(customer=user)
-    
-    def partial_update(self, request, *args, **kwargs):
-        return super().partial_update(request, *args, **kwargs)

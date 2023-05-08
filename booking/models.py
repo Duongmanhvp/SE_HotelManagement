@@ -17,7 +17,7 @@ class Hotel(
     class Meta:
         verbose_name = 'Hotel'
         verbose_name_plural = 'Hotels'
-        ordering = ["id"]
+        ordering = ['created', 'id']
 
     star_rating = models.IntegerField(default=1, blank= False)
     country = models.CharField(max_length=100, default='country', blank=False)
@@ -131,6 +131,15 @@ class Reservation(
 
     check_in = models.DateTimeField(null=True, blank=True)
     check_out = models.DateTimeField(null=True, blank=True)
+
+    @property
+    def date_diff(self):
+        return (self.check_out - self.check_in).days
+    
+    @property
+    def amount(self):
+        price = RoomType.objects.get(hotel=self.hotel, description=self.room_type).rate
+        return self.date_diff * price
 
     def __str__(self):
         return f'{str(self.customer)} - {self.hotel.title} - {self.room_type}'

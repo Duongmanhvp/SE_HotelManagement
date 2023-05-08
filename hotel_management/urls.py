@@ -16,7 +16,6 @@ from rest_framework_simplejwt.views import (
 router = routers.SimpleRouter()
 
 # viewsets
-# router.register(r'user', core_views.UserProfileSerializer, basename='user')
 router.register(r'hotel',booking_views.HotelViewSet, basename='hotel')
 router.register(r'reservation', booking_views.ReservationViewSet, basename='reservation')
 router.register(r'hotel-manager', management_views.HotelManagerView, basename='management')

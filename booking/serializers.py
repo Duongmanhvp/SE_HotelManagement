@@ -65,6 +65,7 @@ class SingleHotelSerializer(
 class ReservationSerializer(
     serializers.ModelSerializer,
 ):
+    amount = serializers.ReadOnlyField()
     class Meta:
         model = Reservation
         fields = (
@@ -77,6 +78,7 @@ class ReservationSerializer(
             'meal_type',
             'has_parking_lot',
             'special_requests',
+            'amount',
             'status',
         )
         extra_kwargs = {

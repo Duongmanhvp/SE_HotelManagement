@@ -72,3 +72,6 @@ class UserProfileSerializer(
             'is_hotel_manager': {'read_only': True}
         }
 
+    def validate(self, data):
+        
+        return super().validate(data)
