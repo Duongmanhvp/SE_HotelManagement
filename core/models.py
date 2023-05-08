@@ -39,8 +39,8 @@ class AccountManager(BaseUserManager):
 
 		return self._create_user(email, username, password, **extra_field)
 	
-def get_profile_image_path(self):
-	return f'profile_images/{self.pk}/{"profile_image.png"}'
+def get_profile_image_path(self, filename):
+	return f'static/profile_images/{self.pk}/{filename}'
 
 def get_default_profile_image():
 	return "static/default.png"
@@ -56,17 +56,18 @@ class Account(
 		verbose_name = "Account"
 		verbose_name_plural = "Accounts"
 
+		permissions = [
+			("is_hotel_manager", "can manage reservation")
+		]
+
 	username = models.CharField(max_length=50, default="new user")
 	email = models.EmailField(verbose_name="Email", unique=True, blank=True)
 	phone_number = models.CharField(max_length=11, blank=True)
-	first_name = None
-	last_name = None
 
 	is_active = models.BooleanField(default=True)
 	is_admin = models.BooleanField(default=False)
 	is_superuser = models.BooleanField(default=False)
 	is_staff = models.BooleanField(default=False)
-
 	is_hotel_manager = models.BooleanField(default=False)
 
 	profile_image = models.ImageField(

@@ -1,11 +1,11 @@
 from rest_framework import serializers
-from rest_framework.fields import CharField, EmailField
+from rest_framework.serializers import CharField, EmailField
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 from .models import Account
 
-class MyTokenViewPairSerializer(
+class AccountLoginSerializer(
     TokenObtainPairSerializer,
     ):   
     @classmethod
@@ -18,7 +18,7 @@ class MyTokenViewPairSerializer(
         # ...
 
         return token
-    
+
 class AccountRegisterSerializer(
     serializers.ModelSerializer
     ):
@@ -40,14 +40,35 @@ class AccountRegisterSerializer(
     def validate_email(self, value):
         if value and Account.objects.filter(email__exact=value).exists():
             raise serializers.ValidationError('Email already exists')
-        # You need to return the value in after validation.
         return value
-        
+    
+    # password validation   
     def validate(self, data):
-        # password validation
+
         password = data.get('password')
         re_password = data.get('re_password')
 
         if password != re_password:
             raise serializers.ValidationError('Password mismatch')
         return data
+    
+class UserProfileSerializer(
+    serializers.ModelSerializer
+    ):
+
+    class Meta:
+        model = Account
+        fields = (
+            'username',
+            'email',
+            'first_name',
+            'last_name',
+            'is_hotel_manager',
+            'profile_image'
+        )
+
+        extra_kwargs = {
+            'email': {'read_only': True},
+            'is_hotel_manager': {'read_only': True}
+        }
+

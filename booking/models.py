@@ -5,7 +5,6 @@ from django_extensions.db.models import (
     ActivatorModel,
     TitleDescriptionModel,
 )
-from datetime import datetime
 
 from core.models import Account
 
@@ -40,35 +39,24 @@ class RoomType(
             models.UniqueConstraint('id', 'hotel', name='constraint_1')
         ]
     
-    hotel = models.ForeignKey(Hotel, default=0, unique=False, on_delete=models.CASCADE)
+    hotel = models.ForeignKey(Hotel, default=0, unique=False, on_delete=models.CASCADE, to_field='id', related_name='room_type')
     title = models.CharField(max_length=50)
     total_inventory = models.IntegerField(default=2)
     total_reserved = models.IntegerField(default=1)
     rate = models.DecimalField(max_digits=20,default=0, decimal_places=2)
-
-    def check_availablity(self):
-        return self.total_inventory > self.total_reserved
-
-    def manage_available_rooms(self, qty):
-        new_no_room_available = self.no_room_available - int(qty)
-        self.no_room_available = new_no_room_available
-        self.save()
-
     
-    def make_reservation(self, user, qty):
-        if self.check_availablity(qty):
-            reservation = Reservation.objects.create(
-                room= self, 
-                quantity= qty, 
-                user= user
-            )
-            self.manage_available_room(qty)
-            return reservation
-        else:
-            return None
-        
-class Room(
-    # ActivatorModel,
+    def check_availability(self, check_in, check_out):
+        avail_list = []
+        booking_list = Reservation.objects.filter(room_type=self.description, hotel=self.hotel)
+        for reservation in booking_list:
+            if reservation.check_in > check_out or reservation.check_out < check_in:
+                avail_list.append(True)
+            else:
+                avail_list.append(False)
+        return False if avail_list.count(False) >= 10 else True
+
+class Room(    
+    ActivatorModel,
     TimeStampedModel,
     ):
 
@@ -92,43 +80,57 @@ class Reservation(
     ActivatorModel,
     TimeStampedModel,
     ):
+    class RoomTypeChoices(models.TextChoices):
+        ROOM_TYPE_1 = 'single bedroom'
+        ROOM_TYPE_2 = 'double bedroom'
+        ROOM_TYPE_3 = 'queen size'
+        ROOM_TYPE_4 = 'king size'
+        ROOM_TYPE_5 = 'suite'
+        ROOM_TYPE_6 = 'apartment'
+
+    class MealType(models.TextChoices):
+        DEFAULT_TYPE = 'no meal'
+        MEAL_TYPE_1 = 'breakfast'
+        MEAL_TYPE_2 = 'dinner'
+        MEAL_TYPE_3 = 'breakfast and dinner'
+
+    class ReservationStatus(models.TextChoices):
+        NOT_CANCELLED = 'not canceled'
+        CANCELLED = 'cancelled'
 
     class Meta:
         verbose_name = 'Reservation'
         verbose_name_plural = 'Reservation'
         ordering = ['id']
-    
-    class MealType(models.TextChoices):
-        DEFAULT_TYPE = 'na', _('no meal need')
-        MEAL_TYPE_1 = 't1', _('breakfast')
-        MEAL_TYPE_2 = 't2', _('dinner')
-        MEAL_TYPE_3 = 't3', _('breakfast and dinner')
-
-    class ReservationStatus(models.TextChoices):
-        NOT_CANCELLED = 'nc', _('not canceled')
-        CANCELLED = 'c', _('cancelled')
-        ...
 
     customer = models.ForeignKey(Account, on_delete=models.CASCADE, null=True)
+
     hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE)
-    room_type = models.ForeignKey(RoomType, on_delete=models.CASCADE)
+    room_type = models.TextField(
+        max_length=14,
+        choices=RoomTypeChoices.choices,
+        default=RoomTypeChoices.ROOM_TYPE_1
+    )
+
     no_of_children = models.PositiveIntegerField(default=0)
     no_of_adults = models.PositiveIntegerField(default=1)
+
     meal_type = models.TextField(
-        max_length=11,
+        max_length=20,
         choices=MealType.choices,
         default=MealType.DEFAULT_TYPE
     )
     has_parking_lot = models.BooleanField(default=False)
-    special_requests = models.TextField(max_length=1000, default='')
+    special_requests = models.TextField(max_length=1000, default='', blank=True)
+
     status = models.TextField(
-        max_length=2,
+        max_length=12,
         choices=ReservationStatus.choices,
         default=ReservationStatus.NOT_CANCELLED
     )
-    arrive_date = models.DateField()
-    no_of_days_stay = models.IntegerField(default=0)
+
+    check_in = models.DateTimeField(null=True, blank=True)
+    check_out = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
-        return f'{self.customer.name} - {self.room.title} - {self.quantity}'
-    
+        return f'{str(self.customer)} - {self.hotel.title} - {self.room_type}'

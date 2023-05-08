@@ -13,6 +13,7 @@ class AccountCreationForm(forms.ModelForm):
     email = forms.EmailField(label= 'email', widget=forms.EmailInput)
     password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
     password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
+    is_hotel_manager = forms.BooleanField(label= "Hotel manager", widget=forms.CheckboxInput)
 
     class Meta:
         model = Account
@@ -35,16 +36,21 @@ class AccountCreationForm(forms.ModelForm):
         # Save the provided password in hashed format
         user = super().save(commit=False)
         user.set_password(self.cleaned_data["password1"])
+        user['is_hotel_manager'] = self.changed_data["is_hotel_manager"]
         if commit:
             user.save()
         return user
 
-class AccountAdmin(BaseUserAdmin):
+class AccountAdmin(
+    BaseUserAdmin,
+    admin.ModelAdmin,
+    ):
     # The forms to add and change user instances
     # form = UserChangeForm
     add_form = AccountCreationForm
 
-    list_display = ('username', 'email', 'is_hotel_manager')
+    list_display = ('username', 'email', 'is_hotel_manager', 'last_login')
+    list_editable = ('is_hotel_manager',)
     list_filter = ('is_hotel_manager',)
     search_fields = ('username', 'email',)
     ordering = ('email',)

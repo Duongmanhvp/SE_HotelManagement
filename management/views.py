@@ -10,27 +10,12 @@ from rest_framework.mixins import RetrieveModelMixin
 from rest_framework.generics import ListAPIView
 
 from django_filters.rest_framework import DjangoFilterBackend
+from django.db import transaction
 
 from hotel_management import settings
 from booking.models import Reservation, Hotel, RoomType, Room
-from core.models import Account
 from .serializers import HotelManagerSerializer
 from .custom_permissions import IsHotelManagerPermission
-
-class HotelManagerView(
-    RetrieveModelMixin,
-    viewsets.GenericViewSet,
-    ListAPIView
-    ):
-    permission_classes = (permissions.IsAuthenticated, IsHotelManagerPermission,)
-    serializer_class = HotelManagerSerializer
-
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-    filterset_fields = ['country', 'city', 'star_rating']
-    search_fields = ['title']
-    ordering_fields = []
-
-from django.db import transaction
 
 @transaction.atomic
 @api_view(['POST'])
@@ -71,23 +56,40 @@ def create_bulk_data(request):
     #             rate = 100,
     #     )
     
-    room_list = []
-    with open(os.path.join(settings.BASE_DIR,'static/room_data.csv')) as f:
-        reader = csv.reader(f)
-        first_row = next(reader)
-        for row in reader:
-            entry = Room(
-                hotel = Hotel.objects.get(id = row[0]),
-                room_type = RoomType.objects.get(
-                    hotel = row[0],
-                    title = row[2],
-                    ),
-                floor = row[1],
-                is_available = True,
-            )
-            room_list.append(entry)
-        rooms = Room. objects.bulk_create(room_list)
+    # room_list = []
+    # with open(os.path.join(settings.BASE_DIR,'static/room_data.csv')) as f:
+    #     reader = csv.reader(f)
+    #     first_row = next(reader)
+    #     for row in reader:
+    #         entry = Room(
+    #             hotel = Hotel.objects.get(id = row[0]),
+    #             room_type = RoomType.objects.get(
+    #                 hotel = row[0],
+    #                 title = row[2],
+    #                 ),
+    #             floor = row[1],
+    #             is_available = True,
+    #         )
+    #         room_list.append(entry)
+    #     rooms = Room. objects.bulk_create(room_list)
 
     return Response({
         "success": "users succeessfully imported"
     })
+
+class HotelManagerView(
+    RetrieveModelMixin,
+    viewsets.GenericViewSet,
+    ListAPIView
+    ):
+    
+    permission_classes = (permissions.IsAuthenticated, IsHotelManagerPermission,)
+    serializer_class = HotelManagerSerializer
+    queryset = Reservation.objects.all()
+
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    ordering_fields = ['check_in', 'check_out']
+    ordering = ['check_in']
+
+
+

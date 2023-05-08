@@ -1,17 +1,15 @@
 from rest_framework import filters, viewsets
+from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.mixins import RetrieveModelMixin
-from rest_framework.generics import ListAPIView, ListCreateAPIView
+from rest_framework.generics import RetrieveUpdateAPIView, ListCreateAPIView
 
 from django_filters.rest_framework import DjangoFilterBackend
 
-from .serializers import  HotelSerializer, RoomSerializer, ReservationSerializer
-from .models import Hotel, Room , Reservation
+from .serializers import  HotelSerializer, ReservationSerializer, SingleHotelSerializer
+from .models import Hotel, Reservation
 
 class HotelViewSet(
-        viewsets.GenericViewSet,
-        RetrieveModelMixin,
-        ListAPIView
+    viewsets.ReadOnlyModelViewSet,
     ):
     queryset = Hotel.objects.all()
     serializer_class = HotelSerializer
@@ -22,27 +20,15 @@ class HotelViewSet(
     search_fields = ['title']
     ordering_fields = []
 
-class RoomViewSet(
-        viewsets.GenericViewSet,
-        RetrieveModelMixin,
-        ListAPIView
-    ):
-    serializer_class = RoomSerializer
-    queryset = Room.objects.all()
-
-    # filter
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-    filter_fields = ['title', 'description']
-    search_fields = ['title']
-    ordering_fields = ['price']
-
-    def get_queryset(self):
-        return super().get_queryset()
-
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = SingleHotelSerializer(instance, many=False)
+        return Response(serializer.data)
+    
 class ReservationViewSet(
-        viewsets.GenericViewSet,
-        RetrieveModelMixin,
-        ListCreateAPIView
+    viewsets.GenericViewSet,
+    RetrieveUpdateAPIView,
+    ListCreateAPIView
     ):
     
     permission_classes = (IsAuthenticated,)
@@ -52,3 +38,6 @@ class ReservationViewSet(
         user = self.request.user
         print(user)
         return Reservation.objects.filter(customer=user)
+    
+    def partial_update(self, request, *args, **kwargs):
+        return super().partial_update(request, *args, **kwargs)
