@@ -1,25 +1,27 @@
 from django.test import TestCase
-from faker import Faker
-
 from core.models import Account
 
-class NewAccountTestCase(TestCase):
+from faker import Faker
+
+class NewUserTestCase(TestCase):
     """
-    Account test
+    Common user to be inherited by other sub-classes.
     """
 
-    def setUp(self):
+    def setUp(self) -> None:
         faker = Faker()
         self.username = faker.user_name()
-        self.password = faker.password()
         self.email = faker.email()
+        self.password = faker.password()
         self.first_name = faker.first_name()
         self.last_name = faker.last_name()
-        self.user = Account.objects.create_user(username=self.username,
+
+        self.user = Account.objects.create_user(    username=self.username,
                                                     email=self.email,
                                                     password=self.password,
                                                     first_name=self.first_name,
                                                     last_name=self.last_name)
         
-    def tearDown(self):
+
+    def tearDown(self) -> None:
         self.user.delete()

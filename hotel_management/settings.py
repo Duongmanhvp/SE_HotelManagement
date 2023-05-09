@@ -30,7 +30,7 @@ SECRET_KEY = 'django-insecure-w(6=8j-@elf*^1bp)s5t+!jv4#u64m5=n8fibr^7yo$)ry*^!^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 # Application definition
 
@@ -183,7 +183,11 @@ REST_FRAMEWORK = {
     'TEST_REQUEST_RENDERER_CLASSES': (
         'rest_framework_json_api.renderers.JSONRenderer',
     ),
-    'TEST_REQUEST_DEFAULT_FORMAT': 'vnd.api+json',
+    'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.JSONParser',
+        'rest_framework.parsers.MultiPartParser'
+    ],
+    'TEST_REQUEST_DEFAULT_FORMAT': 'json',
     'UNAUTHENTICATED_USER': 'django.contrib.auth.models.AnonymousUser',
 }
 
