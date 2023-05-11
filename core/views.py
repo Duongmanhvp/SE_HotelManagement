@@ -22,7 +22,7 @@ def get_tokens_for_user(user):
 @permission_classes([permissions.AllowAny])
 def get_routes(request):
     routes = [{
-        "end point documentation" : "https://hotel-backend-qpwd.onrender.com",
+        "end point documentation" : "https://hotel-backend-qpwd.onrender.com/swagger-ui/",
     }]
     return Response(routes)
     
