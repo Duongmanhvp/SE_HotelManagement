@@ -11,12 +11,16 @@ from rest_framework.generics import ListAPIView
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from django.db import transaction
-from django.db.models import Sum, F, ExpressionWrapper, DecimalField
 
 from hotel_management import settings
-from booking.models import Reservation, Hotel, RoomType, Room
+from booking.models import Reservation, Hotel
+from core.models import Account
 from .serializers import HotelManagerSerializer
 from .custom_permissions import IsHotelManagerPermission
+
+from faker import Faker
+from datetime import datetime, timedelta
+faker = Faker()
 
 class HotelManagerView(
     RetrieveModelMixin,
@@ -70,68 +74,46 @@ class HotelManagerView(
         queryset = self.get_queryset()
         total = [ i.amount for i in queryset]
         serializer = HotelManagerSerializer(queryset, many=True)
-        return Response({"total reservation": len(total), "total income": sum(total), "data": serializer.data})
+        return Response({
+            "number reservation": len(total),
+            "total": sum(total),
+            "data": serializer.data
+            })
 
     
 
 @transaction.atomic
 @api_view(['POST'])
 def create_bulk_data(request):
-    # with open(os.path.join(settings.BASE_DIR,'static/user_data.csv')) as f:
-    #     reader = csv.reader(f)
-    #     first_row = next(reader)
-    #     for row in reader:
-    #         user, created = Account.objects.get_or_create(
-    #             username = row[0],
-    #             email = row[1],
-    #             password = row[2],
-    #         )
-
-    # with open(os.path.join(settings.BASE_DIR,'static/hotel_data.csv')) as f:
-    #     reader = csv.reader(f)
-    #     first_row = next(reader)
-    #     for row in reader:
-    #         user, created = Hotel.objects.get_or_create(
-    #             title = row[0],
-    #             description = row[1],
-    #             country = row[2],
-    #             city = row[3],
-    #             address = row[4],
-    #             star_rating = randint(3, 5),
-    #     )
-
-    # with open(os.path.join(settings.BASE_DIR,'static/roomtype_data.csv')) as f:
-    #     reader = csv.reader(f)
-    #     first_row = next(reader)
-    #     for row in reader:
-    #         user, created = RoomType.objects.get_or_create(
-    #             hotel = Hotel(id = row[0]),
-    #             title = row[1],
-    #             description = row[2],
-    #             total_inventory = 10,
-    #             total_reserved = 10,
-    #             rate = 100,
-    #     )
-    
     room_list = []
-    with open(os.path.join(settings.BASE_DIR,'static/room_data.csv')) as f:
+    count = 0
+    with open(os.path.join(settings.BASE_DIR,'static/Hotel Reservations.csv')) as f:
         reader = csv.reader(f)
         first_row = next(reader)
         for row in reader:
-            entry = Room(
-                hotel = Hotel.objects.get(id = row[0]),
-                room_type = RoomType.objects.get(
-                    hotel = row[0],
-                    title = row[2],
-                    ),
-                floor = row[1],
-                is_available = True,
+            if count > 5:
+                room_list = Reservation.objects.bulk_create(room_list)
+                return Response({
+                    "success": "users succeessfully imported"
+                })
+            check_in_time = datetime(year=int(row[9]), month=int(row[10]), day=int(row[11]))
+            entry, created = Reservation.objects.get_or_create(
+                hotel = Hotel.objects.get(id = 10),
+                customer = Account.objects.get(id= randint(20, 10000)),
+                no_of_children = row[2],
+                no_of_adults= row[1], 
+                room_type = row[7],
+                meal_type = row[5],
+                has_parking_lot = row[6],
+                check_in = check_in_time, 
+                check_out = check_in_time + timedelta(days=5)
             )
             room_list.append(entry)
-        rooms = Room. objects.bulk_create(room_list)
+            count = count + 1
 
-    return Response({
-        "success": "users succeessfully imported"
-    })
+        return Response({
+            "success": "users succeessfully imported"
+        })
+
 
 

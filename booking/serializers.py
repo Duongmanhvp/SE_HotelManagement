@@ -1,8 +1,6 @@
-from datetime import datetime
 from collections import OrderedDict
 
 from rest_framework import serializers
-from rest_framework.fields import empty
 from rest_framework.serializers import CharField
 from django.utils import timezone
 now = timezone.now()
@@ -62,6 +60,15 @@ class SingleHotelSerializer(
             'room_type',
         )
 
+class StatusUpdateSerializer(
+    serializers.ModelSerializer
+):
+    class Meta:
+        model = Reservation
+        fields = (
+            'status',
+        )
+
 class ReservationSerializer(
     serializers.ModelSerializer,
 ):
@@ -69,6 +76,7 @@ class ReservationSerializer(
     class Meta:
         model = Reservation
         fields = (
+            'id',
             'hotel',
             'room_type',
             'check_in',
@@ -83,23 +91,27 @@ class ReservationSerializer(
         )
         extra_kwargs = {
             'room_type': {'required': True},
-            'hotel': {'required': True},
-            'check_in':{'required': True},
+            'check_in':{'required': True,},
             'check_out':{'required': True},
         }
 
     def validate(self, data):
         # handle check in time
-        if not now <= data['check_in'] <= data['check_out']:
-            raise serializers.ValidationError('Improper check in or check out date')
+        if self.context['request'].method == 'POST':
+            if data['check_in'] <= data['check_out']:
+                raise serializers.ValidationError('Improper check in or check out date')
 
-        # handle room
-        room = RoomType.objects.get(hotel = data['hotel'], description=data['room_type'])
-        if not room.check_availability(data['check_in'], data['check_out']):
-            raise serializers.ValidationError('Not enough room')
+            # handle room
+            room = RoomType.objects.get(hotel = data['hotel'], description=data['room_type'])
+            if not room.check_availability(data['check_in'], data['check_out']):
+                raise serializers.ValidationError('Not enough room')
+            return data
         return data
     
+    def partial_update(self, instance, validated_data):
+        instance.status = validated_data['status']
+        return instance
+
     def create(self, validated_data):
         validated_data['customer'] = self.context['request'].user
         return super().create(validated_data)
- 

@@ -30,7 +30,7 @@ SECRET_KEY = 'django-insecure-w(6=8j-@elf*^1bp)s5t+!jv4#u64m5=n8fibr^7yo$)ry*^!^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['http://127.0.0.1:8000', 'localhost', '*']
 
 # Application definition
 
@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     
     'rest_framework', # DRF package
     'django_filters', # used with DRF
+    'django_extensions', # extensions
 
     'rest_framework.authtoken', # authentication
     'rest_framework_simplejwt', # jwt
@@ -54,6 +55,8 @@ INSTALLED_APPS = [
     'core', # include user account and super user
     'booking', # making reservation app
     'management', # hotel management and accounting
+
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
@@ -71,7 +74,7 @@ ROOT_URLCONF = 'hotel_management.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

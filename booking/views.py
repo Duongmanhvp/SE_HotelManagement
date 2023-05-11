@@ -14,7 +14,6 @@ class HotelViewSet(
     queryset = Hotel.objects.all()
     serializer_class = HotelSerializer
 
-    # filter
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_fields = ['country', 'city', 'star_rating']
     search_fields = ['title']

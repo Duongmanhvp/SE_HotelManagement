@@ -6,8 +6,6 @@ from rest_framework.generics import RetrieveUpdateAPIView
 from .models import Account
 from .serializers import AccountRegisterSerializer, AccountLoginSerializer, UserProfileSerializer
 
-from django.shortcuts import get_object_or_404
-
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken
 
@@ -23,104 +21,9 @@ def get_tokens_for_user(user):
 @authentication_classes([])
 @permission_classes([permissions.AllowAny])
 def get_routes(request):
-    routes = [
-        {
-            "Endpoint": "/register/",
-            "method": "POST",
-            "header": None,
-            "body": {
-                "username": "str",
-                "email": "str",
-                "password": "str",
-                "re_password": "str"
-            },
-            "description": "register new user"
-        },
-        {
-            "Endpoint": "/login/",
-            "method": "PUT",
-            "header": None,
-            "body": {
-                "email": "str",
-                "password": "str"
-            },
-            "description": "return jwt auth key for user login"
-        },
-        {
-            "Endpoint": "/hotel/",
-            "method": "GET",
-            "header": None,
-            "body": None,
-            "description": "return a list of hotels"
-        },
-        {
-            "Endpoint": "/hotel/<int:pk>/",
-            "method": "GET",
-            "header": None,
-            "body": None,
-            "description": "return a hotel details, including rooms for booking"
-        },
-        {
-            "Endpoint": "/reservation/",
-            "method": "GET",
-            "header": {
-                "Authorization": "Bearer ${JWT_TOKEN}",
-            },
-            "body": None,
-            "description": "return list of reservations of an user"
-        },
-        {
-            "Endpoint": "/reservation/",
-            "method": "POST",
-            "header": {
-                "Authorization": "Bearer ${JWT_TOKEN}",
-            },
-            "body": {
-                "hotel": "str",
-                "room_type": "str",
-                "check_in": "str",
-                "check_out": "str",
-                "no_of_children": "int",
-                "no_of_adults": "int",
-                "meal_type": "str",
-                "has_parking_lot": "boolean",
-                "special_requests": "str",
-                "status": "str"
-            },
-            "description": "make reservations"
-        },
-        {
-            "Endpoint": "/reservation/<int:pk>/",
-            "method": "GET",
-            "header": {
-                "Authorization": "Bearer ${JWT_TOKEN}",
-            },
-            "body": None,
-            "description": "return single reservation detail of an user"
-        },
-        {
-            "Endpoint": "/reservation/<int:pk>/",
-            "method": "PUT",
-            "header": {
-                "Authorization": "Bearer ${JWT_TOKEN}",
-            },
-            "body": {
-                "status": None,
-            },
-            "description": "cancel a reservation"
-        },
-        {
-            "Endpoint": "/hotel-management/",
-            "method": "PUT",
-            "header": {
-                "Authorization": "Bearer ${JWT_TOKEN}",
-            },
-            "body": {
-                "status": "str",
-            },
-            "description": "return reservations list of all users"
-        },
-    ]
+    routes = [{
+        "end point documentation" : "http://127.0.0.1:8000/swagger-ui/",
+    }]
     return Response(routes)
     
 @api_view(["POST"])
@@ -140,6 +43,8 @@ class LoginView(
     TokenObtainPairView
     ):
     serializer_class = AccountLoginSerializer
+    permission_classes = (permissions.AllowAny, )
+    authentication_classes = []
     
 class UserProfileView(
     RetrieveUpdateAPIView

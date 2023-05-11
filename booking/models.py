@@ -31,7 +31,7 @@ class RoomType(
     TitleDescriptionModel,
     ActivatorModel, 
     TimeStampedModel,
-):
+    ):
     class Meta:
         verbose_name = 'Room Type'
         verbose_name_plural = 'Room Types'
@@ -95,7 +95,7 @@ class Reservation(
         MEAL_TYPE_3 = 'breakfast and dinner'
 
     class ReservationStatus(models.TextChoices):
-        NOT_CANCELLED = 'not canceled'
+        NOT_CANCELLED = 'not cancelled'
         CANCELLED = 'cancelled'
 
     class Meta:
@@ -124,7 +124,7 @@ class Reservation(
     special_requests = models.TextField(max_length=1000, default='', blank=True)
 
     status = models.TextField(
-        max_length=12,
+        max_length=13,
         choices=ReservationStatus.choices,
         default=ReservationStatus.NOT_CANCELLED
     )
@@ -143,3 +143,21 @@ class Reservation(
 
     def __str__(self):
         return f'{str(self.customer)} - {self.hotel.title} - {self.room_type}'
+    
+class Bill(
+    ActivatorModel,
+    TimeStampedModel,
+    ):
+    reservation = models.ForeignKey(Reservation, on_delete=models.CASCADE)
+    customer = models.ForeignKey(Account, on_delete=models.CASCADE)
+    payment_date = models.DateTimeField(blank=True)
+
+    class PaymentType(models.TextChoices):
+        ON_ARRIVAL = 'on arrival'
+        ONLINE = 'online'
+
+    payment_type = models.TextField(
+        max_length=13,
+        choices=PaymentType.choices,
+        default=PaymentType.ONLINE
+    )

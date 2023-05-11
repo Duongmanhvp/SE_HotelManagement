@@ -2,6 +2,7 @@ from rest_framework import serializers
 from rest_framework.serializers import CharField, EmailField
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from django.contrib.auth.hashers import make_password
 
 from .models import Account
 
@@ -41,10 +42,9 @@ class AccountRegisterSerializer(
         if value and Account.objects.filter(email__exact=value).exists():
             raise serializers.ValidationError('Email already exists')
         return value
-    
-    # password validation   
-    def validate(self, data):
 
+    def validate(self, data):
+        # password validation   
         password = data.get('password')
         re_password = data.get('re_password')
 
