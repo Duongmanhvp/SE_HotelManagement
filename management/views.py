@@ -1,6 +1,13 @@
 import os
 import csv
 from random import randint
+from faker import Faker
+from datetime import datetime, timedelta
+
+from django.db import transaction
+from django.shortcuts import get_object_or_404
+
+from django_filters.rest_framework import DjangoFilterBackend
 
 from rest_framework import viewsets, permissions, filters
 from rest_framework.decorators import api_view
@@ -8,18 +15,12 @@ from rest_framework.response import Response
 from rest_framework.mixins import RetrieveModelMixin
 from rest_framework.generics import ListAPIView
 
-from django.shortcuts import get_object_or_404
-from django_filters.rest_framework import DjangoFilterBackend
-from django.db import transaction
-
 from hotel_management import settings
 from booking.models import Reservation, Hotel
 from core.models import Account
 from .serializers import HotelManagerSerializer
 from .custom_permissions import IsHotelManagerPermission
 
-from faker import Faker
-from datetime import datetime, timedelta
 faker = Faker()
 
 class HotelManagerView(

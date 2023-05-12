@@ -1,11 +1,13 @@
 from collections import OrderedDict
 
+from django.utils import timezone
+
 from rest_framework import serializers
 from rest_framework.serializers import CharField
-from django.utils import timezone
-now = timezone.now()
 
 from .models import RoomType , Reservation, Hotel
+
+now = timezone.now()
 
 class HotelSerializer(serializers.ModelSerializer):
     name = CharField(source="title", required=True)
@@ -96,12 +98,13 @@ class ReservationSerializer(
         }
 
     def validate(self, data):
-        # handle check in time
         if self.context['request'].method == 'POST':
+
+            # validate check in time
             if data['check_in'] <= data['check_out']:
                 raise serializers.ValidationError('Improper check in or check out date')
 
-            # handle room
+            # validate room availability
             room = RoomType.objects.get(hotel = data['hotel'], description=data['room_type'])
             if not room.check_availability(data['check_in'], data['check_out']):
                 raise serializers.ValidationError('Not enough room')
@@ -109,6 +112,7 @@ class ReservationSerializer(
         return data
     
     def partial_update(self, instance, validated_data):
+        # only allow user to cancel a reservation
         instance.status = validated_data['status']
         return instance
 

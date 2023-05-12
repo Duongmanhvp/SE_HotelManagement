@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+
 from django_extensions.db.models import (
     TimeStampedModel,
     ActivatorModel,
@@ -13,7 +14,9 @@ class Hotel(
     ActivatorModel,
     TimeStampedModel,
     ):
-
+    """
+    Hotel ORM for creation of Hotel database.
+    """
     class Meta:
         verbose_name = 'Hotel'
         verbose_name_plural = 'Hotels'
@@ -32,6 +35,12 @@ class RoomType(
     ActivatorModel, 
     TimeStampedModel,
     ):
+    """
+    Room type ORM for creation of Room Type.
+    
+    Whenever user book a room, they can only choose type of room.
+    Their room will be assigned when they check in.
+    """
     class Meta:
         verbose_name = 'Room Type'
         verbose_name_plural = 'Room Types'
@@ -59,7 +68,9 @@ class Room(
     ActivatorModel,
     TimeStampedModel,
     ):
-
+    """
+    Room ORM for creation of Room database.
+    """
     class Meta:
         verbose_name = 'Room'
         verbose_name_plural = 'Rooms'
@@ -80,6 +91,9 @@ class Reservation(
     ActivatorModel,
     TimeStampedModel,
     ):
+    """
+    Reservation ORM for creation of Reservation database. 
+    """
     class RoomTypeChoices(models.TextChoices):
         ROOM_TYPE_1 = 'single bedroom'
         ROOM_TYPE_2 = 'double bedroom'

@@ -1,3 +1,6 @@
+from random import randint
+from faker import Faker
+
 from django.urls import reverse
 
 from rest_framework import status
@@ -6,12 +9,12 @@ from rest_framework.test import APITestCase, APIClient, APIRequestFactory
 from booking.models import Hotel, RoomType, Reservation
 from core.views import Account
 
-from random import randint
-from faker import Faker
-
 class HotelViewTestCase(
     APITestCase
     ):
+    """
+    test for hotel view.
+    """
     def setUp(self) -> None:
         faker = Faker()
 

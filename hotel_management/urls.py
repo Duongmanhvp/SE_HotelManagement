@@ -1,20 +1,20 @@
 from django.urls import path, include
 from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-from django.views.generic import TemplateView
 
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 
-from booking import views as booking_views
-from management import views as management_views
-
 from rest_framework import routers
+
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
     TokenVerifyView
 )
+
+from booking import views as booking_views
+from management import views as management_views
 
 schema_view = get_schema_view(
     openapi.Info(

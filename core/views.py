@@ -3,11 +3,11 @@ from rest_framework.decorators import api_view, permission_classes, authenticati
 from rest_framework.response import Response
 from rest_framework.generics import RetrieveUpdateAPIView
 
-from .models import Account
-from .serializers import AccountRegisterSerializer, AccountLoginSerializer, UserProfileSerializer
-
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken
+
+from .models import Account
+from .serializers import AccountRegisterSerializer, AccountLoginSerializer, UserProfileSerializer
 
 def get_tokens_for_user(user):
     refresh = RefreshToken.for_user(user)

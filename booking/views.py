@@ -1,9 +1,9 @@
+from django_filters.rest_framework import DjangoFilterBackend
+
 from rest_framework import filters, viewsets
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.generics import RetrieveUpdateAPIView, ListCreateAPIView
-
-from django_filters.rest_framework import DjangoFilterBackend
 
 from .serializers import  HotelSerializer, ReservationSerializer, SingleHotelSerializer
 from .models import Hotel, Reservation
@@ -11,6 +11,10 @@ from .models import Hotel, Reservation
 class HotelViewSet(
     viewsets.ReadOnlyModelViewSet,
     ):
+    """
+    Hotel views.
+
+    """
     queryset = Hotel.objects.all()
     serializer_class = HotelSerializer
 
@@ -29,7 +33,9 @@ class ReservationViewSet(
     RetrieveUpdateAPIView,
     ListCreateAPIView
     ):
-    
+    """
+    Reservation views.
+    """
     permission_classes = (IsAuthenticated,)
     serializer_class = ReservationSerializer
 

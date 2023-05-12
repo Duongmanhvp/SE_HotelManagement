@@ -2,7 +2,6 @@ from rest_framework import serializers
 from rest_framework.serializers import CharField, EmailField
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from django.contrib.auth.hashers import make_password
 
 from .models import Account
 
