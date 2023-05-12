@@ -1,11 +1,10 @@
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import AccountNav from "../../components/customer/AccountNav";
-import { _bookings } from "../../data/sampleData";
-import StarRating from "../../components/customer/StarRating";
-import BookingItem from "../../components/customer/BookingItem";
-import UserContext from "../../context/UserContext";
 import { getAllPaymentByUserId, sendReview } from "../../api";
+import AccountNav from "../../components/customer/AccountNav";
+import BookingItem from "../../components/customer/BookingItem";
+import StarRating from "../../components/customer/StarRating";
+import UserContext from "../../context/UserContext";
 
 const starRate = {
   review_scores_cleanliness: "Mức độ sạch sẽ",

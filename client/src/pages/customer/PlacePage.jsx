@@ -1,26 +1,22 @@
 import { useEffect, useState } from "react";
-import AddressLink from "../../components/customer/AddressLink";
-import BookingWidget from "../../components/customer/BookingWidget";
-import PlaceGallery from "../../components/customer/PlaceGallery";
-import { FaWifi } from "react-icons/fa";
-import ReactPaginate from "react-paginate";
+import { AiFillCalendar } from "react-icons/ai";
 import {
-  extractReviewScores,
-  formatStarRate,
-  extractDate,
-  getReviewScore,
-} from "../../utils/Caculate";
-import _place from "../../data/sampleData";
-import { RxAvatar } from "react-icons/rx";
-import {
-  BsFillHouseDoorFill,
   BsAwardFill,
   BsCheckCircleFill,
+  BsFillHouseDoorFill,
 } from "react-icons/bs";
-import { AiFillCalendar } from "react-icons/ai";
-import RateBar from "../../components/customer/RateBar";
+import { RxAvatar } from "react-icons/rx";
+import ReactPaginate from "react-paginate";
 import { useParams } from "react-router-dom";
 import { getPlaceById } from "../../api";
+import AddressLink from "../../components/customer/AddressLink";
+import BookingWidget from "../../components/customer/BookingWidget";
+import RateBar from "../../components/customer/RateBar";
+import {
+  extractDate,
+  extractReviewScores,
+  getReviewScore,
+} from "../../utils/Caculate";
 
 export default function PlacePage() {
   const [place, setPlace] = useState(null);

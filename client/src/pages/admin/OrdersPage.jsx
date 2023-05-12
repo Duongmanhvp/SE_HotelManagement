@@ -1,11 +1,9 @@
+import { format } from "date-fns";
 import React, { useEffect, useState } from "react";
-import { adminData } from "../../data/sampleData";
 import { FaShoppingBag } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import { BsThreeDotsVertical } from "react-icons/bs";
 import { gettAllPayment } from "../../api";
 import { getTimeAgo } from "../../utils/Caculate";
-import { format } from "date-fns";
 
 function ProductsPage() {
   const [bookings, setBookings] = useState();

@@ -1,10 +1,16 @@
-import React, { useState, useEffect, useContext } from "react";
-import { Link, redirect } from "react-router-dom";
-import UserContext from "../../context/UserContext";
+import React, { useContext, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import AvatarImg from "../../assets/avatar.jpg";
+import UserContext from "../../context/UserContext";
+import { useCookies } from "react-cookie";
 
 function Header() {
   const [top, setTop] = useState(true);
+  const [dropdown, setDropdown] = useState(false);
+  const navigate = useNavigate();
+  const [cookies, setCookie, removeCookie] = useCookies("userId");
+  const [user, setUser] = useContext(UserContext);
+
   // detect whether user has scrolled the page down by 10px
   useEffect(() => {
     const scrollHandler = () => {
@@ -13,7 +19,12 @@ function Header() {
     window.addEventListener("scroll", scrollHandler);
     return () => window.removeEventListener("scroll", scrollHandler);
   }, [top]);
-  const [user, setUser] = useContext(UserContext);
+
+  async function handleLogout() {
+    setUser(null);
+    removeCookie("userId");
+    navigate("/");
+  }
 
   return (
     <header
@@ -98,16 +109,19 @@ function Header() {
 
             <ul className="flex flex-grow justify-end flex-wrap gap-8 items-center">
               {user && (
-                <li>
-                  <Link
-                    to="/account"
-                    className="font-medium text-white px-6 py-3 flex items-center "
+                <li className="relative">
+                  <img
+                    src={AvatarImg}
+                    className="w-12 h-12 object-cover rounded-full cursor-pointer"
+                    onClick={() => setDropdown(!dropdown)}
+                  ></img>
+                  <div
+                    className={`absolute top-full -left-1/2 mt-1 duration-200 overflow-hidden ${
+                      dropdown ? "h-fit" : "h-0"
+                    }`}
                   >
-                    <img
-                      src={AvatarImg}
-                      className="w-12 h-12 object-cover rounded-full"
-                    ></img>
-                  </Link>
+                    <Dropdown logout={handleLogout}></Dropdown>
+                  </div>
                 </li>
               )}
               {!user && (
@@ -135,6 +149,51 @@ function Header() {
         </div>
       </div>
     </header>
+  );
+}
+
+function Dropdown({ logout }) {
+  return (
+    <div
+      id="dropdown"
+      className=" bg-white divide-y divide-gray-100 rounded-lg shadow w-52 dark:bg-gray-700 border-[1px]"
+    >
+      <ul
+        className="py-2 text-sm text-gray-700 dark:text-gray-200"
+        aria-labelledby="dropdownDefaultButton"
+      >
+        <li>
+          <Link
+            to={"/account"}
+            className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+          >
+            Profile
+          </Link>
+        </li>
+        <li>
+          <Link
+            to={"/account/update"}
+            className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+          >
+            Update profile
+          </Link>
+        </li>
+        <li>
+          <Link
+            to={"/account/password"}
+            className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+          >
+            Change password
+          </Link>
+        </li>
+        <li
+          className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer"
+          onClick={logout}
+        >
+          Sign out
+        </li>
+      </ul>
+    </div>
   );
 }
 

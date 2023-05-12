@@ -1,7 +1,7 @@
-import { useContext, useEffect, useState } from "react";
 import { differenceInCalendarDays } from "date-fns";
-import { Link, Navigate, useNavigate } from "react-router-dom";
 import formatISO from "date-fns/formatISO";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function BookingWidget({ place }) {
   const {

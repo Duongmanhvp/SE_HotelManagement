@@ -1,8 +1,8 @@
 import { useContext, useState } from "react";
+import { useCookies } from "react-cookie";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { register } from "../../api";
 import UserContext from "../../context/UserContext";
-import { useCookies } from "react-cookie";
 
 export default function RegisterPage() {
   const [registerUser, setRegisterUser] = useState({});
@@ -57,24 +57,27 @@ export default function RegisterPage() {
             onChange={handleChange}
           />
           <input type="date" name="birthday" onChange={handleChange}></input>
-          <fieldset className="flex justify-start items-center gap-6">
-            <div>
-              <input
-                type="radio"
-                name="gender"
-                value="Male"
-                onClick={handleChange}
-              ></input>
-              <label>Male</label>
-            </div>
-            <div>
-              <input
-                type="radio"
-                name="gender"
-                value="Female"
-                onClick={handleChange}
-              ></input>
-              <label>Female</label>
+          <fieldset className="flex justify-start items-center gap-14">
+            <label>Gender</label>
+            <div className="flex px-6 justify-between items-center grow">
+              <div>
+                <input
+                  type="radio"
+                  name="gender"
+                  value="Male"
+                  onClick={handleChange}
+                ></input>
+                <label>Male</label>
+              </div>
+              <div>
+                <input
+                  type="radio"
+                  name="gender"
+                  value="Female"
+                  onClick={handleChange}
+                ></input>
+                <label>Female</label>
+              </div>
             </div>
           </fieldset>
           <button className="primary">Register</button>

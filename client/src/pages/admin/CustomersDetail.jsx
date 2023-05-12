@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from "react";
-import UserProfile from "../../components/customer/UserProfile";
-import { _bookings } from "../../data/sampleData";
-import axios from "axios";
-import { Link, useLocation, useParams } from "react-router-dom";
-import BookingItem from "../../components/customer/BookingItem";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { getAllPaymentByUserId } from "../../api";
+import BookingItem from "../../components/customer/BookingItem";
+import UserProfile from "../../components/customer/UserProfile";
 
 function CustomersDetail() {
   const location = useLocation();

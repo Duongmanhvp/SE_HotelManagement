@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { Bar } from "react-chartjs-2";
 import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
   BarElement,
+  CategoryScale,
+  Chart as ChartJS,
+  Legend,
+  LinearScale,
   Title,
   Tooltip,
-  Legend,
 } from "chart.js";
-import { addDays, getDay, startOfWeek } from "date-fns";
+import { getDay } from "date-fns";
+import React, { useEffect, useState } from "react";
+import { Bar } from "react-chartjs-2";
 
 ChartJS.register(
   CategoryScale,

@@ -8,10 +8,7 @@ import UserContext from "../../context/UserContext";
 function BookingItem({ booking, handleClick }) {
   const [user] = useContext(UserContext);
   const isAdmin = user.role === "ADMIN";
-  // const location = useLocation();
-  // function checkAdmin() {
-  //   return location.pathname.includes("admin");
-  // }
+
   return (
     <div className="flex gap-4 bg-primary/10 rounded-2xl overflow-hidden mb-12">
       <div className="w-[220px] h-[220px] p-4">

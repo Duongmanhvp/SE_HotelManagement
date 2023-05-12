@@ -1,27 +1,27 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { getAllPlace } from "../../api/index.js";
-import PlaceCard from "../../components/customer/PlaceCard.jsx";
-import { _places } from "../../data/sampleData";
-import SearchBar from "../../components/customer/SearchBar.jsx";
 import ReactPaginate from "react-paginate";
+import { Link, useSearchParams } from "react-router-dom";
+import { getPlacesByQuery } from "../../api/index.js";
+import PlaceCard from "../../components/customer/PlaceCard.jsx";
+import SearchBar from "../../components/customer/SearchBar.jsx";
 
 export default function IndexPage() {
   const [places, setPlaces] = useState([]);
-
+  const [query] = useSearchParams();
   useEffect(() => {
     window.scrollTo(0, 0);
-    getAllPlace()
+    getPlacesByQuery(Object.fromEntries([...query]))
       .then((res) => setPlaces(res.data))
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+      .catch((err) => console.log(err));
+  }, [query]);
 
   return (
     <div className="mt-8 ml-[352px] py-4 px-8 ">
       <SearchBar setPlaces={setPlaces}></SearchBar>
-      <PaginatedItems itemsPerPage={16} items={places}></PaginatedItems>
+      <div>
+        {query.entries.length > 0 && <h1>Founded {places.length} rooms!</h1>}
+        <PaginatedItems itemsPerPage={16} items={places}></PaginatedItems>
+      </div>
     </div>
   );
 }

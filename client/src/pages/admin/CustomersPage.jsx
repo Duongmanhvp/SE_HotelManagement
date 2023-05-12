@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { BsPersonFill, BsThreeDotsVertical } from "react-icons/bs";
-import { adminData } from "../../data/sampleData";
 import { Link } from "react-router-dom";
 import { getAllCustomer } from "../../api";
 

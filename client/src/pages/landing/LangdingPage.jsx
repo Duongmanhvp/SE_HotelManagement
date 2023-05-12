@@ -1,11 +1,9 @@
 import React from "react";
-import Header from "../../components/landing/Header";
-import HeroImg from "../../assets/hero.jpg";
-import HandShakeImg from "../../assets/handshake.png";
-import RocketImg from "../../assets/rocket.png";
-import AwardImg from "../../assets/award.png";
 import { Link } from "react-router-dom";
-import Footer from "../../components/customer/Footer";
+import AwardImg from "../../assets/award.png";
+import HandShakeImg from "../../assets/handshake.png";
+import HeroImg from "../../assets/hero.jpg";
+import RocketImg from "../../assets/rocket.png";
 
 function LangdingPage() {
   return (

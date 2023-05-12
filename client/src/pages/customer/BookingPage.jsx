@@ -1,10 +1,10 @@
-import AddressLink from "../../components/customer/AddressLink";
-import BookingDates from "../../components/customer/BookingDates";
 import { useContext, useEffect, useState } from "react";
 import { BiArrowBack } from "react-icons/bi";
 import { Link, useParams } from "react-router-dom";
-import Image from "../../components/customer/Image";
 import { getPayment } from "../../api";
+import AddressLink from "../../components/customer/AddressLink";
+import BookingDates from "../../components/customer/BookingDates";
+import Image from "../../components/customer/Image";
 import UserContext from "../../context/UserContext";
 
 export default function BookingPage() {

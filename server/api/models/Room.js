@@ -29,7 +29,18 @@ const RoomSchema = new Schema({
   amenities: [String],
   security_deposit: Number,
   cleaning_fee: Number,
-  review_scores: Object,
+  review_scores: {
+    type: Object,
+    default: {
+      review_scores_accuracy: 0,
+      review_scores_cleanliness: 0,
+      review_scores_checkin: 0,
+      review_scores_communication: 0,
+      review_scores_location: 0,
+      review_scores_value: 0,
+      review_scores_rating: 0,
+    },
+  },
   reviews: Array,
 });
 

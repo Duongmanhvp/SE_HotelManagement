@@ -17,6 +17,7 @@ export function UserProvider({ children }) {
           setReady(true);
         } catch (error) {
           console.log(error);
+          setUser(null);
         }
       } else {
         setReady(true);

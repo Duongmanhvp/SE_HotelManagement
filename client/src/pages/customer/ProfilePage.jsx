@@ -1,13 +1,11 @@
-import axios from "axios";
-import { useContext, useState } from "react";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
-import AccountNav from "../../components/customer/AccountNav";
-import PlacesPage from "./PlacesPage";
-import { AiFillLock, AiFillEye } from "react-icons/ai";
+import { useContext } from "react";
+import { useCookies } from "react-cookie";
+import { AiFillEye, AiFillLock } from "react-icons/ai";
 import { BsPersonFillLock } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
+import AccountNav from "../../components/customer/AccountNav";
 import UserProfile from "../../components/customer/UserProfile";
 import UserContext from "../../context/UserContext";
-import { useCookies } from "react-cookie";
 
 export default function ProfilePage() {
   const [user, setUser] = useContext(UserContext);

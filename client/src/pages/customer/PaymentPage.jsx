@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
-import UserContext from "../../context/UserContext";
 import { useLocation, useNavigate } from "react-router-dom";
 import { sendPayment } from "../../api";
+import UserContext from "../../context/UserContext";
 
 function PaymentPage() {
   const [payment, setPayment] = useState({ paymentMethod: "checkin" });

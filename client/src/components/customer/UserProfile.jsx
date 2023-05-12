@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import { format } from "date-fns";
-import UserContext from "../../context/UserContext";
 
 function UserProfile({ user }) {
   return (
@@ -8,6 +7,21 @@ function UserProfile({ user }) {
       <div>
         <label className="font-semibold text-lg">Tên pháp lý</label>
         <p className="text-gray-500">{user.name}</p>
+      </div>
+      <hr className="mt-5 mb-5"></hr>
+      <div>
+        <label className="font-semibold text-lg">Địa chỉ email</label>
+        <p className="text-gray-500">{user.email}</p>
+      </div>
+      <hr className="mt-5 mb-5"></hr>
+      <div>
+        <label className="font-semibold text-lg">Password</label>
+        <p className="text-gray-500">
+          {user.password
+            .split("")
+            .map((c) => "*")
+            .join("")}
+        </p>
       </div>
       <hr className="mt-5 mb-5"></hr>
       <div>
@@ -22,11 +36,7 @@ function UserProfile({ user }) {
         <p className="text-gray-500">{user.gender || "Not provide"}</p>
       </div>
       <hr className="mt-5 mb-5"></hr>
-      <div>
-        <label className="font-semibold text-lg">Địa chỉ email</label>
-        <p className="text-gray-500">{user.email}</p>
-      </div>
-      <hr className="mt-5 mb-5"></hr>
+
       <div>
         <label className="font-semibold text-lg">Số điện thoại</label>
         <p className="text-gray-500">{user.phone}</p>

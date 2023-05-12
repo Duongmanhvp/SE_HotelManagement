@@ -1,26 +1,28 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import LangdingPage from "../pages/landing/LangdingPage";
+import RequiredAuth from "../components/customer/RequiredAuth";
+import AdminLayout from "../layout/AdminLayout";
+import Layout from "../layout/Layout";
+import AdminPage from "../pages/admin/AdminPage";
+import CustomersDetail from "../pages/admin/CustomersDetail";
+import CustomersPage from "../pages/admin/CustomersPage";
+import OrdersPage from "../pages/admin/OrdersPage";
+import Rooms from "../pages/admin/Rooms";
+import BookingPage from "../pages/customer/BookingPage";
+import BookingsPage from "../pages/customer/BookingsPage";
 import IndexPage from "../pages/customer/IndexPage.jsx";
 import LoginPage from "../pages/customer/LoginPage";
-import Layout from "../layout/Layout";
-import RegisterPage from "../pages/customer/RegisterPage";
-import ProfilePage from "../pages/customer/ProfilePage.jsx";
-import PlacesPage from "../pages/customer/PlacesPage";
-import PlacesFormPage from "../pages/customer/PlacesFormPage";
-import PlacePage from "../pages/customer/PlacePage";
-import BookingsPage from "../pages/customer/BookingsPage";
-import BookingPage from "../pages/customer/BookingPage";
 import PaymentPage from "../pages/customer/PaymentPage";
-import AdminPage from "../pages/admin/AdminPage";
-import AdminLayout from "../layout/AdminLayout";
-import OrdersPage from "../pages/admin/OrdersPage";
-import CustomersPage from "../pages/admin/CustomersPage";
-import CustomersDetail from "../pages/admin/CustomersDetail";
-import OrderDetail from "../pages/admin/OrderDetail";
-import Rooms from "../pages/admin/Rooms";
-import RequiredAuth from "../components/customer/RequiredAuth";
+import PlacePage from "../pages/customer/PlacePage";
+import PlacesPage from "../pages/customer/PlacesPage";
+import ProfilePage from "../pages/customer/ProfilePage.jsx";
+import RegisterPage from "../pages/customer/RegisterPage";
 import DeniedAccessPage from "../pages/error/DeniedAccessPage";
+import NotFoundPage from "../pages/error/NotFoundPage";
+import LangdingPage from "../pages/landing/LangdingPage";
+import NewRoom from "../pages/admin/NewRoom";
+import ProfileUpdate from "../pages/customer/ProfileUpdate";
+import ChangePassword from "../pages/customer/ChangePassword";
 
 function AppRoute() {
   return (
@@ -38,18 +40,25 @@ function AppRoute() {
         <Route path="/" element={<RequiredAuth></RequiredAuth>}>
           <Route path="/account" element={<ProfilePage />} />
           <Route path="/account/places" element={<PlacesPage />} />
-          <Route path="/account/places/new" element={<PlacesFormPage />} />
-          <Route path="/account/places/:id" element={<PlacesFormPage />} />
           <Route path="/account/bookings" element={<BookingsPage />} />
           <Route
             path="/account/bookings/:bookingId"
             element={<BookingPage />}
           />
           <Route
+            path="/account/update"
+            element={<ProfileUpdate></ProfileUpdate>}
+          ></Route>
+          <Route
+            path="/account/password"
+            element={<ChangePassword></ChangePassword>}
+          ></Route>
+          <Route
             path="/account/bookings/payment"
             element={<PaymentPage></PaymentPage>}
           ></Route>
         </Route>
+        <Route path="*" element={<NotFoundPage></NotFoundPage>}></Route>
       </Route>
 
       <Route path="/admin" element={<AdminLayout></AdminLayout>}>
@@ -68,6 +77,8 @@ function AppRoute() {
           element={<BookingPage></BookingPage>}
         ></Route>
         <Route path="rooms" element={<Rooms></Rooms>}></Route>
+        <Route path="rooms/new" element={<NewRoom></NewRoom>}></Route>
+        <Route path="*" element={<NotFoundPage></NotFoundPage>}></Route>
       </Route>
     </Routes>
   );
