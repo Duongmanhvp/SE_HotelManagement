@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { getAllPaymentByUserId } from "../../api";
 import BookingItem from "../../components/customer/BookingItem";
 import UserProfile from "../../components/customer/UserProfile";
+import { RxAvatar } from "react-icons/rx";
 
 function CustomersDetail() {
   const location = useLocation();
@@ -29,14 +30,10 @@ function CustomersDetail() {
       <h1 className="font-bold text-xl mt-3 ml-6">Chi tiết khách hàng</h1>
       <hr className="mt-3"></hr>
       <div className="flex justify-start items-center mt-4 ml-6">
-        <img
-          src="https://picsum.photos/200"
-          className="w-32 h-32 rounded-full"
-        ></img>
+        <RxAvatar className="w-32 h-32 rounded-full"></RxAvatar>
         <div className="ml-8">
-          <span className=" font-bold text-2xl">Nguyễn Văn A</span>
+          <span className=" font-bold text-2xl">{customer.name}</span>
           <p className=" text-lg mt-2 font-medium">
-            {/* Rank: <span className="font-bold">Gold</span> • Khách hàng tiềm năng */}
             Total payment: ${totalPayed}
           </p>
         </div>

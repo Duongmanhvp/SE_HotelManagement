@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 function NotFoundPage() {
   return (
-    <div class="bg-gray-100 h-screen justify-center">
+    <div class="bg-transparent h-screen justify-center">
       <center class="mt-24 m-auto">
         <svg
           class="emoji-404"
@@ -100,7 +100,8 @@ function NotFoundPage() {
             <span>4 0 4</span>
           </span>
           <span class="text-gray-500 text-xl">
-            Sorry, We couldn't find what you are looking for!
+            Sorry, We couldn't find what you are looking for! Please check your
+            link or may be it has been deleted by admin.
           </span>
         </div>
       </center>

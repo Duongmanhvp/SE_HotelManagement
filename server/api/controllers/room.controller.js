@@ -1,6 +1,7 @@
 const Room = require("../models/Room");
 const RoomDto = require("../dto/RoomDto");
 const Booking = require("../models/Booking");
+const roomSchema = require("../validate/room.validate");
 
 const getAllRooms = async (req, res) => {
   try {
@@ -47,7 +48,6 @@ const getAllRooms = async (req, res) => {
           checkoutTime <= book.check_out.getTime()
         );
       });
-
       return !overlayCheckin && !overlayCheckout;
     });
 
@@ -84,11 +84,11 @@ const createRoom = async (req, res) => {
         street,
       },
     });
-    console.log(newRoom);
+    const result = roomSchema.validate(newRoom);
+    if (result.error) {
+      return res.status(400).send("Not valid request data! Try again.");
+    }
     await newRoom.save();
-    await Room.deleteOne({ _id: newRoom._id }).then(() =>
-      console.log("Deleted room.")
-    );
     return res.status(200).send({ _id: newRoom._id });
   } catch (error) {
     return res.status(500).send("Server error! Try again.");
@@ -100,9 +100,19 @@ const getRoomById = async (req, res) => {
     const id = req.params.id;
     const data = await Room.findOne({ _id: id });
     if (!data) {
-      res.status(404).send("Room not found!");
+      return res.status(404).send("Room not found!");
     }
     res.json(new Room(data));
+  } catch (error) {
+    return res.status(500).send("Server error! Try again.");
+  }
+};
+
+const deleteRoom = async (req, res) => {
+  const placeId = req.params.placeId;
+  try {
+    await Room.deleteOne({ _id: placeId });
+    res.status(200).send("Delete room successfully!");
   } catch (error) {
     res.status(500).send("Server error! Try again.");
   }
@@ -182,4 +192,10 @@ const createReview = async (req, res) => {
   }
 };
 
-module.exports = { getAllRooms, createRoom, getRoomById, createReview };
+module.exports = {
+  getAllRooms,
+  createRoom,
+  getRoomById,
+  createReview,
+  deleteRoom,
+};

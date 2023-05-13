@@ -12,21 +12,27 @@ export default function LoginPage() {
   const [cookies, setCookie] = useCookies(["userId"]);
   const [user, setUser] = useContext(UserContext);
 
-  const handleLoginSubmit = async (ev) => {
-    ev.preventDefault();
+  const handleEmailChange = (event) => {
+    setEmail(event.target.value);
+  };
 
+  const handlePasswordChange = (event) => {
+    setPassword(event.target.value);
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
     login({ email, password })
       .then((res) => {
-        if (res.status === 200) {
-          setUser(res.data);
-          setCookie("userId", res.data._id);
-          alert("Login successful");
-          navigate("/");
-        } else {
-          setError(true);
-        }
+        setUser(res.data);
+        setCookie("userId", res.data._id);
+        alert("Login successful");
+        navigate("/");
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        setError(true);
+      });
   };
 
   if (user) {
@@ -34,56 +40,52 @@ export default function LoginPage() {
   }
 
   return (
-    <>
-      {error && (
-        <div className="bg-red-400/40 text-center py-2 rounded-3xl">
-          <p className="text-red-800 font-semibold">{`Wrong email or password! Try again.`}</p>
-        </div>
-      )}
-      <form
-        onSubmit={handleLoginSubmit}
-        className="flex flex-col justify-start items-center"
-      >
-        <div className="mt-4">
-          <h1 className="text-4xl text-center mb-12 font-semibold">Login</h1>
-          <div>
-            <div className="">
-              <label className="">Email</label>
-              <input
-                className=""
-                type="email"
-                value={email}
-                onChange={(ev) => {
-                  setEmail(ev.target.value);
-                  setError(false);
-                }}
-              />
-              <span></span>
-            </div>
-
-            <div>
-              <label>Password</label>
-              <input
-                type="password"
-                value={password}
-                onChange={(ev) => {
-                  setPassword(ev.target.value);
-                  setError(false);
-                }}
-              />
-              <span></span>
-            </div>
-
-            <button className="primary">Login</button>
-            <div className="text-center py-2 text-gray-500">
-              Don't have an account yet?{" "}
-              <Link className="underline text-black" to={"/register"}>
-                Register now
-              </Link>
-            </div>
+    <div className="flex justify-center items-center">
+      <div className="w-1/2 py-10 px-[5%]">
+        {error && (
+          <div className="bg-red-400/40 text-center py-2 rounded-3xl">
+            <p className="text-red-800 font-semibold">{`Wrong email or password! Try again.`}</p>
           </div>
-        </div>
-      </form>
-    </>
+        )}
+        <form onSubmit={handleSubmit} className="bg-gray-100 p-10 rounded-lg">
+          <h2 className="text-3xl font-semibold text-center mb-4">Login</h2>
+          <label className="block mb-2">
+            Email
+            <input
+              type="email"
+              value={email}
+              onChange={handleEmailChange}
+              className="border border-gray-400 p-2 w-full rounded-lg"
+            />
+          </label>
+
+          <label className="block mb-2">
+            Password
+            <input
+              type="password"
+              value={password}
+              onChange={handlePasswordChange}
+              className="border border-gray-400 p-2 w-full rounded-lg"
+            />
+          </label>
+
+          <button
+            type="submit"
+            className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-700 w-full"
+          >
+            Login
+          </button>
+          <p className="text-center mt-4">
+            Don't have an account?{" "}
+            <Link
+              to="/register"
+              className="text-blue-500 hover:text-blue-700 font-bold"
+            >
+              Register here
+            </Link>
+          </p>
+        </form>
+      </div>
+    </div>
   );
 }

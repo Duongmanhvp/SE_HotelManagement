@@ -12,6 +12,50 @@ const getAllUsers = async (req, res) => {
   }
 };
 
+const updateUser = async (req, res) => {
+  try {
+    const newUser = req.body;
+    const result = userSchema.validate(newUser);
+    if (result.error) {
+      return res.status(400).send("Not valid request data! Try again.");
+    }
+    await User.updateOne({ _id: newUser._id }, newUser);
+    return res.status(200).json({
+      _id: req.body._id,
+      ...newUser,
+    });
+  } catch (error) {
+    return res.status(500).send("Server error! Try again.");
+  }
+};
+
+const deleteUser = async (req, res) => {
+  const { userId } = req.params;
+  try {
+    await User.deleteOne({ _id: userId });
+    res.status(200).send("Delete user successfully!");
+  } catch (error) {
+    res.status(500).send("Server error! Try again.");
+  }
+};
+
+const updatePassword = async (req, res) => {
+  const { userId } = req.params;
+  const newPassword = req.body.newPassword;
+  if (newPassword.length < 8 || newPassword.length > 24) {
+    return res.status(400).send("Not valid request data! Try again.");
+  }
+  try {
+    await User.findByIdAndUpdate(
+      { _id: userId },
+      { $set: { password: newPassword } }
+    );
+    return res.status(200).send("Update password successfully.");
+  } catch (error) {
+    return res.status(500).send("Server error! Try again." + error.message);
+  }
+};
+
 const getAllUserBookings = async (req, res) => {
   try {
     const userId = req.params.userId;
@@ -92,7 +136,10 @@ const getStatistics = async (req, res) => {
 
 module.exports = {
   getAllUsers,
+  updateUser,
   getAllUserBookings,
   getUserById,
   getStatistics,
+  updatePassword,
+  deleteUser,
 };

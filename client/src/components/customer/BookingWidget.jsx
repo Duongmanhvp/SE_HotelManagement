@@ -1,7 +1,8 @@
 import { differenceInCalendarDays } from "date-fns";
 import formatISO from "date-fns/formatISO";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import UserContext from "../../context/UserContext";
 
 export default function BookingWidget({ place }) {
   const {
@@ -15,6 +16,7 @@ export default function BookingWidget({ place }) {
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
   const [numberOfGuests, setNumberOfGuests] = useState(1);
+  const [user] = useContext(UserContext);
   const navigate = useNavigate();
 
   let numberOfNights = 0;
@@ -34,6 +36,9 @@ export default function BookingWidget({ place }) {
   let totalPrice = +corePrice + +securityDeposit + +cleaningFee;
 
   function bookThisPlace(e) {
+    if (!user) {
+      navigate("/login");
+    }
     e.preventDefault();
     if (checkIn && checkOut && validGuest && validNight) {
       navigate("/account/bookings/payment", {

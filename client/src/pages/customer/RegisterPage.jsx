@@ -3,92 +3,161 @@ import { useCookies } from "react-cookie";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { register } from "../../api";
 import UserContext from "../../context/UserContext";
+import registerSchema from "../../validate/RegisterValidator";
 
 export default function RegisterPage() {
-  const [registerUser, setRegisterUser] = useState({});
+  // const [registerUser, setRegisterUser] = useState({});
   const [user, setUser] = useContext(UserContext);
   const [cookies, setCookie] = useCookies(["userId"]);
+  const [error, setError] = useState();
   const navigate = useNavigate();
-  const handleChange = (e) => {
-    setRegisterUser({ ...registerUser, [e.target.name]: e.target.value });
+
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    phone: "",
+    birthday: "",
+    gender: "",
+  });
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setError(false);
+    setFormData({ ...formData, [name]: value });
   };
+
   const handleSubmit = async (ev) => {
     ev.preventDefault();
-    register(registerUser)
-      .then((res) => {
-        setUser(res.data);
-        setCookie("userId", res.data._id);
-      })
-      .catch((err) => console.log(err));
-    navigate("/");
+    try {
+      const result = registerSchema.validate(formData);
+      if (!result.error) {
+        register(formData).then((res) => {
+          setUser(res.data);
+          setCookie("userId", res.data._id);
+        });
+        navigate("/");
+      } else {
+        window.scrollTo(0, 0);
+        setError(result.error.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
   if (user) {
     return <Navigate to={"/"}></Navigate>;
   }
 
   return (
-    <form className="max-w-md mx-auto" onSubmit={handleSubmit}>
-      <div className="mt-4 flex items-center justify-center grow+">
-        <div>
-          <h1 className="text-4xl text-center mb-12">Register</h1>
+    <div className="flex justify-center items-center">
+      <div className="w-2/3 py-10 px-[5%]">
+        {error && (
+          <div className="bg-red-400/40 text-center py-2 rounded-3xl">
+            <p className="text-red-800 font-semibold">{`Error: ${error}`}</p>
+          </div>
+        )}
+        <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
+          <h2 className="text-3xl font-semibold text-center mb-4">
+            Register user
+          </h2>
+          <label className="flex flex-col">
+            <span className="text-gray-700">Name</span>
 
-          <input
-            type="text"
-            placeholder="Nguyen Van A"
-            name="name"
-            onChange={handleChange}
-          />
-          <input
-            type="email"
-            placeholder="your@email.com"
-            name="email"
-            onChange={handleChange}
-          />
-          <input
-            type="password"
-            placeholder="password"
-            name="password"
-            onChange={handleChange}
-          />
-          <input
-            type="text"
-            placeholder="phone"
-            name="phone"
-            onChange={handleChange}
-          />
-          <input type="date" name="birthday" onChange={handleChange}></input>
-          <fieldset className="flex justify-start items-center gap-14">
-            <label>Gender</label>
-            <div className="flex px-6 justify-between items-center grow">
-              <div>
-                <input
-                  type="radio"
-                  name="gender"
-                  value="Male"
-                  onClick={handleChange}
-                ></input>
-                <label>Male</label>
-              </div>
-              <div>
-                <input
-                  type="radio"
-                  name="gender"
-                  value="Female"
-                  onClick={handleChange}
-                ></input>
-                <label>Female</label>
-              </div>
-            </div>
-          </fieldset>
-          <button className="primary">Register</button>
-          <div className="text-center py-2 text-gray-500">
-            Already a member?{" "}
-            <Link className="underline text-black" to={"/login"}>
+            <input
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleInputChange}
+              className="mt-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+            />
+          </label>
+
+          <label className="flex flex-col">
+            <span className="text-gray-700">Email</span>
+
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleInputChange}
+              className="mt-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+            />
+          </label>
+
+          <label className="flex flex-col">
+            <span className="text-gray-700">Password</span>
+
+            <input
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleInputChange}
+              className="mt-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+            />
+          </label>
+
+          <label className="flex flex-col">
+            <span className="text-gray-700">Phone</span>
+
+            <input
+              type="tel"
+              name="phone"
+              value={formData.phone}
+              onChange={handleInputChange}
+              className="mt-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+            />
+          </label>
+
+          <label className="flex flex-col">
+            <span className="text-gray-700">Birthday</span>
+
+            <input
+              type="date"
+              name="birthday"
+              value={formData.birthday}
+              onChange={handleInputChange}
+              className="mt-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+            />
+          </label>
+
+          <label className="flex flex-col">
+            <span className="text-gray-700">Gender</span>
+
+            <select
+              name="gender"
+              value={formData.gender}
+              onChange={handleInputChange}
+              className="mt-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+            >
+              <option value="">Select</option>
+
+              <option value="male">Male</option>
+
+              <option value="female">Female</option>
+
+              <option value="other">Other</option>
+            </select>
+          </label>
+
+          <button
+            type="submit"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          >
+            Register
+          </button>
+          <div className="text-center mt-4">
+            <span className="text-gray-700">Already have an account?</span>
+            <Link
+              to={"/login"}
+              className="text-blue-500 hover:text-blue-700 font-bold"
+            >
+              {" "}
               Login
             </Link>
           </div>
-        </div>
+        </form>
       </div>
-    </form>
+    </div>
   );
 }

@@ -22,7 +22,7 @@ function AdminPage() {
   } = statistics;
   return (
     <main className="bg-gray-100 min-h-screen">
-      <Header />
+      <Header pagename={"Statistics page"} />
       <TopCards
         currMonthRevenue={currMonthRevenue}
         customerNumber={customerNumber}

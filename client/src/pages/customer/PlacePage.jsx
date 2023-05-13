@@ -17,9 +17,14 @@ import {
   extractReviewScores,
   getReviewScore,
 } from "../../utils/Caculate";
+import NotFoundPage from "../error/NotFoundPage";
+import ReviewItem from "../../components/customer/ReviewItem";
+import ShowText from "../../components/customer/ShowText";
 
 export default function PlacePage() {
   const [place, setPlace] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [notFound, setNotFound] = useState(false);
   const [showServices, setShowServices] = useState(false);
   const [longService, setLongService] = useState(false);
   const { placeId } = useParams();
@@ -27,17 +32,30 @@ export default function PlacePage() {
   let reviewScores = extractReviewScores(place);
   useEffect(() => {
     window.scrollTo(0, 0);
+    setLoading(true);
     getPlaceById(placeId)
       .then((res) => {
-        setPlace(res.data);
-        setLongService(res.data.amenities.length > 10);
+        if (res.status === 404) {
+          setNotFound(true);
+
+          return;
+        } else {
+          setPlace(res.data);
+          setLongService(res.data.amenities.length > 10);
+        }
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
+        setNotFound(true);
+        setLoading(false);
       });
   }, []);
 
-  if (!place) return <p>Loading...</p>;
+  if (loading) return <p>Loading...</p>;
+  if (notFound) {
+    return <NotFoundPage></NotFoundPage>;
+  }
 
   return (
     <div className="p-8">
@@ -89,7 +107,10 @@ export default function PlacePage() {
                   <h2 className="font-semibold text-lg">
                     Owner {place.host.host_name}
                   </h2>
-                  <p>{place.host.host_about}</p>
+                  <ShowText
+                    text={place.host.host_about}
+                    showChar={100}
+                  ></ShowText>
                 </div>
               </div>
               <div className="flex items-center mb-10">
@@ -103,7 +124,7 @@ export default function PlacePage() {
             <hr></hr>
             <div className="my-6">
               <h2 className="font-bold text-2xl mb-5">Mô tả phòng</h2>
-              <p className="leading-loose">{place.description}</p>
+              <ShowText text={place.description} showChar={400}></ShowText>
             </div>
             <hr></hr>
             <div className="my-6">
@@ -132,14 +153,16 @@ export default function PlacePage() {
                         <span className="ml-3">{item}</span>
                       </li>
                     ))}
-                    <button
-                      className="toggle-btn"
-                      onClick={() => {
-                        setShowServices(true);
-                      }}
-                    >
-                      Show all
-                    </button>
+                    <div className="col-span-2">
+                      <button
+                        className="toggle-btn w-1/3"
+                        onClick={() => {
+                          setShowServices(true);
+                        }}
+                      >
+                        Show all
+                      </button>
+                    </div>
                   </>
                 )}
                 {longService && showServices && (
@@ -153,14 +176,16 @@ export default function PlacePage() {
                         <span className="ml-3">{item}</span>
                       </li>
                     ))}
-                    <button
-                      className="toggle-btn"
-                      onClick={() => {
-                        setShowServices(false);
-                      }}
-                    >
-                      Hide
-                    </button>
+                    <div className="col-span-2">
+                      <button
+                        className="toggle-btn w-1/3"
+                        onClick={() => {
+                          setShowServices(false);
+                        }}
+                      >
+                        Hide
+                      </button>
+                    </div>
                   </>
                 )}
               </ul>
@@ -198,18 +223,7 @@ function Items({ reviews }) {
     <>
       <ul className="grid grid-cols-2 gap-x-56">
         {reviews.map((item) => (
-          <li className="mb-8">
-            <div className="flex items-center">
-              <RxAvatar size={40}></RxAvatar>
-              <div className="ml-2 mb-2">
-                <p className="font-semibold">{item.reviewer_name}</p>
-                <span className="font-light">
-                  {extractDate(new Date(item.date))}
-                </span>
-              </div>
-            </div>
-            <p>{item.comments}</p>
-          </li>
+          <ReviewItem item={item}></ReviewItem>
         ))}
       </ul>
     </>

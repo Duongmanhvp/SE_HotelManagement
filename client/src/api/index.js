@@ -21,6 +21,9 @@ export const createRoom = async (room) => {
 export const getPlaceById = async (placeId) => {
   return await axios.get(`${BASE_URL}/rooms/${placeId}`);
 };
+export const deletePlace = async (placeId) => {
+  return await axios.delete(`${BASE_URL}/rooms/${placeId}`);
+};
 export const sendReview = async (bookingId, review) => {
   return await axios.post(`${BASE_URL}/rooms/reviews/${bookingId}`, review);
 };
@@ -43,6 +46,18 @@ export const getUserById = async (userId) => {
 export const getAllPaymentByUserId = async (userId) => {
   return await axios.get(`${BASE_URL}/users/${userId}/bookings`);
 };
+export const updateUser = async (newUser) => {
+  return await axios.put(`${BASE_URL}/users`, newUser);
+};
+export const changePassword = async (userId, newPassword) => {
+  return await axios.put(`${BASE_URL}/users/${userId}/password`, {
+    newPassword,
+  });
+};
+export const deleteUser = async (userId) => {
+  return await axios.delete(`${BASE_URL}/users/${userId}`);
+};
+
 // statistics api
 export const getMainStatistics = async () => {
   return await axios.get(`${BASE_URL}/users/admin/statistics`);

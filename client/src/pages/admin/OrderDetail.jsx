@@ -1,6 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import Image from "../../components/customer/Image";
 import BookingPage from "../customer/BookingPage";
 
 function OrderDetail() {

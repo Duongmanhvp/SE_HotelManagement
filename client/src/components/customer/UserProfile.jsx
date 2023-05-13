@@ -41,11 +41,6 @@ function UserProfile({ user }) {
         <label className="font-semibold text-lg">Số điện thoại</label>
         <p className="text-gray-500">{user.phone}</p>
       </div>
-      <hr className="mt-5 mb-5"></hr>
-      <div>
-        <label className="font-semibold text-lg">Địa chỉ</label>
-        <p className="text-gray-500">Đường X, XYZ - ABC - VietNam</p>
-      </div>
     </div>
   );
 }

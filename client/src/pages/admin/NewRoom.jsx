@@ -69,7 +69,9 @@ function NewRoom() {
     <div className="flex justify-center items-center ">
       <div className=" py-12 w-2/3 flex flex-col gap-4 items-center justify-start">
         <button className="mb-4 text-xl font-medium hover:bg-primary duration-200 w-full bg-primary/80 text-white py-2 text-center rounded-3xl">
-          <Link to="/admin/rooms">Back</Link>
+          <Link to="/admin/rooms" className="block w-full">
+            Back
+          </Link>
         </button>
         <div className="w-full text-center">
           <h2 className="text-3xl font-bold">Add New Room </h2>

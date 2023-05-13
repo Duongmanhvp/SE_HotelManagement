@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import AvatarImg from "../../assets/avatar.jpg";
 import UserContext from "../../context/UserContext";
 import { useCookies } from "react-cookie";
+import { RxAvatar } from "react-icons/rx";
 
 function Header() {
   const [top, setTop] = useState(true);
@@ -22,6 +22,7 @@ function Header() {
 
   async function handleLogout() {
     setUser(null);
+    setDropdown(false);
     removeCookie("userId");
     navigate("/");
   }
@@ -110,17 +111,24 @@ function Header() {
             <ul className="flex flex-grow justify-end flex-wrap gap-8 items-center">
               {user && (
                 <li className="relative">
-                  <img
+                  {/* <img
                     src={AvatarImg}
                     className="w-12 h-12 object-cover rounded-full cursor-pointer"
                     onClick={() => setDropdown(!dropdown)}
-                  ></img>
+                  ></img> */}
+                  <RxAvatar
+                    className="w-12 h-12 object-cover rounded-full cursor-pointer"
+                    onClick={() => setDropdown(!dropdown)}
+                  ></RxAvatar>
                   <div
                     className={`absolute top-full -left-1/2 mt-1 duration-200 overflow-hidden ${
                       dropdown ? "h-fit" : "h-0"
                     }`}
                   >
-                    <Dropdown logout={handleLogout}></Dropdown>
+                    <Dropdown
+                      logout={handleLogout}
+                      setDropdown={setDropdown}
+                    ></Dropdown>
                   </div>
                 </li>
               )}
@@ -152,7 +160,7 @@ function Header() {
   );
 }
 
-function Dropdown({ logout }) {
+function Dropdown({ logout, setDropdown }) {
   return (
     <div
       id="dropdown"
@@ -162,7 +170,7 @@ function Dropdown({ logout }) {
         className="py-2 text-sm text-gray-700 dark:text-gray-200"
         aria-labelledby="dropdownDefaultButton"
       >
-        <li>
+        <li onClick={() => setDropdown(false)}>
           <Link
             to={"/account"}
             className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
@@ -170,7 +178,7 @@ function Dropdown({ logout }) {
             Profile
           </Link>
         </li>
-        <li>
+        <li onClick={() => setDropdown(false)}>
           <Link
             to={"/account/update"}
             className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
@@ -178,7 +186,7 @@ function Dropdown({ logout }) {
             Update profile
           </Link>
         </li>
-        <li>
+        <li onClick={() => setDropdown(false)}>
           <Link
             to={"/account/password"}
             className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
@@ -187,7 +195,7 @@ function Dropdown({ logout }) {
           </Link>
         </li>
         <li
-          className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer"
+          className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer border-t-2"
           onClick={logout}
         >
           Sign out

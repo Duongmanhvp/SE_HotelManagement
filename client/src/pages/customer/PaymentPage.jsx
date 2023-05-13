@@ -5,8 +5,12 @@ import UserContext from "../../context/UserContext";
 
 function PaymentPage() {
   const [payment, setPayment] = useState({ paymentMethod: "checkin" });
+  const navigate = useNavigate();
   const location = useLocation();
   const [user] = useContext(UserContext);
+  if (location.state?.place) {
+    navigate("/");
+  }
   const {
     place,
     corePrice,
@@ -17,7 +21,7 @@ function PaymentPage() {
     checkOut,
     numberOfGuests,
   } = location.state;
-  const navigate = useNavigate();
+
   const handleChange = (e) => {
     setPayment({
       ...payment,
@@ -44,7 +48,7 @@ function PaymentPage() {
         cleaningFee,
         totalPrice,
       },
-      paymentType: payment.paymentType,
+      paymentType: payment.paymentMethod,
       payerName: payment.name,
       payerPhone: payment.phone,
     };

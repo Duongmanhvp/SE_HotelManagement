@@ -4,6 +4,7 @@ const {
   getRoomById,
   createReview,
   createRoom,
+  deleteRoom,
 } = require("../controllers/room.controller");
 const { uploadsFileToDrive } = require("../services/ggdrive");
 
@@ -26,6 +27,7 @@ const upload = multer({ storage: storage });
 router.get("/", getAllRooms);
 router.get("/:id", getRoomById);
 router.post("/", upload.single("roomImage"), uploadsFileToDrive, createRoom);
+router.delete("/:placeId", deleteRoom);
 router.post("/reviews/:bookingId", createReview);
 
 module.exports = router;
