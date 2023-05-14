@@ -21,7 +21,7 @@ export default function BookingWidget({ place }) {
   const [user] = useContext(UserContext);
   const [change, setChange] = useState(false);
   const [newPrice, setNewPrice] = useState(price);
-  const admin = user.role === "ADMIN";
+  const admin = !!user && user.role === "ADMIN";
   const navigate = useNavigate();
 
   let numberOfNights = 0;

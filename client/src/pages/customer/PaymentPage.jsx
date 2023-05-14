@@ -8,7 +8,7 @@ function PaymentPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const [user] = useContext(UserContext);
-  if (location.state?.place) {
+  if (!location.state?.place) {
     navigate("/");
   }
   const {
@@ -36,7 +36,7 @@ function PaymentPage() {
         thumbnail: place.images.picture_url,
         name: place.name,
         address: place.address.street,
-        price: place.price.$numberDecimal,
+        price: place.price,
       },
       userId: user._id,
       checkIn,

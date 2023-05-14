@@ -7,11 +7,11 @@ import { format } from "date-fns";
 function ProfileUpdate() {
   const [user, setUser] = useContext(UserContext);
   const [newUser, setNewUser] = useState(user);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState();
   const navigate = useNavigate();
   const handleChange = (e) => {
     setNewUser({ ...newUser, [e.target.name]: e.target.value });
-    setError(false);
+    setError("");
   };
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -21,7 +21,7 @@ function ProfileUpdate() {
         navigate("/account");
       })
       .catch((err) => {
-        setError(true);
+        setError(err.response.data);
         console.log(err);
       });
   };
@@ -30,7 +30,7 @@ function ProfileUpdate() {
       <div className="w-1/2 py-10 px-[5%]">
         {error && (
           <div className="bg-red-400/40 text-center py-2 rounded-3xl mb-6">
-            <p className="text-red-800 font-semibold">{`Update user failed! Try again.`}</p>
+            <p className="text-red-800 font-semibold">{`Update user failed!. ${error}`}</p>
           </div>
         )}
         <form onSubmit={handleSubmit}>

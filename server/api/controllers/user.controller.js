@@ -65,7 +65,9 @@ const updatePassword = async (req, res) => {
 const getAllUserBookings = async (req, res) => {
   try {
     const userId = req.params.userId;
-    const bookings = await Booking.find({ userId: userId });
+    const bookings = await Booking.find({ userId: userId }).sort({
+      createdAt: -1,
+    });
     return res.status(200).json(bookings);
   } catch (error) {
     res.status(500).send("Server error! Try again.");
@@ -112,7 +114,9 @@ const getStatistics = async (req, res) => {
     const recentPayments = await Booking.find(
       {},
       { _id: 1, price: 1, payerName: 1, createdAt: 1 }
-    ).sort({ createdAt: -1 });
+    )
+      .limit(10)
+      .sort({ createdAt: -1 });
     const lastweekPayments = await Booking.aggregate([
       {
         $match: { createdAt: { $gte: startPrevWeek, $lte: endPrevWeek } },

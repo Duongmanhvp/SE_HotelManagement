@@ -27,7 +27,11 @@ export default function IndexPage() {
     <div className="mt-8 ml-[352px] py-4 px-8 ">
       <SearchBar setPlaces={setPlaces}></SearchBar>
       <div>
-        {query.entries.length > 0 && <h1>Founded {places.length} rooms!</h1>}
+        {
+          <h1 className="text-3xl font-semibold mb-8">
+            Founded {places.length} rooms!
+          </h1>
+        }
         <PaginatedItems itemsPerPage={16} items={places}></PaginatedItems>
       </div>
     </div>

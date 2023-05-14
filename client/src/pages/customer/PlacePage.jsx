@@ -24,7 +24,6 @@ export default function PlacePage() {
   const { placeId } = useParams();
   const [user] = useContext(UserContext);
 
-  const admin = user.role === "ADMIN";
   let star = getReviewScore(place?.review_scores);
   let reviewScores = extractReviewScores(place);
 
@@ -47,7 +46,7 @@ export default function PlacePage() {
         setLoading(false);
       });
   }, []);
-
+  const admin = !!user && user.role === "ADMIN";
   if (loading) return <Loading></Loading>;
   if (notFound) {
     return <NotFoundPage></NotFoundPage>;

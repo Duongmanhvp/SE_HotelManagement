@@ -65,8 +65,7 @@ export default function BookingPage() {
                 </p>
               ) : (
                 <div className="flex gap-x-4 items-center mt-6 ">
-                  <p className=" text-gray-500">Chưa được bạn đánh giá</p>
-                  <p className="underline font-semibold">Đánh giá ngay!</p>
+                  <p className=" text-gray-500">Not yet rated by you</p>
                 </div>
               ))}
           </div>
@@ -76,29 +75,29 @@ export default function BookingPage() {
         <h2 className="text-2xl mb-8 font-semibold">Booking information</h2>
         <div className="grid grid-cols-2 gap-y-4 "></div>
         <div className="grid grid-cols-2 gap-y-4 ">
-          <label className="text-gray-600">Số người</label>
+          <label className="text-gray-600">Guest number</label>
           <span>{booking.guests}</span>
-          <label className="text-gray-600">Số đêm</label>
+          <label className="text-gray-600">Night number</label>
           <BookingDates booking={booking} />
           <hr className="border-2"></hr>
           <hr className="border-2"></hr>
-          <label className="text-gray-600">Tổng tiền phòng</label>
+          <label className="text-gray-600">Total room rate</label>
           <span>${booking.price.corePrice}</span>
-          <label className="text-gray-600">Phí an ninh</label>
+          <label className="text-gray-600">Security fee</label>
           <span>${booking.price.securityDeposit}</span>
-          <label className="text-gray-600">Phí vệ sinh</label>
+          <label className="text-gray-600">Cleaning fee</label>
           <span>${booking.price.cleaningFee}</span>
           <hr className="border-1"></hr>
           <hr className="border-1"></hr>
-          <label className="text-gray-600">Tổng</label>
+          <label className="text-gray-600">Total</label>
           <span>${booking.price.totalPrice}</span>
           <hr className="border-2"></hr>
           <hr className="border-2"></hr>
-          <label className="text-gray-600">Phương thức thanh toán</label>
+          <label className="text-gray-600">Payment method</label>
           <span>{booking.paymentType}</span>
-          <label className="text-gray-600">Người thanh toán</label>
+          <label className="text-gray-600">Payer</label>
           <span>{booking.payerName}</span>
-          <label className="text-gray-600">Số điện thoại</label>
+          <label className="text-gray-600">Phone</label>
           <span>{booking.payerPhone}</span>
         </div>
       </div>

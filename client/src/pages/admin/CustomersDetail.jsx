@@ -66,6 +66,9 @@ function CustomersDetail() {
       )}
       {index === 2 && (
         <div className="w-2/3 mx-auto mt-16 pb-16">
+          {bookings?.length === 0 && (
+            <h2 className="text-3xl font-semibold text-center">No orders!</h2>
+          )}
           {bookings?.length > 0 &&
             bookings.map((booking) => (
               <Link to={`/account/bookings/${booking._id}`}>

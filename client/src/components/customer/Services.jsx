@@ -11,7 +11,7 @@ function Services({ items, placeId }) {
   const [services, setServices] = useState(items);
   const [user] = useContext(UserContext);
   const [adding, setAdding] = useState(false);
-  const admin = user.role === "ADMIN";
+  const admin = !!user && user.role === "ADMIN";
   const longService = services.length > 10;
   const handleAdd = async () => {
     try {
@@ -43,7 +43,7 @@ function Services({ items, placeId }) {
             ></IoMdAddCircle>
           </span>
         )}
-        {adding && (
+        {admin && adding && (
           <div className="flex items-center gap-2">
             <input
               type="text"
@@ -114,20 +114,21 @@ function Services({ items, placeId }) {
 }
 const ServiceItem = ({ item, handleRemove }) => {
   const [hover, setHover] = useState(false);
-
+  const [user] = useContext(UserContext);
+  const admin = !!user && user.role === "ADMIN";
   return (
     <li
       className="flex items-center mb-6"
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
     >
-      {!hover && (
+      {(!admin || (admin && !hover)) && (
         <BsCheckCircleFill
           size={24}
           style={{ color: "green" }}
         ></BsCheckCircleFill>
       )}
-      {hover && (
+      {admin && hover && (
         <AiFillMinusCircle
           size={24}
           className="cursor-pointer"

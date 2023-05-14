@@ -8,7 +8,7 @@ function Header() {
   const [top, setTop] = useState(true);
   const [dropdown, setDropdown] = useState(false);
   const navigate = useNavigate();
-  const [cookies, setCookie, removeCookie] = useCookies("userId");
+  const [cookies, setCookie, removeCookie] = useCookies(["userId"]);
   const [user, setUser] = useContext(UserContext);
 
   // detect whether user has scrolled the page down by 10px
