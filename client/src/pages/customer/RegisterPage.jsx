@@ -4,6 +4,7 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import { register } from "../../api";
 import UserContext from "../../context/UserContext";
 import registerSchema from "../../validate/RegisterValidator";
+import subYears from "date-fns/subYears";
 
 export default function RegisterPage() {
   // const [registerUser, setRegisterUser] = useState({});
@@ -29,6 +30,10 @@ export default function RegisterPage() {
 
   const handleSubmit = async (ev) => {
     ev.preventDefault();
+    if (subYears(Date.now(), 18).getTime() < new Date(formData.birthday)) {
+      setError("User must be more than 18 years old.");
+      return;
+    }
     try {
       const result = registerSchema.validate(formData);
       if (!result.error) {
