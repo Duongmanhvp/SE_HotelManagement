@@ -14,7 +14,7 @@ function LangdingPage() {
           <h2 className="text-7xl font-bold italic mb-8">
             Welcome to{" "}
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/80">
-              Howell
+              Booking
             </span>
           </h2>
           <p className="text-2xl">
@@ -25,7 +25,7 @@ function LangdingPage() {
           </p>
           <Link to={"/"}>
             <button className="mt-8 text-lg text-white  outline-none bg-gradient-to-r from-primary to-primary/80 px-8 py-4 border-none hover:px-16 rounded-full duration-300">
-              Đặt phòng ngay
+              Booking now
             </button>
           </Link>
         </div>
@@ -39,15 +39,15 @@ function LangdingPage() {
         <div className="grid grid-cols-3 mt-12">
           <div className="flex items-center justify-center flex-col">
             <img src={HandShakeImg} className="w-32 h-32  object-cover"></img>
-            <h2 className="text-3xl mt-8">Uy tín</h2>
+            <h2 className="text-3xl mt-8">Credibility</h2>
           </div>
           <div className="flex items-center justify-center flex-col">
             <img src={RocketImg} className="w-32 h-32"></img>
-            <h2 className="text-3xl mt-8">Nhanh gọn</h2>
+            <h2 className="text-3xl mt-8">Quickly</h2>
           </div>
           <div className="flex items-center justify-center flex-col">
             <img src={AwardImg} className="w-32 h-32"></img>
-            <h2 className="text-3xl mt-8">Chất lượng cao</h2>
+            <h2 className="text-3xl mt-8">High Quality</h2>
           </div>
         </div>
       </div>

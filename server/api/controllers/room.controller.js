@@ -6,7 +6,7 @@ const roomSchema = require("../validate/room.validate");
 const getAllRooms = async (req, res) => {
   try {
     if (Object.keys(req.query).length === 0) {
-      let data = await Room.find({}).limit(100);
+      let data = await Room.find({});
       data = data.map((item) => new RoomDto(item));
       return res.json(data);
     }
@@ -22,7 +22,7 @@ const getAllRooms = async (req, res) => {
       $and: queryArr,
     };
     if (!checkin && !checkout) {
-      let data = await Room.find(dbQuery).limit(100);
+      let data = await Room.find(dbQuery);
       data = data.map((item) => new RoomDto(item));
       return res.json(data);
     }
@@ -32,7 +32,7 @@ const getAllRooms = async (req, res) => {
     if (!checkout) {
       checkout = checkin;
     }
-    const data = await Room.find(dbQuery).limit(100);
+    const data = await Room.find(dbQuery);
     const checkinTime = new Date(checkin).getTime();
     const checkoutTime = new Date(checkout).getTime();
     const filter = data.filter((room) => {
@@ -81,10 +81,6 @@ const createRoom = async (req, res) => {
         street,
       },
     });
-    // const result = roomSchema.validate(newRoom);
-    // if (result.error) {
-    //   return res.status(400).send("Not valid request data! Try again.");
-    // }
     await newRoom.save();
     return res.status(200).send({ _id: newRoom._id });
   } catch (error) {
@@ -105,22 +101,6 @@ const getRoomById = async (req, res) => {
   }
 };
 
-// const updateRoom = async (req, res) => {
-//   const { placeId } = req.params;
-//   const update = req.body;
-//   try {
-//     let room = await Room.findOne({ _id: placeId });
-//     for (const key in update) {
-//       const value = update[key];
-//       room[key] = value;
-//     }
-
-//     await room.save();
-//     return res.status(200).send("Update room success.");
-//   } catch (error) {
-//     res.status(500).send("Server error! Try again.");
-//   }
-// };
 const addService = async (req, res) => {
   const { placeId } = req.params;
   const item = req.body.item;

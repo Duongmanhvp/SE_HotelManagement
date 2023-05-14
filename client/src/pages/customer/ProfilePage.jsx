@@ -31,35 +31,33 @@ export default function ProfilePage() {
                 size={50}
               ></BsPersonFillLock>
               <h2 className="font-semibold text-xl">
-                Tại sao thông tin của tôi không được hiển thị ở đây?
+                Why is my information not displayed here?
               </h2>
               <p className="text-gray-500">
-                Chúng tôi đang ẩn một số thông tin tài khoản để bảo vệ danh tính
-                của bạn.
+                We are hiding some account information to protect your identity.
               </p>
             </div>
             <div>
               <AiFillLock className="text-blue-500" size={50}></AiFillLock>
               <h2 className="font-semibold text-xl">
-                Bạn có thể chỉnh sửa những thông tin nào?
+                What information can you edit?
               </h2>
               <p className="text-gray-500">
-                Không thể thay đổi thông tin mà chúng tôi sử dụng để xác minh
-                danh tính của bạn. Bạn có thể chỉnh sửa thông tin liên hệ và một
-                số thông tin cá nhân, nhưng chúng tôi có thể yêu cầu bạn xác
-                minh danh tính vào lần tới khi bạn đặt phòng hoặc tạo mục cho
-                thuê.
+                The information we uses to verify your identity cannot be
+                changed. You can edit your contact information and some personal
+                information, but we may ask you to verify your identity the next
+                time you book or create a rental.
               </p>
             </div>
 
             <div>
               <AiFillEye className="text-blue-500" size={50}></AiFillEye>
               <h2 className="font-semibold text-xl">
-                Thông tin nào được chia sẻ với người khác?
+                What information is shared with others?
               </h2>
               <p className="text-gray-500">
-                Chúng tôi chỉ tiết lộ thông tin liên lạc cho Chủ nhà/Người tổ
-                chức và khách sau khi đặt phòng/đặt chỗ được xác nhận.
+                We only discloses contact information to Hosts/Organizers and
+                guests once the reservation/reservation is confirmed.
               </p>
             </div>
           </div>

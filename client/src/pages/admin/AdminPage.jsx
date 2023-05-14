@@ -4,6 +4,7 @@ import TopCards from "../../components/admin/TopCards";
 import BarChart from "../../components/admin/BarChart";
 import RecentOrders from "../../components/admin/RecentOrders";
 import { getMainStatistics } from "../../api";
+import Loading from "../../components/customer/Loading";
 
 function AdminPage() {
   const [statistics, setStatistics] = useState();
@@ -11,7 +12,7 @@ function AdminPage() {
     getMainStatistics().then((res) => setStatistics(res.data));
   }, []);
   if (!statistics) {
-    return <p>Loading...</p>;
+    return <Loading></Loading>;
   }
   const {
     currMonthRevenue,

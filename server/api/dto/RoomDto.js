@@ -7,6 +7,15 @@ class RoomDto {
     this.address = address;
     this.images = images;
     this.review_scores = review_scores;
+    this.availability = this.checkRenting(place);
+  }
+  checkRenting(place) {
+    const now = Date.now();
+    return place.booked.some(({ check_in, check_out }) => {
+      const checkin = new Date(check_in).getTime();
+      const checkout = new Date(check_out).getTime();
+      return checkin <= now && checkout >= now;
+    });
   }
 }
 module.exports = RoomDto;

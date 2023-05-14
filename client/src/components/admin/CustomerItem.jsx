@@ -1,24 +1,14 @@
 import React, { useState } from "react";
 import { BsPersonFill, BsThreeDotsVertical } from "react-icons/bs";
 import { Link } from "react-router-dom";
-import { deleteUser } from "../../api";
 
-function CustomerItem({ customer }) {
+function CustomerItem({ customer, onclick }) {
   const [dropdown, setDropdown] = useState(false);
+
   const handleDropdown = (e) => {
     e.stopPropagation();
     e.preventDefault();
     setDropdown(!dropdown);
-  };
-  const handleDetele = async () => {
-    try {
-      const res = await deleteUser(customer._id);
-      if (res.status === 200) {
-        alert("Delete user success");
-      }
-    } catch (error) {
-      alert("Delete failed");
-    }
   };
 
   return (
@@ -60,7 +50,7 @@ function CustomerItem({ customer }) {
           </li>
           <li
             onClick={() => {
-              handleDetele();
+              onclick();
               setDropdown(false);
             }}
             className="cursor-pointer block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 text-red-600"

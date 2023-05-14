@@ -4,6 +4,7 @@ import { getAllPaymentByUserId } from "../../api";
 import BookingItem from "../../components/customer/BookingItem";
 import UserProfile from "../../components/customer/UserProfile";
 import { RxAvatar } from "react-icons/rx";
+import Loading from "../../components/customer/Loading";
 
 function CustomersDetail() {
   const location = useLocation();
@@ -19,7 +20,7 @@ function CustomersDetail() {
   }, []);
 
   if (!bookings) {
-    return <p>Loading...</p>;
+    return <Loading></Loading>;
   }
   const totalPayed = bookings.reduce(
     (currSum, booking) => currSum + booking.price.totalPrice,

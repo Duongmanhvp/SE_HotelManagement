@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { gettAllPayment } from "../../api";
 import { getTimeAgo } from "../../utils/Caculate";
 import Header from "../../components/admin/Header";
+import Loading from "../../components/customer/Loading";
 
 function ProductsPage() {
   const [bookings, setBookings] = useState();
@@ -14,7 +15,7 @@ function ProductsPage() {
       .catch((err) => console.log(err));
   }, []);
   if (!bookings) {
-    return <p>Loading...</p>;
+    return <Loading></Loading>;
   }
   return (
     <div className="bg-gray-100 min-h-screen">

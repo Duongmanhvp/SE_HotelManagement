@@ -18,7 +18,7 @@ const createBooking = async (req, res) => {
 
 const getAllBookings = async (req, res) => {
   try {
-    const bookings = await Booking.find({});
+    const bookings = await Booking.find({}).sort({ createdAt: -1 });
     res.status(200).json(bookings);
   } catch (error) {
     res.status(500).send("Server error! Try again.");

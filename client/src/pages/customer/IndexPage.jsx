@@ -4,16 +4,24 @@ import { Link, useSearchParams } from "react-router-dom";
 import { getPlacesByQuery } from "../../api/index.js";
 import PlaceCard from "../../components/customer/PlaceCard.jsx";
 import SearchBar from "../../components/customer/SearchBar.jsx";
+import Loading from "../../components/customer/Loading.jsx";
 
 export default function IndexPage() {
   const [places, setPlaces] = useState([]);
   const [query] = useSearchParams();
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     window.scrollTo(0, 0);
+    setLoading(true);
     getPlacesByQuery(Object.fromEntries([...query]))
       .then((res) => setPlaces(res.data))
+      .then(() => setLoading(false))
       .catch((err) => console.log(err));
   }, [query]);
+
+  if (loading) {
+    return <Loading></Loading>;
+  }
 
   return (
     <div className="mt-8 ml-[352px] py-4 px-8 ">

@@ -5,7 +5,7 @@ import { getTimeAgo } from "../../utils/Caculate";
 const RecentOrders = ({ recentPayments }) => {
   return (
     <div className="w-full col-span-1 relative lg:h-[70vh] h-[50vh] m-auto p-4 border rounded-lg bg-white overflow-scroll">
-      <h1 className="font-bold text-lg">Đơn đặt phòng gần nhất</h1>
+      <h1 className="font-bold text-lg">Recent bookings</h1>
       <ul>
         {recentPayments.map((payment) => (
           <li

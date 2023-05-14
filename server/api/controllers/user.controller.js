@@ -2,6 +2,7 @@ const userSchema = require("../validate/user.validate");
 const User = require("../models/User");
 const Booking = require("../models/Booking");
 const { startOfMonth, startOfWeek, endOfWeek } = require("date-fns");
+const RoomModel = require("../models/Room");
 
 const getAllUsers = async (req, res) => {
   try {
@@ -105,7 +106,7 @@ const getStatistics = async (req, res) => {
       (total, currBooking) => total + currBooking.price.totalPrice,
       0
     );
-    const roomsNumber = 100;
+    const roomsNumber = (await RoomModel.find({})).length;
     const customers = await User.find({ role: { $ne: "ADMIN" } });
     const customerNumber = customers.length;
     const recentPayments = await Booking.find(

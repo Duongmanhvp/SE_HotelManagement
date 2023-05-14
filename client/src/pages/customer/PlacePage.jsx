@@ -66,6 +66,7 @@ export default function PlacePage() {
 
       <img
         src={place.images?.picture_url || ImageNotFound}
+        alt="Place images"
         className="rounded-3xl h-[480px] cover m-auto"
       ></img>
       <div className="flex justify-between mt-12 gap-12">

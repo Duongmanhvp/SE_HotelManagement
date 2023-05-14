@@ -41,12 +41,11 @@ const BarChart = ({ lastweekPayments }) => {
       }
     });
     data = Object.values(data);
-    // console.log(data);
     setChartData({
       labels: ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"],
       datasets: [
         {
-          label: "Đơn vị $",
+          label: "Unit $",
           data,
           borderColor: "rgb(53, 162, 235)",
           backgroundColor: "rgb(53, 162, 235, 0.4)",
@@ -60,7 +59,7 @@ const BarChart = ({ lastweekPayments }) => {
         },
         title: {
           display: true,
-          text: "Biểu đồ doanh thu tuần vừa qua",
+          text: "Last week's revenue chart",
         },
       },
       maintainAspectRatio: false,

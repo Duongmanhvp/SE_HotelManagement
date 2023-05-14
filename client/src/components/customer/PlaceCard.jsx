@@ -11,7 +11,7 @@ function PlaceCard({ place }) {
         <Image
           className=" object-cover aspect-square m-auto"
           src={place.images.picture_url}
-          alt=""
+          alt="Place image"
         />
       </div>
       <div className="grid grid-cols-[4fr,1fr] gap-2">

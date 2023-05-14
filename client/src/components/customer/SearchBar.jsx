@@ -48,14 +48,14 @@ function SearchBar({ setPlaces }) {
         <div className="bg-gray-200 px-4 py-8 rounded-3xl flex flex-col items-center">
           <div className="flex items-center gap-2">
             <FiFilter size={24}></FiFilter>
-            <h2 className="text-lg font-bold">Tìm kiếm khách sạn</h2>
+            <h2 className="text-lg font-bold">Room Searching</h2>
           </div>
           <div className="mt-8 w-full">
             <label className="text-lg font-medium flex gap-1 items-center">
-              <BiMap size={26}></BiMap>Địa điểm
+              <BiMap size={26}></BiMap>Address
             </label>
             <div className="mt-1">
-              <h3>Quốc gia</h3>
+              <h3>Country</h3>
               <input
                 onChange={handleInputChange}
                 type={"text"}
@@ -64,7 +64,7 @@ function SearchBar({ setPlaces }) {
               ></input>
             </div>
             <div className="mt-2">
-              <h3>Thành phố</h3>
+              <h3>City</h3>
               <input
                 onChange={handleInputChange}
                 type={"text"}
@@ -76,7 +76,7 @@ function SearchBar({ setPlaces }) {
           <hr className="border-1 my-4"></hr>
           <div className="mt-6 w-full">
             <label className="text-lg font-medium flex gap-1 items-center">
-              <BiCalendarAlt size={26}></BiCalendarAlt>Thời gian
+              <BiCalendarAlt size={26}></BiCalendarAlt>Datetime
             </label>
             <div className="mt-1">
               <h3>Check-in</h3>
@@ -114,10 +114,10 @@ function SearchBar({ setPlaces }) {
               <MdOutlineConfirmationNumber
                 size={26}
               ></MdOutlineConfirmationNumber>
-              Số lượng
+              Quantity
             </label>
             <div className="flex items-center justify-between gap-16 ">
-              <label>Khách</label>
+              <label>Guests</label>
 
               <input
                 onChange={handleInputChange}
