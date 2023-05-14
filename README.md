@@ -1,6 +1,6 @@
 ## Giới thiệu
 
-Backend server cho quản lý khách sạn
+Backend server cho quản lý khách sạn. Sử dụng Django, Django_rest_api.
 
 ## Yêu cầu phần mềm:
 
