@@ -1,9 +1,10 @@
 const Joi = require("joi");
 
 const roomSchema = Joi.object({
+  _id: Joi.string().required(),
   name: Joi.string().required(),
   description: Joi.string().required(),
-  roomImage: Joi.required(),
+  images: Joi.any(),
   price: Joi.number().required(),
   security_deposit: Joi.number().required(),
   cleaning_fee: Joi.number().required(),
@@ -17,11 +18,8 @@ const roomSchema = Joi.object({
   beds: Joi.number().required().min(1),
   bathrooms: Joi.number().required().min(1),
   guests_included: Joi.number().required().min(1),
-  host_name: Joi.string().required(),
-  host_about: Joi.any(),
-  country: Joi.string().required(),
-  market: Joi.string().required(),
-  street: Joi.string().required(),
+  host: Joi.object().required(),
+  address: Joi.object().required(),
 });
 
 module.exports = roomSchema;

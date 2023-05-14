@@ -78,6 +78,7 @@ function AppRoute() {
         ></Route>
         <Route path="rooms" element={<Rooms></Rooms>}></Route>
         <Route path="rooms/new" element={<NewRoom></NewRoom>}></Route>
+
         <Route path="*" element={<NotFoundPage></NotFoundPage>}></Route>
       </Route>
     </Routes>

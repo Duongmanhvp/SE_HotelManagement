@@ -5,6 +5,9 @@ const {
   createReview,
   createRoom,
   deleteRoom,
+  addService,
+  removeService,
+  updatePrice,
 } = require("../controllers/room.controller");
 const { uploadsFileToDrive } = require("../services/ggdrive");
 
@@ -29,5 +32,8 @@ router.get("/:id", getRoomById);
 router.post("/", upload.single("roomImage"), uploadsFileToDrive, createRoom);
 router.delete("/:placeId", deleteRoom);
 router.post("/reviews/:bookingId", createReview);
+router.put("/:placeId/services", addService);
+router.put("/:placeId/price", updatePrice);
+router.delete("/:placeId/services", removeService);
 
 module.exports = router;

@@ -27,7 +27,15 @@ export const deletePlace = async (placeId) => {
 export const sendReview = async (bookingId, review) => {
   return await axios.post(`${BASE_URL}/rooms/reviews/${bookingId}`, review);
 };
-
+export const addService = async (item, placeId) => {
+  return await axios.put(`${BASE_URL}/rooms/${placeId}/services`, { item });
+};
+export const removeService = async (item, placeId) => {
+  return await axios.delete(`${BASE_URL}/rooms/${placeId}/services`, { item });
+};
+export const updatePrice = async (newPrice, placeId) => {
+  return await axios.put(`${BASE_URL}/rooms/${placeId}/price`, { newPrice });
+};
 // auth api
 export const login = async (user) => {
   return await axios.post(`${BASE_URL}/auth/login`, user);

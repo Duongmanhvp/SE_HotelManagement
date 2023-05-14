@@ -1,4 +1,4 @@
-const Room = require("../models/Room");
+const userSchema = require("../validate/user.validate");
 const User = require("../models/User");
 const Booking = require("../models/Booking");
 const { startOfMonth, startOfWeek, endOfWeek } = require("date-fns");
@@ -17,15 +17,20 @@ const updateUser = async (req, res) => {
     const newUser = req.body;
     const result = userSchema.validate(newUser);
     if (result.error) {
-      return res.status(400).send("Not valid request data! Try again.");
+      return res
+        .status(400)
+        .send("Not valid request data! Try again. " + result.error.message);
     }
-    await User.updateOne({ _id: newUser._id }, newUser);
-    return res.status(200).json({
-      _id: req.body._id,
-      ...newUser,
-    });
+
+    let user = await User.findOne({ _id: newUser._id });
+    for (const key in newUser) {
+      const value = newUser[key];
+      user[key] = value;
+    }
+    await user.save();
+    return res.status(200).json(user);
   } catch (error) {
-    return res.status(500).send("Server error! Try again.");
+    return res.status(500).send("Server error! Try again. " + error.message);
   }
 };
 

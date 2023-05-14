@@ -60,7 +60,7 @@ function RoomItem({ place }) {
             }}
             className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
           >
-            <Link to={`/place/${place._id}/update`}>Update room</Link>
+            <Link to={`/admin/place/${place._id}/update`}>Update room</Link>
           </li>
           <li
             onClick={() => {

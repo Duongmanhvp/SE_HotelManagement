@@ -71,9 +71,6 @@ const createRoom = async (req, res) => {
       ...room,
       _id: now,
       amenities: amenities.split(","),
-      images: {
-        picture_url,
-      },
       host: {
         host_name,
         host_about,
@@ -84,10 +81,10 @@ const createRoom = async (req, res) => {
         street,
       },
     });
-    const result = roomSchema.validate(newRoom);
-    if (result.error) {
-      return res.status(400).send("Not valid request data! Try again.");
-    }
+    // const result = roomSchema.validate(newRoom);
+    // if (result.error) {
+    //   return res.status(400).send("Not valid request data! Try again.");
+    // }
     await newRoom.save();
     return res.status(200).send({ _id: newRoom._id });
   } catch (error) {
@@ -105,6 +102,60 @@ const getRoomById = async (req, res) => {
     res.json(new Room(data));
   } catch (error) {
     return res.status(500).send("Server error! Try again.");
+  }
+};
+
+// const updateRoom = async (req, res) => {
+//   const { placeId } = req.params;
+//   const update = req.body;
+//   try {
+//     let room = await Room.findOne({ _id: placeId });
+//     for (const key in update) {
+//       const value = update[key];
+//       room[key] = value;
+//     }
+
+//     await room.save();
+//     return res.status(200).send("Update room success.");
+//   } catch (error) {
+//     res.status(500).send("Server error! Try again.");
+//   }
+// };
+const addService = async (req, res) => {
+  const { placeId } = req.params;
+  const item = req.body.item;
+  try {
+    const room = await Room.findOne({ _id: placeId });
+    room.amenities.push(item);
+    await room.save();
+    return res.status(200).send("Add service success.");
+  } catch (error) {
+    return res.status(500).send("Server error! try again.");
+  }
+};
+const updatePrice = async (req, res) => {
+  const { placeId } = req.params;
+  const newPrice = req.body.newPrice;
+  try {
+    const room = await Room.findOne({ _id: placeId });
+    room.price = newPrice;
+    await room.save();
+    return res.status(200).send("Update price success.");
+  } catch (error) {
+    return res.status(500).send("Server error! try again.");
+  }
+};
+const removeService = async (req, res) => {
+  const { placeId } = req.params;
+  const item = req.body.item;
+  try {
+    const room = await Room.findOne({ _id: placeId });
+    console.log(item);
+    room.amenities = room.amenities.filter((i) => i !== item);
+    await room.save();
+    return res.status(200).send("Remove service success.");
+  } catch (error) {
+    return res.status(500).send("Server error! try again.");
   }
 };
 
@@ -198,4 +249,7 @@ module.exports = {
   getRoomById,
   createReview,
   deleteRoom,
+  addService,
+  removeService,
+  updatePrice,
 };

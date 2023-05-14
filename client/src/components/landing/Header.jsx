@@ -111,11 +111,6 @@ function Header() {
             <ul className="flex flex-grow justify-end flex-wrap gap-8 items-center">
               {user && (
                 <li className="relative">
-                  {/* <img
-                    src={AvatarImg}
-                    className="w-12 h-12 object-cover rounded-full cursor-pointer"
-                    onClick={() => setDropdown(!dropdown)}
-                  ></img> */}
                   <RxAvatar
                     className="w-12 h-12 object-cover rounded-full cursor-pointer"
                     onClick={() => setDropdown(!dropdown)}

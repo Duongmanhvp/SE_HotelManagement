@@ -3,6 +3,8 @@ import formatISO from "date-fns/formatISO";
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import UserContext from "../../context/UserContext";
+import { BsPencilSquare, BsCheckCircle } from "react-icons/bs";
+import { updatePrice } from "../../api";
 
 export default function BookingWidget({ place }) {
   const {
@@ -17,6 +19,9 @@ export default function BookingWidget({ place }) {
   const [checkOut, setCheckOut] = useState("");
   const [numberOfGuests, setNumberOfGuests] = useState(1);
   const [user] = useContext(UserContext);
+  const [change, setChange] = useState(false);
+  const [newPrice, setNewPrice] = useState(price);
+  const admin = user.role === "ADMIN";
   const navigate = useNavigate();
 
   let numberOfNights = 0;
@@ -55,11 +60,51 @@ export default function BookingWidget({ place }) {
       });
     }
   }
+  const handleUpdatePrice = async () => {
+    try {
+      await updatePrice(newPrice, place._id);
+      setChange(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="bg-white shadow-lg px-8 py-12 rounded-2xl h-fit max-h-fit border-2 ">
       <div className="text-2xl text-center mb-8">
-        Price: <span className="font-semibold">${price}</span>
+        {!admin && (
+          <p>
+            {" "}
+            Price: <span className="font-semibold">${newPrice}</span>
+          </p>
+        )}
+        {admin && !change && (
+          <div className="flex items-center gap-2 justify-center">
+            <p>
+              {" "}
+              Price: <span className="font-semibold">${newPrice}</span>
+            </p>
+            <span onClick={() => setChange(true)}>
+              <BsPencilSquare className="cursor-pointer font-semibold"></BsPencilSquare>
+            </span>
+          </div>
+        )}
+        {admin && change && (
+          <div className="flex items-center gap-2 justify-center text-base">
+            <input
+              type="number"
+              placeholder="Enter new price"
+              min={0}
+              onChange={(e) => setNewPrice(e.target.value)}
+            ></input>
+            <span onClick={handleUpdatePrice}>
+              <BsCheckCircle
+                className="cursor-pointer font-semibold text-green-600 "
+                size={24}
+              ></BsCheckCircle>
+            </span>
+          </div>
+        )}
       </div>
       <form>
         <div className="border rounded-2xl mt-4 mb-6">

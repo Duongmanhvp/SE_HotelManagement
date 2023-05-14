@@ -1,10 +1,6 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AiFillCalendar } from "react-icons/ai";
-import {
-  BsAwardFill,
-  BsCheckCircleFill,
-  BsFillHouseDoorFill,
-} from "react-icons/bs";
+import { BsAwardFill, BsFillHouseDoorFill } from "react-icons/bs";
 import { RxAvatar } from "react-icons/rx";
 import ReactPaginate from "react-paginate";
 import { useParams } from "react-router-dom";
@@ -12,24 +8,25 @@ import { getPlaceById } from "../../api";
 import AddressLink from "../../components/customer/AddressLink";
 import BookingWidget from "../../components/customer/BookingWidget";
 import RateBar from "../../components/customer/RateBar";
-import {
-  extractDate,
-  extractReviewScores,
-  getReviewScore,
-} from "../../utils/Caculate";
+import { extractReviewScores, getReviewScore } from "../../utils/Caculate";
 import NotFoundPage from "../error/NotFoundPage";
 import ReviewItem from "../../components/customer/ReviewItem";
 import ShowText from "../../components/customer/ShowText";
+import ImageNotFound from "../../assets/img.png";
+import UserContext from "../../context/UserContext";
+import Services from "../../components/customer/Services";
 
 export default function PlacePage() {
   const [place, setPlace] = useState(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
-  const [showServices, setShowServices] = useState(false);
-  const [longService, setLongService] = useState(false);
   const { placeId } = useParams();
+  const [user] = useContext(UserContext);
+
+  const admin = user.role === "ADMIN";
   let star = getReviewScore(place?.review_scores);
   let reviewScores = extractReviewScores(place);
+
   useEffect(() => {
     window.scrollTo(0, 0);
     setLoading(true);
@@ -37,11 +34,9 @@ export default function PlacePage() {
       .then((res) => {
         if (res.status === 404) {
           setNotFound(true);
-
           return;
         } else {
           setPlace(res.data);
-          setLongService(res.data.amenities.length > 10);
         }
         setLoading(false);
       })
@@ -70,10 +65,10 @@ export default function PlacePage() {
       </div>
 
       <img
-        src={place.images.picture_url}
+        src={place.images?.picture_url || ImageNotFound}
         className="rounded-3xl h-[480px] cover m-auto"
       ></img>
-      <div className="flex justify-between mt-12 gap-12 ">
+      <div className="flex justify-between mt-12 gap-12">
         <div>
           <div>
             <div className="flex justify-between items-center mb-6">
@@ -127,69 +122,7 @@ export default function PlacePage() {
               <ShowText text={place.description} showChar={400}></ShowText>
             </div>
             <hr></hr>
-            <div className="my-6">
-              <h2 className="font-bold text-2xl mb-8">
-                Nơi này có những gì cho bạn
-              </h2>
-              <ul className="grid grid-cols-2">
-                {!longService &&
-                  place.amenities.map((item) => (
-                    <li className="flex items-center mb-6">
-                      <BsCheckCircleFill
-                        size={24}
-                        style={{ color: "green" }}
-                      ></BsCheckCircleFill>
-                      <span className="ml-3">{item}</span>
-                    </li>
-                  ))}
-                {longService && !showServices && (
-                  <>
-                    {place.amenities.slice(0, 10).map((item) => (
-                      <li className="flex items-center mb-6">
-                        <BsCheckCircleFill
-                          size={24}
-                          style={{ color: "green" }}
-                        ></BsCheckCircleFill>
-                        <span className="ml-3">{item}</span>
-                      </li>
-                    ))}
-                    <div className="col-span-2">
-                      <button
-                        className="toggle-btn w-1/3"
-                        onClick={() => {
-                          setShowServices(true);
-                        }}
-                      >
-                        Show all
-                      </button>
-                    </div>
-                  </>
-                )}
-                {longService && showServices && (
-                  <>
-                    {place.amenities.map((item) => (
-                      <li className="flex items-center mb-6">
-                        <BsCheckCircleFill
-                          size={24}
-                          style={{ color: "green" }}
-                        ></BsCheckCircleFill>
-                        <span className="ml-3">{item}</span>
-                      </li>
-                    ))}
-                    <div className="col-span-2">
-                      <button
-                        className="toggle-btn w-1/3"
-                        onClick={() => {
-                          setShowServices(false);
-                        }}
-                      >
-                        Hide
-                      </button>
-                    </div>
-                  </>
-                )}
-              </ul>
-            </div>
+            <Services items={place.amenities} placeId={placeId}></Services>
             <hr></hr>
           </div>
         </div>
