@@ -6,7 +6,6 @@ Backend server cho quản lý khách sạn. Sử dụng Django, Django_rest_api.
 
 - Hệ điều hành Window
 - Python version >  3.7
-- PostgreSQL 15.3
 
 ## Cài đặt
 
