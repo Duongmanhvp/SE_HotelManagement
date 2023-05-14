@@ -15,6 +15,7 @@ import ShowText from "../../components/customer/ShowText";
 import ImageNotFound from "../../assets/img.png";
 import UserContext from "../../context/UserContext";
 import Services from "../../components/customer/Services";
+import Loading from "../../components/customer/Loading";
 
 export default function PlacePage() {
   const [place, setPlace] = useState(null);
@@ -47,7 +48,7 @@ export default function PlacePage() {
       });
   }, []);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <Loading></Loading>;
   if (notFound) {
     return <NotFoundPage></NotFoundPage>;
   }
