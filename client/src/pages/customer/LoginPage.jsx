@@ -40,52 +40,54 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex justify-center items-center">
-      <div className="w-1/2 py-10 px-[5%]">
-        {error && (
-          <div className="bg-red-400/40 text-center py-2 rounded-3xl">
-            <p className="text-red-800 font-semibold">{`Wrong email or password! Try again.`}</p>
-          </div>
-        )}
-        <form onSubmit={handleSubmit} className="bg-gray-100 p-10 rounded-lg">
-          <h2 className="text-3xl font-semibold text-center mb-4">Login</h2>
-          <label className="block mb-2">
-            Email
-            <input
-              type="email"
-              value={email}
-              onChange={handleEmailChange}
-              className="border border-gray-400 p-2 w-full rounded-lg"
-            />
-          </label>
+    <>
+      <div className="flex justify-center items-center">
+        <div className="w-1/2 py-10 px-[5%]">
+          {error && (
+            <div className="bg-red-400/40 text-center py-2 rounded-3xl">
+              <p className="text-red-800 font-semibold">{`Wrong email or password! Try again.`}</p>
+            </div>
+          )}
+          <form onSubmit={handleSubmit} className="bg-gray-100 p-10 rounded-lg">
+            <h2 className="text-3xl font-semibold text-center mb-4">Login</h2>
+            <label className="block mb-2">
+              Email
+              <input
+                type="email"
+                value={email}
+                onChange={handleEmailChange}
+                className="border border-gray-400 p-2 w-full rounded-lg"
+              />
+            </label>
 
-          <label className="block mb-2">
-            Password
-            <input
-              type="password"
-              value={password}
-              onChange={handlePasswordChange}
-              className="border border-gray-400 p-2 w-full rounded-lg"
-            />
-          </label>
+            <label className="block mb-2">
+              Password
+              <input
+                type="password"
+                value={password}
+                onChange={handlePasswordChange}
+                className="border border-gray-400 p-2 w-full rounded-lg"
+              />
+            </label>
 
-          <button
-            type="submit"
-            className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-700 w-full"
-          >
-            Login
-          </button>
-          <p className="text-center mt-4">
-            Don't have an account?{" "}
-            <Link
-              to="/register"
-              className="text-blue-500 hover:text-blue-700 font-bold"
+            <button
+              type="submit"
+              className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-700 w-full"
             >
-              Register here
-            </Link>
-          </p>
-        </form>
+              Login
+            </button>
+            <p className="text-center mt-4">
+              Don't have an account?{" "}
+              <Link
+                to="/register"
+                className="text-blue-500 hover:text-blue-700 font-bold"
+              >
+                Register here
+              </Link>
+            </p>
+          </form>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

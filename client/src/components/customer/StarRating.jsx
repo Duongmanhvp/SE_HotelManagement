@@ -20,19 +20,6 @@ function StarRating({ name, stars, setStars }) {
           &#9733;
         </p>
       ))}
-
-      {/* <p className="text-3xl star hover:text-yellow-500 cursor-pointer duration-150">
-        &#9733;
-      </p>
-      <p className="text-3xl star hover:text-yellow-500 cursor-pointer duration-150">
-        &#9733;
-      </p>
-      <p className="text-3xl star hover:text-yellow-500 cursor-pointer duration-150">
-        &#9733;
-      </p>
-      <p className="text-3xl star hover:text-yellow-500 cursor-pointer duration-150">
-        &#9733;
-      </p> */}
     </div>
   );
 }
